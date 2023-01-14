@@ -1,0 +1,78 @@
+CREATE TABLE users(
+    -- indentification and verification
+    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    is_verified BOOLEAN DEFAULT FALSE NOT NULL,
+
+    -- user details
+    email VARCHAR UNIQUE NOT NULL,
+    contact_number VARCHAR NOT NULL,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
+
+    -- user confidential information
+    password VARCHAR(255) NOT NULL,
+    refresh_token VARCHAR
+);
+
+-- to store tokens while user email verification
+CREATE TABLE user_verification_tokens(
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    token VARCHAR NOT NULL
+);
+
+-- role of each users will be defined in this table
+CREATE TABLE user_role(
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    role_admin BOOLEAN DEFAULT FALSE,
+    role_coordinator BOOLEAN DEFAULT FALSE,
+    role_volunteer BOOLEAN DEFAULT FALSE,
+    role_participant BOOLEAN DEFAULT FALSE
+);
+
+-- permissions of users will be defined here
+CREATE TABLE user_permission(
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    perm_add_event BOOLEAN DEFAULT FALSE,
+    perm_edit_event BOOLEAN DEFAULT FALSE,
+    perm_delete_event BOOLEAN DEFAULT FALSE,
+    
+    perm_view_participant BOOLEAN DEFAULT FALSE,
+    perm_edit_participant BOOLEAN DEFAULT FALSE,
+    
+    perm_access_report BOOLEAN DEFAULT FALSE
+);
+
+--used to store other details of participants--
+CREATE TABLE participant_details(
+    user_id uuid REFERENCES users,
+    college_name VARCHAR NOT NULL,
+    usn VARCHAR NOT NULL,
+    state VARCHAR NOT NULL,
+    city VARCHAR NOT NULL,
+    zip INT NOT NULL
+);
+
+--used to store details of events--
+CREATE TABLE event_master(
+    event_id SERIAL PRIMARY KEY,
+    event_name VARCHAR NOT NULL,
+    event_description VARCHAR NOT NULL,
+    event_max_points INT NOT NULL,
+    event_max_team_size INT NOT NULL
+);
+
+--used to store details of team along with team head--
+CREATE TABLE team_master(
+    team_id SERIAL PRIMARY KEY,
+    team_name VARCHAR NOT NULL,
+    team_head_user uuid REFERENCES users,
+    team_is_gc_considered BOOLEAN NOT NULL
+);
+
+--used to map each team member (along with team head) with --
+--the events that he/she will participate in--
+CREATE TABLE team_member_event(
+    team_id INT REFERENCES team_master,
+    member_user_id uuid REFERENCES users,
+    event_id INT REFERENCES event_master
+);
