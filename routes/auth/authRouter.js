@@ -3,6 +3,7 @@ const router = require("express").Router();
 require("./authRoutes/register-admin")(router);
 require("./authRoutes/register-coordinator")(router);
 require("./authRoutes/register-particpant")(router);
+require("./authRoutes/register-volunteer")(router);
 
 require("./authRoutes/delete-user")(router);
 require("./authRoutes/send-confirmation-email")(router);

@@ -6,10 +6,9 @@ const {
 const validateInputs = require("../../../middleware/validateInputs");
 const appConstants = require("../../../constants/appConstants");
 const addUser = require("./funcAddUser");
-const addPartipant = require("./funcAddParticipant");
 
 module.exports = (router) => {
-  router.post("/register-participant", validateInputs, async (req, res) => {
+  router.post("/register-volunteer", validateInputs, async (req, res) => {
     console.log("Route:", req.path);
 
     const { users, userVerificationTokens, userPermission, userRole } =
@@ -17,18 +16,7 @@ module.exports = (router) => {
 
     try {
       // destructure req body
-      const {
-        email,
-        contactNumber,
-        firstName,
-        lastName,
-        password,
-        collegeName,
-        usn,
-        state,
-        city,
-        zip,
-      } = req.body;
+      const { email, contactNumber, firstName, lastName, password } = req.body;
 
       const userDetails = {
         email,
@@ -38,32 +26,15 @@ module.exports = (router) => {
         password,
       };
 
-      const participantDetails = {
-        collegeName,
-        usn,
-        state,
-        city,
-        zip,
-      };
-
       const addUserRes = await addUser(userDetails);
       if (addUserRes.error) {
         return res.status(401).json({ error: addUserRes.errorMessage });
       }
       const newUser = addUserRes.data;
 
-      //Add participant
-      const addPartipantRes = await addPartipant(
-        newUser.user_id,
-        participantDetails
-      );
-      if (addPartipantRes.error) {
-        return res.status(401).json({ error: addPartipantRes.errorMessage });
-      }
-
       // save role of this user
       const userRoleRes = await pool.query(
-        `INSERT INTO ${userRole}(user_id, role_participant)
+        `INSERT INTO ${userRole}(user_id, role_volunteer)
         VALUES ($1, true)
         RETURNING *`,
         [newUser.user_id]
@@ -74,7 +45,7 @@ module.exports = (router) => {
       const perm_add_event = false;
       const perm_edit_event = false;
       const perm_delete_event = false;
-      const perm_view_participant = false;
+      const perm_view_participant = true;
       const perm_edit_participant = false;
       const perm_access_report = false;
 
@@ -131,7 +102,7 @@ module.exports = (router) => {
         contact_number: newUser.contact_number,
       });
     } catch (error) {
-      console.error("Error while registering participant", error);
+      console.error("Error while registering volunteer", error);
       return res.status(500).send("Server error");
     }
   });
