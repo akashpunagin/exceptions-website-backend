@@ -6,9 +6,10 @@ const {
 const validateInputs = require("../../../middleware/validateInputs");
 const appConstants = require("../../../constants/appConstants");
 const addUser = require("./funcAddUser");
+const addPartipant = require("./funcAddParticipant");
 
 module.exports = (router) => {
-  router.post("/register-customer", validateInputs, async (req, res) => {
+  router.post("/register-participant", validateInputs, async (req, res) => {
     console.log("Route:", req.path);
 
     const { users, userVerificationTokens, userPermission, userRole } =
@@ -17,29 +18,32 @@ module.exports = (router) => {
     try {
       // destructure req body
       const {
+        email,
+        contactNumber,
         firstName,
         lastName,
-        email,
         password,
-        country,
+        collegeName,
+        usn,
         state,
         city,
         zip,
-        address,
-        contact_number,
       } = req.body;
 
       const userDetails = {
+        email,
+        contactNumber,
         firstName,
         lastName,
-        email,
         password,
-        country,
+      };
+
+      const participantDetails = {
+        collegeName,
+        usn,
         state,
         city,
         zip,
-        address,
-        contact_number,
       };
 
       const addUserRes = await addUser(userDetails);
@@ -48,9 +52,18 @@ module.exports = (router) => {
       }
       const newUser = addUserRes.data;
 
+      //Add participant
+      const addPartipantRes = await addPartipant(
+        newUser.user_id,
+        participantDetails
+      );
+      if (addPartipantRes.error) {
+        return res.status(401).json({ error: addPartipantRes.errorMessage });
+      }
+
       // save role of this user
       const userRoleRes = await pool.query(
-        `INSERT INTO ${userRole}(user_id, role_customer)
+        `INSERT INTO ${userRole}(user_id, role_participant)
         VALUES ($1, true)
         RETURNING *`,
         [newUser.user_id]
@@ -58,28 +71,34 @@ module.exports = (router) => {
       const newUserRole = userRoleRes.rows[0];
       console.log("USER ROLE: ", newUserRole);
 
-      const isAddDevicePermission = false;
-      const isAddCustomerPermission = false;
-      const isAddSensorPermission = false;
-      const isAddTenantPermission = true;
+      const perm_add_event = false;
+      const perm_edit_event = false;
+      const perm_delete_event = false;
+      const perm_view_participant = true;
+      const perm_edit_participant = false;
+      const perm_access_report = false;
 
       // save permission of this user
       const userPermissionRes = await pool.query(
         `INSERT INTO ${userPermission}(
           user_id,
-          perm_add_device,
-          perm_add_customer,
-          perm_add_sensor,
-          perm_add_tenant
+          perm_add_event,
+          perm_edit_event,
+          perm_delete_event,
+          perm_view_participant,
+          perm_edit_participant,
+          perm_access_report
         )
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *`,
         [
           newUser.user_id,
-          isAddDevicePermission,
-          isAddCustomerPermission,
-          isAddSensorPermission,
-          isAddTenantPermission,
+          perm_add_event,
+          perm_edit_event,
+          perm_delete_event,
+          perm_view_participant,
+          perm_edit_participant,
+          perm_access_report,
         ]
       );
       const newUserPermission = userPermissionRes.rows[0];
@@ -109,15 +128,10 @@ module.exports = (router) => {
         firstName: newUser.first_name,
         lastName: newUser.last_name,
         email: newUser.email,
-        country: newUser.country,
-        state: newUser.state,
-        city: newUser.city,
-        zip: newUser.zip,
-        address: newUser.address,
         contact_number: newUser.contact_number,
       });
     } catch (error) {
-      console.error("Error while registering user", error);
+      console.error("Error while registering coordinator", error);
       return res.status(500).send("Server error");
     }
   });
