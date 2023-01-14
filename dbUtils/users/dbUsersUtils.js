@@ -52,7 +52,10 @@ async function getUserByUserId(userId) {
 
 async function getUserRoleByUserId(userId) {
   const userRoleRes = await pool.query(
-    `SELECT ur.role_admin, ur.role_customer
+    `SELECT ur.role_admin,
+      role_coordinator,
+      role_volunteer,
+      role_participant
     FROM ${users} as u, 
         ${userRole} as ur
     WHERE u.user_id = ur.user_id

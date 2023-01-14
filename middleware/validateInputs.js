@@ -96,15 +96,42 @@ function handleAuthReq(req) {
   }
 }
 
+function handelEventReq(req) {
+  const { eventId, name, description, maxPoints, maxTeamSize } = req.body;
+
+  if (req.path === "/add") {
+    if (![name, description, maxPoints, maxTeamSize].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/delete") {
+    if (![eventId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/update") {
+    if (![eventId, name, description, maxPoints, maxTeamSize].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
+  const eventError = handelEventReq(req);
 
   console.log({
     authError,
+    eventError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
     return res.status(401).json({ error: authError });
+  }
+  if (req.originalUrl.includes("/event/") && eventError) {
+    return res.status(401).json({ error: eventError });
   }
 
   next();
