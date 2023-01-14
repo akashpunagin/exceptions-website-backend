@@ -43,6 +43,15 @@ function handleAuthReq(req) {
     }
   }
 
+  if (req.path === "/register-volunteer") {
+    if (![email, contactNumber, firstName, lastName, password].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidEmail(email)) {
+      return invalidEmailMessage;
+    }
+  }
+
   if (req.path === "/register-participant") {
     if (
       ![
