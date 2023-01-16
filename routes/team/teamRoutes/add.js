@@ -16,7 +16,10 @@ module.exports = (router) => {
     const { teamMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { name, headUserId, isGCConsidered } = req.body;
+      const { name, isGCConsidered } = req.body;
+
+      const currentUser = req.user;
+      const headUserId = currentUser.userId;
 
       const teamRes = await pool.query(
         `SELECT team_id 

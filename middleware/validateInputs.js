@@ -119,10 +119,10 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { teamId, name, headUserId, isGCConsidered } = req.body;
+  const { teamId, name, isGCConsidered } = req.body;
 
   if (req.path === "/add") {
-    if (![name, headUserId, isGCConsidered].every(Boolean)) {
+    if (![name, isGCConsidered].every(Boolean)) {
       return missingCredsMessage;
     }
     if (typeof isGCConsidered !== "boolean") {
@@ -143,10 +143,21 @@ function handleTeamReq(req) {
   }
 }
 
+function handleTeamMemberError(req) {
+  const { memberUserId, eventId } = req.body;
+
+  if (req.path === "/add") {
+    if (![memberUserId, eventId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
   const teamError = handleTeamReq(req);
+  const teamMemberError = handleTeamMemberError(req);
 
   console.log({
     authError,

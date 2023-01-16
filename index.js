@@ -8,6 +8,7 @@ const authRouter = require("./routes/auth/authRouter");
 const profileRouter = require("./routes/profile/profileRouter");
 const eventRouter = require("./routes/event/eventRouter");
 const teamRouter = require("./routes/team/teamRouter");
+const teamMemberRouter = require("./routes/teamMember/teamMemberRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -23,6 +24,7 @@ app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/event", eventRouter);
 app.use("/team", teamRouter);
+app.use("/teamMember", teamMemberRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
