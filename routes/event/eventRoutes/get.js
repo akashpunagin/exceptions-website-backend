@@ -12,8 +12,6 @@ module.exports = (router) => {
     const { eventMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { name, description, maxPoints, maxTeamSize } = req.body;
-
       const eventRes = await pool.query(`SELECT * FROM ${eventMaster}`);
       let data = eventRes.rows;
 
