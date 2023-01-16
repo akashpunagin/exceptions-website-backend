@@ -119,7 +119,7 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { name, headUserId, isGCConsidered } = req.body;
+  const { teamId, name, headUserId, isGCConsidered } = req.body;
 
   if (req.path === "/add") {
     if (![name, headUserId, isGCConsidered].every(Boolean)) {
@@ -128,8 +128,12 @@ function handleTeamReq(req) {
     if (typeof isGCConsidered !== "boolean") {
       return invalidCredsMessage;
     }
+  }
 
-    console.log("SEE", typeof isGCConsidered);
+  if (req.path === "/delete") {
+    if (![teamId].every(Boolean)) {
+      return missingCredsMessage;
+    }
   }
 }
 
