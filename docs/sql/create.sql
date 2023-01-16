@@ -44,7 +44,7 @@ CREATE TABLE user_permission(
 
 --used to store other details of participants--
 CREATE TABLE participant_details(
-    user_id uuid REFERENCES users,
+    user_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     college_name VARCHAR NOT NULL,
     usn VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
@@ -65,14 +65,15 @@ CREATE TABLE event_master(
 CREATE TABLE team_master(
     team_id SERIAL PRIMARY KEY,
     team_name VARCHAR NOT NULL,
-    team_head_user uuid REFERENCES users,
-    team_is_gc_considered BOOLEAN NOT NULL
+    team_head_user uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    team_is_gc_considered BOOLEAN NOT NULL,
+    team_score INT DEFAULT 0
 );
 
 --used to map each team member (along with team head) with --
 --the events that he/she will participate in--
 CREATE TABLE team_member_event(
-    team_id INT REFERENCES team_master,
-    member_user_id uuid REFERENCES users,
-    event_id INT REFERENCES event_master
+    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
+    member_user_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE
 );

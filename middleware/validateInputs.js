@@ -135,6 +135,12 @@ function handleTeamReq(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/update") {
+    if (![teamId, name, isGCConsidered].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {

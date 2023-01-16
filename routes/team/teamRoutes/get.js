@@ -21,6 +21,7 @@ module.exports = (router) => {
           name: team.team_name,
           headUserId: team.team_head_user,
           isGCConsidered: team.team_is_gc_considered,
+          score: team.team_score,
         };
       });
 

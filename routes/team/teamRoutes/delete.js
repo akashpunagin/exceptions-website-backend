@@ -1,7 +1,6 @@
 const pool = require("../../../db/pool");
 const {
   authorization,
-  authorizeAdmin,
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
@@ -9,7 +8,7 @@ const appConstants = require("../../../constants/appConstants");
 module.exports = (router) => {
   router.delete(
     "/delete",
-    [authorization, authorizeAdmin, validateInputs],
+    [authorization, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
