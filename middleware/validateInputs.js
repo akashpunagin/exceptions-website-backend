@@ -118,13 +118,30 @@ function handelEventReq(req) {
   }
 }
 
+function handleTeamReq(req) {
+  const { name, headUserId, isGCConsidered } = req.body;
+
+  if (req.path === "/add") {
+    if (![name, headUserId, isGCConsidered].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (typeof isGCConsidered !== "boolean") {
+      return invalidCredsMessage;
+    }
+
+    console.log("SEE", typeof isGCConsidered);
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
+  const teamError = handleTeamReq(req);
 
   console.log({
     authError,
     eventError,
+    teamError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -132,6 +149,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/event/") && eventError) {
     return res.status(401).json({ error: eventError });
+  }
+  if (req.originalUrl.includes("/team/") && teamError) {
+    return res.status(401).json({ error: teamError });
   }
 
   next();

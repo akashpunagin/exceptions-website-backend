@@ -1,2 +1,6 @@
 sudo su postgres
 psql -d exceptions_event
+
+or 
+
+psql -d exceptions_event -U postgres
