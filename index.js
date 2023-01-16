@@ -9,6 +9,9 @@ const profileRouter = require("./routes/profile/profileRouter");
 const eventRouter = require("./routes/event/eventRouter");
 const teamRouter = require("./routes/team/teamRouter");
 
+// TODO delete
+const testingRouter = require("./routes/testing/testingRouter");
+
 const PORT = process.env.PORT;
 
 // Middlewares
@@ -20,6 +23,9 @@ app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/event", eventRouter);
 app.use("/team", teamRouter);
+
+// TODO delete
+app.use("/testing", testingRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
