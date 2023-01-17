@@ -14,16 +14,16 @@ module.exports = (router) => {
     try {
       const currentUser = req.user;
 
-      const teamExistsRes = await pool.query(
+      const teamHeadExistsRes = await pool.query(
         `SELECT * FROM ${teamMaster}
           WHERE team_head_user = $1`,
         [currentUser.userId]
       );
-      if (teamExistsRes.rowCount === 0) {
+      if (teamHeadExistsRes.rowCount === 0) {
         return res.status(401).json({ error: "User does not have any team" });
       }
 
-      const team = teamExistsRes.rows[0];
+      const team = teamHeadExistsRes.rows[0];
       const teamId = team.team_id;
 
       const teamRes = await pool.query(

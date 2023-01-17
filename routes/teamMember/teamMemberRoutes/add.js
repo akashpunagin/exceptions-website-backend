@@ -24,7 +24,6 @@ module.exports = (router) => {
 
       const currentUser = req.user;
 
-      /*
       const isEventExists = await isEventExistsByEventId(eventId);
       if (!isEventExists) {
         return res.status(401).json({ error: "Event does not exists" });
@@ -41,50 +40,34 @@ module.exports = (router) => {
       const currentTeam = currentTeamRes.rows[0];
       const teamId = currentTeam.team_id;
 
-      const teamRes = await pool.query(
-        `SELECT team_id
-        FROM ${teamMaster}
-        WHERE
+      const teamMemberExistsRes = await pool.query(
+        `SELECT * FROM ${teamMemberEvent}
+          WHERE 
             team_id = $1 AND
-            team_head_user = $2`,
-        [teamId, currentUser.userId]
+            event_id = $2 AND
+            first_name = $3 AND
+            last_name = $4 AND
+            usn = $5 AND
+            email = $6 AND
+            contact_number = $7`,
+        [teamId, eventId, firstName, lastName, usn, email, contactNumber]
       );
-      if (teamRes.rowCount === 0) {
+      if (teamMemberExistsRes.rowCount > 0) {
         return res
           .status(401)
-          .json({ error: "User does not belong to the current team" });
-      }
-
-      const isTeamHeadMemberExists = await isTeamHeadExists(memberUserId);
-      if (isTeamHeadMemberExists) {
-        return res
-          .status(401)
-          .json({ error: "Member is already a team head of some other team" });
-      }
-
-      const memberRes = await pool.query(
-        `SELECT *
-        FROM ${teamMemberEvent}
-        WHERE member_user_id = $1`,
-        [memberUserId]
-      );
-      if (memberRes.rowCount > 0) {
-        return res.status(401).json({
-          error: "Member is already a team member of some other team",
-        });
+          .json({ error: "Team member already exists in this team" });
       }
 
       const addRes = await pool.query(
-        `INSERT INTO ${teamMemberEvent}(team_id, member_user_id, event_id)
-          VALUES($1, $2, $3)
+        `INSERT INTO ${teamMemberEvent}(team_id, event_id, first_name, last_name, usn, email, contact_number)
+          VALUES($1, $2, $3, $4, $5, $6, $7)
           RETURNING *`,
-        [teamId, memberUserId, eventId]
+        [teamId, eventId, firstName, lastName, usn, email, contactNumber]
       );
-      */
 
       return res.status(200).json({
         status: "Team member added successfully",
-        data: "addRes.rows[0]",
+        data: addRes.rows[0],
       });
     } catch (error) {
       console.log("ADD Team member error", error);
