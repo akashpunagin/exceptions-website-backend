@@ -97,11 +97,17 @@ function handleAuthReq(req) {
 }
 
 function handelEventReq(req) {
-  const { eventId, name, description, maxPoints, maxTeamSize } = req.body;
+  const { eventId, name, description, maxPoints, maxTeamSize, isOpenEvent } =
+    req.body;
 
   if (req.path === "/add") {
-    if (![name, description, maxPoints, maxTeamSize].every(Boolean)) {
+    if (
+      ![name, description, maxPoints, maxTeamSize, isOpenEvent].every(Boolean)
+    ) {
       return missingCredsMessage;
+    }
+    if (typeof isOpenEvent !== "boolean") {
+      return invalidCredsMessage;
     }
   }
 
@@ -112,8 +118,15 @@ function handelEventReq(req) {
   }
 
   if (req.path === "/update") {
-    if (![eventId, name, description, maxPoints, maxTeamSize].every(Boolean)) {
+    if (
+      ![eventId, name, description, maxPoints, maxTeamSize, isOpenEvent].every(
+        Boolean
+      )
+    ) {
       return missingCredsMessage;
+    }
+    if (typeof isOpenEvent !== "boolean") {
+      return invalidCredsMessage;
     }
   }
 }

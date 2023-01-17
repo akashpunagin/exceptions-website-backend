@@ -58,7 +58,8 @@ CREATE TABLE event_master(
     event_name VARCHAR NOT NULL,
     event_description VARCHAR NOT NULL,
     event_max_points INT NOT NULL,
-    event_max_team_size INT NOT NULL
+    event_max_team_size INT NOT NULL,
+    event_is_open_event BOOLEAN NOT NULL --open or group event--
 );
 
 --used to store details of team along with team head--

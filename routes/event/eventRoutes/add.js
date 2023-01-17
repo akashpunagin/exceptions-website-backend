@@ -19,29 +19,20 @@ module.exports = (router) => {
       const { eventMaster } = appConstants.SQL_TABLE;
 
       try {
-        const { name, description, maxPoints, maxTeamSize } = req.body;
+        const { name, description, maxPoints, maxTeamSize, isOpenEvent } =
+          req.body;
 
         const isEventExists = await isEventExistsByEventName(name);
         if (isEventExists) {
           return res.status(401).json({ error: "Event already exists" });
         }
 
-        // const eventRes = await pool.query(
-        //   `SELECT event_id
-        //     FROM ${eventMaster}
-        //     WHERE event_name = $1`,
-        //   [name]
-        // );
-        // if (eventRes.rowCount > 0) {
-        //   return res.status(401).json({ error: "Event already exists" });
-        // }
-
         const addRes = await pool.query(
           `INSERT INTO ${eventMaster}(event_name, event_description, 
-            event_max_points, event_max_team_size)
-          VALUES($1, $2, $3, $4)
+            event_max_points, event_max_team_size, event_is_open_event)
+          VALUES($1, $2, $3, $4, $5)
           RETURNING *`,
-          [name, description, maxPoints, maxTeamSize]
+          [name, description, maxPoints, maxTeamSize, isOpenEvent]
         );
 
         return res.status(200).json({

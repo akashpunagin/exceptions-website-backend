@@ -22,6 +22,7 @@ module.exports = (router) => {
           description: event.event_description,
           maxPoints: event.event_max_points,
           maxTeamSize: event.event_max_team_size,
+          isOpenEvent: event.event_is_open_event,
         };
       });
 

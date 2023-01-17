@@ -43,16 +43,26 @@ module.exports = (router) => {
           .json({ error: "User does not belong to the current team" });
       }
 
-      const addRes = await pool.query(
-        `INSERT INTO ${teamMemberEvent}(team_id, member_user_id, event_id)
-          VALUES($1, $2, $3)
-          RETURNING *`,
-        [teamId, memberUserId, eventId]
+      // TODO validate if member is in any other team
+      const memberRes = await pool.query(
+        `SELECT *
+        FROM ${teamMemberEvent}
+        WHERE
+          member_user_id = $1 AND
+          event_id NOT IN $2`,
+        [memberUserId, eventId]
       );
+
+      // const addRes = await pool.query(
+      //   `INSERT INTO ${teamMemberEvent}(team_id, member_user_id, event_id)
+      //     VALUES($1, $2, $3)
+      //     RETURNING *`,
+      //   [teamId, memberUserId, eventId]
+      // );
 
       return res.status(200).json({
         status: "Team member added successfully",
-        data: addRes.rows[0],
+        data: "addRes.rows[0]",
       });
     } catch (error) {
       console.log("ADD Team member error", error);
