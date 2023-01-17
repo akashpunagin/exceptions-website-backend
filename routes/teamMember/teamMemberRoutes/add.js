@@ -19,14 +19,12 @@ module.exports = (router) => {
     const { teamMemberEvent, teamMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { memberUserId, eventId } = req.body;
+      const { eventId, firstName, lastName, usn, email, contactNumber } =
+        req.body;
+
       const currentUser = req.user;
 
-      const isUserExists = await isUserExistsByUserId(memberUserId);
-      if (!isUserExists) {
-        return res.status(401).json({ error: "User does not exists" });
-      }
-
+      /*
       const isEventExists = await isEventExistsByEventId(eventId);
       if (!isEventExists) {
         return res.status(401).json({ error: "Event does not exists" });
@@ -82,10 +80,11 @@ module.exports = (router) => {
           RETURNING *`,
         [teamId, memberUserId, eventId]
       );
+      */
 
       return res.status(200).json({
         status: "Team member added successfully",
-        data: addRes.rows[0],
+        data: "addRes.rows[0]",
       });
     } catch (error) {
       console.log("ADD Team member error", error);

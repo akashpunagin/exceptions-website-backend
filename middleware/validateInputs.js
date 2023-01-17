@@ -157,10 +157,12 @@ function handleTeamReq(req) {
 }
 
 function handleTeamMemberError(req) {
-  const { memberUserId, eventId } = req.body;
+  const { eventId, firstName, lastName, usn, email, contactNumber } = req.body;
 
   if (req.path === "/add") {
-    if (![memberUserId, eventId].every(Boolean)) {
+    if (
+      ![eventId, firstName, lastName, usn, email, contactNumber].every(Boolean)
+    ) {
       return missingCredsMessage;
     }
   }
@@ -176,6 +178,7 @@ module.exports = (req, res, next) => {
     authError,
     eventError,
     teamError,
+    teamMemberError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -186,6 +189,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/team/") && teamError) {
     return res.status(401).json({ error: teamError });
+  }
+  if (req.originalUrl.includes("/teamMember/") && teamMemberError) {
+    return res.status(401).json({ error: teamMemberError });
   }
 
   next();

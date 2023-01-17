@@ -71,10 +71,13 @@ CREATE TABLE team_master(
     team_score INT DEFAULT 0
 );
 
---used to map each team member (along with team head) with --
---the events that he/she will participate in--
+--master table used to store members of the team--
 CREATE TABLE team_member_event(
     team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
-    member_user_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL
+    usn VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    contact_number VARCHAR NOT NULL
 );
