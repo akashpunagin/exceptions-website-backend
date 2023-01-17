@@ -24,8 +24,9 @@ module.exports = (router) => {
 
       const {
         role_admin: roleAdmin,
-        role_customer: roleCustomer,
-        role_tenant: roleTenant,
+        role_coordinator: roleCoordinator,
+        role_volunteer: roleVolunteer,
+        role_participant: roleParticipant,
       } = roles;
 
       let role = null;
@@ -33,16 +34,19 @@ module.exports = (router) => {
       if (roleAdmin) {
         role = "ADMIN";
       }
-      if (roleCustomer) {
-        role = "CUSTOMER";
+      if (roleCoordinator) {
+        role = "COORDINATOR";
       }
-      if (roleTenant) {
-        role = "TENANT";
+      if (roleVolunteer) {
+        role = "VOLUNTEER";
+      }
+      if (roleParticipant) {
+        role = "PARTICIPANT";
       }
 
       return res.status(200).json({ role });
     } catch (error) {
-      console.error("Error while verifying", error);
+      console.error("Error while getting role", error);
       res.status(500).json("Server error");
     }
   });
