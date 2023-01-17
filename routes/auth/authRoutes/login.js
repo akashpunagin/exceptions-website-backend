@@ -1,5 +1,5 @@
 const pool = require("../../../db/pool");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const {
   accessTokenGenerator,
   refreshTokenGenerator,

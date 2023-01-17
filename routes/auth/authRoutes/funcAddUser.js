@@ -3,7 +3,7 @@ const appConstants = require("../../../constants/appConstants");
 const {
   isUserExistsByUserEmail,
 } = require("../../../dbUtils/users/dbUsersUtils");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 async function addUser(userDetails) {
   const { email, contactNumber, firstName, lastName, password } = userDetails;
