@@ -52,7 +52,10 @@ module.exports = (router) => {
           event_id NOT IN $2`,
         [memberUserId, eventId]
       );
+      const memberData = memberRes.rows;
+      console.log("COUNT:", memberRes.rowCount);
 
+      // TODO uncomment
       // const addRes = await pool.query(
       //   `INSERT INTO ${teamMemberEvent}(team_id, member_user_id, event_id)
       //     VALUES($1, $2, $3)
