@@ -166,6 +166,14 @@ function handleTeamMemberError(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/delete") {
+    if (
+      ![eventId, firstName, lastName, usn, email, contactNumber].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {

@@ -4,13 +4,12 @@ const {
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
-const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   isEventExistsByEventId,
 } = require("../../../dbUtils/event/dbEventUtils");
 const {
-  isTeamHeadExists,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+  getTeamIdOfUser,
+} = require("../../../dbUtils/team_member_event/dbTeamMemberEventUtils");
 
 module.exports = (router) => {
   router.post("/add", [authorization, validateInputs], async (req, res) => {
@@ -29,16 +28,11 @@ module.exports = (router) => {
         return res.status(401).json({ error: "Event does not exists" });
       }
 
-      const currentTeamRes = await pool.query(
-        `SELECT * FROM ${teamMaster}
-        WHERE team_head_user = $1`,
-        [currentUser.userId]
-      );
-      if (currentTeamRes.rowCount === 0) {
-        return res.status(401).json({ error: "User does not have any team" });
+      const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
+      if (getTeamOfUserRes.isError) {
+        return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
       }
-      const currentTeam = currentTeamRes.rows[0];
-      const teamId = currentTeam.team_id;
+      const teamId = getTeamOfUserRes.data;
 
       const teamMemberExistsRes = await pool.query(
         `SELECT * FROM ${teamMemberEvent}

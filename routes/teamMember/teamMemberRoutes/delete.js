@@ -4,19 +4,15 @@ const {
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
-const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
-  isEventExistsByEventId,
-} = require("../../../dbUtils/event/dbEventUtils");
-const {
-  isTeamHeadExists,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+  getTeamIdOfUser,
+} = require("../../../dbUtils/team_member_event/dbTeamMemberEventUtils");
 
 module.exports = (router) => {
   router.post("/delete", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberEvent, teamMaster } = appConstants.SQL_TABLE;
+    const { teamMemberEvent } = appConstants.SQL_TABLE;
 
     try {
       const { eventId, firstName, lastName, usn, email, contactNumber } =
@@ -24,21 +20,11 @@ module.exports = (router) => {
 
       const currentUser = req.user;
 
-      //   const isEventExists = await isEventExistsByEventId(eventId);
-      //   if (!isEventExists) {
-      //     return res.status(401).json({ error: "Event does not exists" });
-      //   }
-
-      const currentTeamRes = await pool.query(
-        `SELECT * FROM ${teamMaster}
-        WHERE team_head_user = $1`,
-        [currentUser.userId]
-      );
-      if (currentTeamRes.rowCount === 0) {
-        return res.status(401).json({ error: "User does not have any team" });
+      const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
+      if (getTeamOfUserRes.isError) {
+        return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
       }
-      const currentTeam = currentTeamRes.rows[0];
-      const teamId = currentTeam.team_id;
+      const teamId = getTeamOfUserRes.data;
 
       const teamMemberDeleteRes = await pool.query(
         `DELETE FROM ${teamMemberEvent}
