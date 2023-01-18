@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const { generateBcryptPassword } = require("./funcGenerateBcryptPassword");
 
 module.exports = (router) => {
-  router.get("/update-password", validateInputs, async (req, res) => {
+  router.post("/update-password", validateInputs, async (req, res) => {
     console.log("ROUTE:", req.path);
 
     const { users } = appConstants.SQL_TABLE;
@@ -38,13 +38,11 @@ module.exports = (router) => {
       const payload = jwt.verify(jwtToken, jwtSecret);
       const userIdFromPayload = payload.userId;
 
-      console.log({ userIdFromPayload });
-
       if (userIdFromPayload !== userId) {
         return res.status(403).json({ error: "Not Authorized" });
       }
 
-      const bcryptPassword = generateBcryptPassword(newPassword);
+      const bcryptPassword = await generateBcryptPassword(newPassword);
 
       const updateRes = await pool.query(
         `UPDATE users
