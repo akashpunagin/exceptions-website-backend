@@ -12,7 +12,9 @@ const transport = nodemailer.createTransport({
 });
 
 const sendPasswordResetEmail = async (name, userId, email, jwtToken) => {
-  const link = `${BASE_URL}/auth/update-password?jwtToken=${jwtToken}&userId=${userId}`;
+  // const link = `${BASE_URL}/auth/update-password?jwtToken=${jwtToken}&userId=${userId}`;
+  const reactAppUrl = "http://192.168.66.68:3000/";
+  const link = `${reactAppUrl}/update-password?jwtToken=${jwtToken}&userId=${userId}`;
 
   try {
     const temp = await transport.sendMail({

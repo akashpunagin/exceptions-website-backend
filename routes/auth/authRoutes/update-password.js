@@ -1,13 +1,11 @@
 const pool = require("../../../db/pool");
 const validateInputs = require("../../../middleware/validateInputs");
-const sendConfirmationEmail = require("../../../utilities/sendConfirmationEmail");
 const appConstants = require("../../../constants/appConstants");
 const {
-  resetPasswordTokenGenerator,
   passwordResetJwtSecretGenerator,
 } = require("../../../utilities/jwtGenerator");
-const sendPasswordResetEmail = require("../../../utilities/sendPasswordResetEmail");
 const jwt = require("jsonwebtoken");
+const { generateBcryptPassword } = require("./funcGenerateBcryptPassword");
 
 module.exports = (router) => {
   router.get("/update-password", validateInputs, async (req, res) => {
@@ -45,47 +43,25 @@ module.exports = (router) => {
       if (userIdFromPayload !== userId) {
         return res.status(403).json({ error: "Not Authorized" });
       }
-      /*
-      const getUserRes = await pool.query(
-        `SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, u.created_at
-          FROM ${users} AS u
-          WHERE email = $1`,
-        [email]
+
+      const bcryptPassword = generateBcryptPassword(newPassword);
+
+      const updateRes = await pool.query(
+        `UPDATE users
+        SET password = $1
+        WHERE user_id = $2
+        RETURNING *`,
+        [bcryptPassword, userId]
       );
-
-      if (getUserRes.rowCount === 0) {
-        return res.status(401).json({ error: "User does not exist" });
-      }
-
-      const userData = getUserRes.rows[0];
-      const {
-        user_id: userId,
-        first_name: firstName,
-        last_name: lastName,
-      } = userData;
-
-      const passwordResetToken = resetPasswordTokenGenerator(userData);
-
-      const userFullName = `${firstName} ${lastName}`;
-      const isSuccess = await sendPasswordResetEmail(
-        userFullName,
-        userId,
-        email,
-        passwordResetToken
-      );
-
-      if (!isSuccess) {
+      if (updateRes.rowCount === 0) {
         return res
           .status(401)
-          .json({ error: "Error while sending password reset email" });
+          .json({ error: "Error while updating user's password" });
       }
-      */
-      return res.status(200).json({
-        message: "Sent Password reset email successfully",
-        user: "{ userId, firstName, lastName, email }",
-      });
+
+      return res.status(200).json("Sent Password reset email successfully");
     } catch (error) {
-      console.error("Error while sending confirmation email", error);
+      console.error("Error while updating password", error);
       return res.status(500).json("Server error");
     }
   });

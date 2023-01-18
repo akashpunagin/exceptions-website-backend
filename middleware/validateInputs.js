@@ -22,6 +22,7 @@ function handleAuthReq(req) {
     state,
     city,
     zip,
+    newPassword,
   } = req.body;
 
   if (req.path === "/register-admin") {
@@ -94,6 +95,12 @@ function handleAuthReq(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/update-password") {
+    if (![newPassword].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 function handelEventReq(req) {
@@ -150,7 +157,7 @@ function handleTeamReq(req) {
   }
 
   if (req.path === "/update") {
-    if (![teamId, name, isGCConsidered].every(Boolean)) {
+    if (![name].every(Boolean)) {
       return missingCredsMessage;
     }
   }
