@@ -181,6 +181,12 @@ function handleTeamMemberError(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/get-by-eventId") {
+    if (![eventId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {

@@ -40,4 +40,7 @@ app.listen(PORT, async () => {
 module.exports = app;
 
 // TODO
-// add team head to team member, also send if current member is team head
+
+// 2. available events - if member is in a event then only return
+// 3. get coordinators, volunteers, participants - for admin
+// 4. authorized emails for admin, coordinators, volunteers
