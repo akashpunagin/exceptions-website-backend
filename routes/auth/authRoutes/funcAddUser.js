@@ -4,6 +4,7 @@ const {
   isUserExistsByUserEmail,
 } = require("../../../dbUtils/users/dbUsersUtils");
 const bcrypt = require("bcryptjs");
+const { generateBcryptPassword } = require("./funcGenerateBcryptPassword");
 
 async function addUser(userDetails) {
   const { email, contactNumber, firstName, lastName, password } = userDetails;
@@ -18,9 +19,7 @@ async function addUser(userDetails) {
   }
 
   // else bcrypt users password
-  const saltRounds = 10;
-  const salt = await bcrypt.genSalt(saltRounds);
-  const bcryptPassword = await bcrypt.hash(password, salt);
+  const bcryptPassword = await generateBcryptPassword(password);
 
   const newUserRes = await pool.query(
     `INSERT INTO ${users}(first_name, last_name, email, contact_number, password)

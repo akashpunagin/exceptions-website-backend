@@ -38,3 +38,6 @@ app.listen(PORT, async () => {
 });
 
 module.exports = app;
+
+// TODO
+// add team head to team member, also send if current member is team head
