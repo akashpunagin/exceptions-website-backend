@@ -15,12 +15,6 @@ const testingRouter = require("./routes/testing/testingRouter");
 
 const PORT = process.env.PORT;
 
-// const corsOptions = {
-//   origin: "*",
-//   credentials: true, //access-control-allow-credentials:true
-//   optionSuccessStatus: 200,
-// };
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
