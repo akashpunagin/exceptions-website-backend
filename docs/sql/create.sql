@@ -11,7 +11,10 @@ CREATE TABLE users(
 
     -- user confidential information
     password VARCHAR(255) NOT NULL,
-    refresh_token VARCHAR
+    refresh_token VARCHAR,
+
+    -- created at
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- to store tokens while user email verification
@@ -44,7 +47,7 @@ CREATE TABLE user_permission(
 
 --used to store other details of participants--
 CREATE TABLE participant_details(
-    user_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     college_name VARCHAR NOT NULL,
     usn VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
@@ -79,5 +82,7 @@ CREATE TABLE team_member_event(
     last_name VARCHAR NOT NULL,
     usn VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    contact_number VARCHAR NOT NULL
+    contact_number VARCHAR NOT NULL,
+
+    PRIMARY KEY(team_id, event_id)
 );

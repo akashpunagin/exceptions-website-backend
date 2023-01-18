@@ -10,6 +10,7 @@ module.exports = (router) => {
   router.post("/delete-user", validateInputs, async (req, res) => {
     console.log("Route:", req.path);
 
+    // TODO fix error in this route
     const {
       users,
       userVerificationTokens,

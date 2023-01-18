@@ -87,7 +87,7 @@ module.exports = (router) => {
         [refreshToken, newUser.user_id]
       );
 
-      // save the token in db
+      // save the access token in db for email verification
       await pool.query(
         `INSERT INTO ${userVerificationTokens}(user_id, token)
           VALUES($1, $2)`,

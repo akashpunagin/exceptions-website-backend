@@ -18,7 +18,30 @@ function refreshTokenGenerator(user) {
   });
 }
 
+function resetPasswordTokenGenerator(user) {
+  const {
+    password: passwordHash,
+    user_id: userId,
+    created_at: createdAt,
+  } = user;
+
+  const payload = payloadGenerator(user);
+
+  const jwtSecret = passwordResetJwtSecretGenerator(passwordHash, createdAt);
+
+  return jwt.sign(payload, jwtSecret, {
+    expiresIn: process.env.RESET_PASSWORD_TOKEN_EXPIRY,
+  });
+}
+
+function passwordResetJwtSecretGenerator(passwordHash, createdAt) {
+  const jwtSecret = `${passwordHash}-${createdAt}`;
+  return jwtSecret;
+}
+
 module.exports = {
   accessTokenGenerator,
   refreshTokenGenerator,
+  resetPasswordTokenGenerator,
+  passwordResetJwtSecretGenerator,
 };

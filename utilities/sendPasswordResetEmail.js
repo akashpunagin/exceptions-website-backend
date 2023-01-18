@@ -11,25 +11,25 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendConfirmationEmail = async (name, email, jwtToken) => {
-  const link = `${BASE_URL}/auth/verify-email?jwtToken=${jwtToken}`;
+const sendPasswordResetEmail = async (name, userId, email, jwtToken) => {
+  const link = `${BASE_URL}/auth/update-password?jwtToken=${jwtToken}&userId=${userId}`;
 
   try {
     const temp = await transport.sendMail({
       from: process.env.NODEMAILDER_EMAIL,
       to: email,
-      subject: "Please confirm your account",
-      html: `<h1>Email Confirmation</h1>
+      subject: "Password reset email",
+      html: `<h1>Password Reset</h1>
             <h2>Hello ${name}</h2>
-            <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
+            <p>Your password reset url is ready. Please click the below link to continue</p>
             <a href=${link}> Click here</a>
             </div>`,
     });
     return true;
   } catch (error) {
-    console.error("ERROR while sending confirmation email", error);
+    console.error("ERROR while sending password reset email", error);
     return false;
   }
 };
 
-module.exports = sendConfirmationEmail;
+module.exports = sendPasswordResetEmail;
