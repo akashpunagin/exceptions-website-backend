@@ -12,7 +12,7 @@ module.exports = (router) => {
   router.get("/get", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberEvent } = appConstants.SQL_TABLE;
+    const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
 
     try {
       const currentUser = req.user;
@@ -24,14 +24,19 @@ module.exports = (router) => {
       const teamId = getTeamOfUserRes.data;
 
       const teamRes = await pool.query(
-        `SELECT * FROM ${teamMemberEvent}
-        WHERE team_id = $1`,
+        `SELECT * 
+        FROM
+          ${teamMemberMaster} as master,
+          ${teamIdTeamMember} as member
+        WHERE
+          member.member_id = master.member_id AND
+          member.team_id = $1`,
         [teamId]
       );
+
       const data = teamRes.rows.map((row) => {
         return {
-          teamId: row.team_id,
-          eventId: row.event_id,
+          teamMemberId: row.member_id,
           firstName: row.first_name,
           lastName: row.last_name,
           usn: row.usn,
