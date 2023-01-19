@@ -58,11 +58,11 @@ module.exports = (router) => {
       );
 
       return res.status(200).json({
-        status: "Event updated successfully",
+        status: "Team updated successfully",
         data: updateRes.rows[0],
       });
     } catch (error) {
-      console.log("Update Event error", error);
+      console.log("Update Team error", error);
       return res.status(500).json("Server error");
     }
   });

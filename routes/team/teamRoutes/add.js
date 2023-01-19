@@ -47,16 +47,16 @@ module.exports = (router) => {
             .json({ error: "User is already a team head of another team" });
         }
 
-        // const addRes = await pool.query(
-        //   `INSERT INTO ${teamMaster}(team_name, team_head_user, team_is_gc_considered)
-        //     VALUES($1, $2, $3)
-        //     RETURNING *`,
-        //   [name, headUserId, isGCConsidered]
-        // );
+        const addRes = await pool.query(
+          `INSERT INTO ${teamMaster}(team_name, team_head_user, team_is_gc_considered)
+            VALUES($1, $2, $3)
+            RETURNING *`,
+          [name, headUserId, isGCConsidered]
+        );
 
         return res.status(200).json({
           status: "Team added successfully",
-          data: "addRes.rows[0]",
+          data: addRes.rows[0],
         });
       } catch (error) {
         console.log("ADD Team error", error);
