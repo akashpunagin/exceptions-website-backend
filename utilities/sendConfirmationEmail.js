@@ -4,6 +4,10 @@ require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
 
 const transport = nodemailer.createTransport({
+  // if normal password is used
+  ignoreTLS: false,
+  secure: false,
+
   service: "Gmail",
   auth: {
     user: process.env.NODEMAILDER_EMAIL,

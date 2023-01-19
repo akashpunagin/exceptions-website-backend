@@ -1,12 +1,9 @@
 const pool = require("../../../db/pool");
-const {
-  authorization,
-  authorizeAdmin,
-} = require("../../../middleware/exportMiddlewares");
+const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 
 module.exports = (router) => {
-  router.get("/get", [authorization, authorizeAdmin], async (req, res) => {
+  router.get("/get", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { eventMaster } = appConstants.SQL_TABLE;
