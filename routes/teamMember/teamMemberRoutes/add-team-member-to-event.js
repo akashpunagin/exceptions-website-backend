@@ -46,7 +46,32 @@ module.exports = (router) => {
         }
         const teamId = getTeamOfUserRes.data;
 
-        console.log("SEE here:", teamId);
+        const getTeamMemberToEventRes = await pool.query(
+          `SELECT * FROM ${teamIdTeamMemberEvent}
+          WHERE
+            team_id = $1 AND
+            member_id = $2 AND
+            event_id = $3`,
+          [teamId, memberId, eventId]
+        );
+        if (getTeamMemberToEventRes.rowCount > 0) {
+          return res
+            .status(401)
+            .json({ error: "Member is already registered for this event" });
+        }
+
+        const getTeamMemberExistsRes = await pool.query(
+          `SELECT * FROM ${teamIdTeamMemberEvent}
+          WHERE
+            team_id = $1 AND
+            member_id = $2`,
+          [teamId, memberId]
+        );
+        if (getTeamMemberExistsRes.rowCount > 0) {
+          return res
+            .status(401)
+            .json({ error: "Member is already exists in other event" });
+        }
 
         const addTeamMemberToEventRes = await pool.query(
           `INSERT INTO ${teamIdTeamMemberEvent}(team_id, member_id, event_id)
@@ -63,7 +88,7 @@ module.exports = (router) => {
 
         return res.status(200).json({
           status: "Team member added to event successfully",
-          data: { ...teamIdTeamMemberData, teamId },
+          data: { ...teamIdTeamMemberData },
         });
       } catch (error) {
         console.log("ADD Team member error", error);
