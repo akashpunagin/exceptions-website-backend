@@ -76,7 +76,7 @@ module.exports = (router) => {
 
       return res.status(200).json({
         status: "Team member added successfully",
-        data: { teamMemberData, teamIdTeamMemberData },
+        data: { ...teamMemberData, teamId },
       });
     } catch (error) {
       console.log("ADD Team member error", error);

@@ -12,11 +12,10 @@ module.exports = (router) => {
   router.post("/delete", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberEvent } = appConstants.SQL_TABLE;
+    const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
 
     try {
-      const { eventId, firstName, lastName, usn, email, contactNumber } =
-        req.body;
+      const { firstName, lastName, usn, email, contactNumber } = req.body;
 
       const currentUser = req.user;
 
@@ -27,23 +26,21 @@ module.exports = (router) => {
       const teamId = getTeamOfUserRes.data;
 
       const teamMemberDeleteRes = await pool.query(
-        `DELETE FROM ${teamMemberEvent}
+        `DELETE FROM ${teamMemberMaster}
           WHERE 
-            team_id = $1 AND
-            event_id = $2 AND
-            first_name = $3 AND
-            last_name = $4 AND
-            usn = $5 AND
-            email = $6 AND
-            contact_number = $7
+            first_name = $1 AND
+            last_name = $2 AND
+            usn = $3 AND
+            email = $4 AND
+            contact_number = $5
         RETURNING *`,
-        [teamId, eventId, firstName, lastName, usn, email, contactNumber]
+        [firstName, lastName, usn, email, contactNumber]
       );
       if (teamMemberDeleteRes.rowCount === 0) {
         return res.status(401).json({ error: "No such team member exists" });
       }
 
-      const data = teamMemberDeleteRes.rows;
+      const data = { ...teamMemberDeleteRes.rows[0], teamId };
 
       return res.status(200).json({
         status: "Team member deleted successfully",
