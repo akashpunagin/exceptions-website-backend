@@ -45,7 +45,7 @@ CREATE TABLE user_permission(
     perm_access_report BOOLEAN DEFAULT FALSE
 );
 
---used to store other details of participants--
+--used to store other details of participants (participant is team head)--
 CREATE TABLE participant_details(
     user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     college_name VARCHAR NOT NULL,
@@ -74,15 +74,29 @@ CREATE TABLE team_master(
     team_score INT DEFAULT 0
 );
 
---master table used to store members of the team--
-CREATE TABLE team_member_event(
-    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
-    event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE,
+--team member master--
+CREATE TABLE team_member_master(
+    member_id SERIAL PRIMARY KEY,
     first_name VARCHAR NOT NULL,
     last_name VARCHAR NOT NULL,
     usn VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    contact_number VARCHAR NOT NULL,
+    contact_number VARCHAR NOT NULL
+);
 
-    PRIMARY KEY(team_id, event_id)
+--used to map team and team members--
+CREATE TABLE team_id_team_member(
+    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
+    member_id INT REFERENCES team_member_master ON DELETE CASCADE ON UPDATE CASCADE,
+
+    PRIMARY KEY(team_id, member_id)
+);
+
+--used to map team, team members and team member's event--
+CREATE TABLE team_id_team_member_event(
+    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
+    member_id INT REFERENCES team_member_master ON DELETE CASCADE ON UPDATE CASCADE,
+    event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE,
+
+    PRIMARY KEY(team_id, member_id, event_id)
 );

@@ -1,4 +1,6 @@
-DROP TABLE team_member_event;
+DROP TABLE team_id_team_member_event;
+DROP TABLE team_id_team_member;
+DROP TABLE team_member_master;
 DROP TABLE team_master;
 DROP TABLE event_master;
 DROP TABLE participant_details;

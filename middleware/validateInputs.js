@@ -164,29 +164,25 @@ function handleTeamReq(req) {
 }
 
 function handleTeamMemberError(req) {
-  const { eventId, firstName, lastName, usn, email, contactNumber } = req.body;
+  const { firstName, lastName, usn, email, contactNumber } = req.body;
 
   if (req.path === "/add") {
-    if (
-      ![eventId, firstName, lastName, usn, email, contactNumber].every(Boolean)
-    ) {
+    if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
       return missingCredsMessage;
     }
   }
 
   if (req.path === "/delete") {
-    if (
-      ![eventId, firstName, lastName, usn, email, contactNumber].every(Boolean)
-    ) {
+    if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
       return missingCredsMessage;
     }
   }
 
-  if (req.path === "/get-by-eventId") {
-    if (![eventId].every(Boolean)) {
-      return missingCredsMessage;
-    }
-  }
+  // if (req.path === "/get-by-eventId") {
+  //   if (![eventId].every(Boolean)) {
+  //     return missingCredsMessage;
+  //   }
+  // }
 }
 
 module.exports = (req, res, next) => {

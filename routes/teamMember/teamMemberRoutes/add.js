@@ -15,18 +15,12 @@ module.exports = (router) => {
   router.post("/add", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberEvent, teamMaster } = appConstants.SQL_TABLE;
+    const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
 
     try {
-      const { eventId, firstName, lastName, usn, email, contactNumber } =
-        req.body;
+      const { firstName, lastName, usn, email, contactNumber } = req.body;
 
       const currentUser = req.user;
-
-      const isEventExists = await isEventExistsByEventId(eventId);
-      if (!isEventExists) {
-        return res.status(401).json({ error: "Event does not exists" });
-      }
 
       const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
       if (getTeamOfUserRes.isError) {
@@ -35,16 +29,14 @@ module.exports = (router) => {
       const teamId = getTeamOfUserRes.data;
 
       const teamMemberExistsRes = await pool.query(
-        `SELECT * FROM ${teamMemberEvent}
-          WHERE 
-            team_id = $1 AND
-            event_id = $2 AND
-            first_name = $3 AND
-            last_name = $4 AND
-            usn = $5 AND
-            email = $6 AND
-            contact_number = $7`,
-        [teamId, eventId, firstName, lastName, usn, email, contactNumber]
+        `SELECT * FROM ${teamMemberMaster}
+          WHERE
+            first_name = $1 AND
+            last_name = $2 AND
+            usn = $3 AND
+            email = $4 AND
+            contact_number = $5`,
+        [firstName, lastName, usn, email, contactNumber]
       );
       if (teamMemberExistsRes.rowCount > 0) {
         return res
@@ -52,16 +44,39 @@ module.exports = (router) => {
           .json({ error: "Team member already exists in this team" });
       }
 
-      const addRes = await pool.query(
-        `INSERT INTO ${teamMemberEvent}(team_id, event_id, first_name, last_name, usn, email, contact_number)
-          VALUES($1, $2, $3, $4, $5, $6, $7)
+      const addTeamMemberMasterRes = await pool.query(
+        `INSERT INTO ${teamMemberMaster}(first_name, last_name, usn, email, contact_number)
+          VALUES($1, $2, $3, $4, $5)
           RETURNING *`,
-        [teamId, eventId, firstName, lastName, usn, email, contactNumber]
+        [firstName, lastName, usn, email, contactNumber]
       );
+      if (addTeamMemberMasterRes.rowCount === 0) {
+        return res
+          .status(401)
+          .json({ error: "Error while adding team member" });
+      }
+
+      const teamMemberData = addTeamMemberMasterRes.rows[0];
+      const memberId = teamMemberData.member_id;
+      console.log("SEE HERE:", { teamMemberData, memberId });
+
+      const addTeamIdTeamMemberRes = await pool.query(
+        `INSERT INTO ${teamIdTeamMember}(team_id, member_id)
+          VALUES($1, $2)
+          RETURNING *`,
+        [teamId, memberId]
+      );
+      if (addTeamIdTeamMemberRes.rowCount === 0) {
+        return res
+          .status(401)
+          .json({ error: "Error while adding team member in team" });
+      }
+      const teamIdTeamMemberData = addTeamIdTeamMemberRes.rows[0];
+      console.log("SEE HERE:", { teamIdTeamMemberData });
 
       return res.status(200).json({
         status: "Team member added successfully",
-        data: addRes.rows[0],
+        data: { teamMemberData, teamIdTeamMemberData },
       });
     } catch (error) {
       console.log("ADD Team member error", error);
