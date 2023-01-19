@@ -6,7 +6,7 @@ const {
 const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
-} = require("../../../dbUtils/team_member_event/dbTeamMemberEventUtils");
+} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 
 module.exports = (router) => {
   router.post("/delete", [authorization, validateInputs], async (req, res) => {

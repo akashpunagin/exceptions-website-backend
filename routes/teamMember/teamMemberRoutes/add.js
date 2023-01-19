@@ -9,7 +9,7 @@ const {
 } = require("../../../dbUtils/event/dbEventUtils");
 const {
   getTeamIdOfUser,
-} = require("../../../dbUtils/team_member_event/dbTeamMemberEventUtils");
+} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 
 module.exports = (router) => {
   router.post("/add", [authorization, validateInputs], async (req, res) => {

@@ -164,7 +164,8 @@ function handleTeamReq(req) {
 }
 
 function handleTeamMemberError(req) {
-  const { firstName, lastName, usn, email, contactNumber } = req.body;
+  const { firstName, lastName, usn, email, contactNumber, eventId, memberId } =
+    req.body;
 
   if (req.path === "/add") {
     if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
@@ -178,11 +179,11 @@ function handleTeamMemberError(req) {
     }
   }
 
-  // if (req.path === "/get-by-eventId") {
-  //   if (![eventId].every(Boolean)) {
-  //     return missingCredsMessage;
-  //   }
-  // }
+  if (req.path === "/add-team-member-to-event") {
+    if (![eventId, memberId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {
