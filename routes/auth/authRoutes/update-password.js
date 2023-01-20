@@ -57,7 +57,10 @@ module.exports = (router) => {
           .json({ error: "Error while updating user's password" });
       }
 
-      return res.status(200).json("Sent Password reset email successfully");
+      return res.status(200).json({
+        message: "Sent Password reset email successfully",
+        user: { userId },
+      });
     } catch (error) {
       console.error("Error while updating password", error);
       return res.status(500).json("Server error");
