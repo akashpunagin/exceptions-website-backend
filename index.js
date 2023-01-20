@@ -41,6 +41,7 @@ module.exports = app;
 
 // TODO
 // 1. team member update
+// 2. get team member by event id
 // 2. Un assign team member to event
 // 2. available events - if member is in a event then only return
 // 3. get coordinators, volunteers, participants - for admin

@@ -1,10 +1,9 @@
 const pool = require("../../../db/pool");
-const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
-  router.get("/get-all-users", [authorization], async (req, res) => {
+  router.get("/get-all-users", async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { users, userRole, userPermission } = appConstants.SQL_TABLE;

@@ -18,7 +18,8 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { teamMemberEvent } = appConstants.SQL_TABLE;
+      const { teamIdTeamMemberEvent, teamMemberMaster, teamMaster } =
+        appConstants.SQL_TABLE;
 
       try {
         const { eventId } = req.body;

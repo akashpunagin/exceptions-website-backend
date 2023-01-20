@@ -46,13 +46,27 @@ module.exports = (router) => {
         }
         const teamId = getTeamOfUserRes.data;
 
+        const getTeamIdTeamMemberRes = await pool.query(
+          `SELECT * FROM ${teamIdTeamMember}
+          WHERE
+            team_id = $1 AND
+            member_id = $2`,
+          [teamId, memberId]
+        );
+        if (getTeamIdTeamMemberRes.rowCount === 0) {
+          return res
+            .status(401)
+            .json({ error: "No such team member in the team" });
+        }
+        const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows[0];
+        const teamIdTeamMemberId = teamIdTeamMemberData.team_id_team_member_id;
+
         const getTeamMemberToEventRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMemberEvent}
           WHERE
-            team_id = $1 AND
-            member_id = $2 AND
-            event_id = $3`,
-          [teamId, memberId, eventId]
+            team_id_team_member_id = $1 AND
+            event_id = $2`,
+          [teamIdTeamMemberId, eventId]
         );
         if (getTeamMemberToEventRes.rowCount > 0) {
           return res
@@ -60,35 +74,21 @@ module.exports = (router) => {
             .json({ error: "Member is already registered for this event" });
         }
 
-        const getTeamMemberExistsRes = await pool.query(
-          `SELECT * FROM ${teamIdTeamMemberEvent}
-          WHERE
-            team_id = $1 AND
-            member_id = $2`,
-          [teamId, memberId]
-        );
-        if (getTeamMemberExistsRes.rowCount > 0) {
-          return res
-            .status(401)
-            .json({ error: "Member is already exists in other event" });
-        }
-
         const addTeamMemberToEventRes = await pool.query(
-          `INSERT INTO ${teamIdTeamMemberEvent}(team_id, member_id, event_id)
-          VALUES($1, $2, $3)
+          `INSERT INTO ${teamIdTeamMemberEvent}(team_id_team_member_id, event_id)
+          VALUES($1, $2)
           RETURNING *`,
-          [teamId, memberId, eventId]
+          [teamIdTeamMemberId, eventId]
         );
         if (addTeamMemberToEventRes.rowCount === 0) {
           return res
             .status(401)
             .json({ error: "Error while adding team member in team" });
         }
-        const teamIdTeamMemberData = addTeamMemberToEventRes.rows[0];
 
         return res.status(200).json({
           status: "Team member added to event successfully",
-          data: { ...teamIdTeamMemberData },
+          data: teamIdTeamMemberData,
         });
       } catch (error) {
         console.log("ADD Team member error", error);

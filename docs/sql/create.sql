@@ -86,17 +86,17 @@ CREATE TABLE team_member_master(
 
 --used to map team and team members--
 CREATE TABLE team_id_team_member(
+    team_id_team_member_id SERIAL PRIMARY KEY,
     team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
     member_id INT REFERENCES team_member_master ON DELETE CASCADE ON UPDATE CASCADE,
 
-    PRIMARY KEY(team_id, member_id)
+    UNIQUE(team_id, member_id)
 );
 
 --used to map team, team members and team member's event--
 CREATE TABLE team_id_team_member_event(
-    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
-    member_id INT REFERENCES team_member_master ON DELETE CASCADE ON UPDATE CASCADE,
+    team_id_team_member_id INT REFERENCES team_id_team_member ON DELETE CASCADE ON UPDATE CASCADE,
     event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE,
 
-    PRIMARY KEY(team_id, member_id, event_id)
+    PRIMARY KEY(team_id_team_member_id, event_id)
 );
