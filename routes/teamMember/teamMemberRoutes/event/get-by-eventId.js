@@ -18,7 +18,7 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { teamIdTeamMemberEvent, teamMemberMaster, teamMaster } =
+      const { teamIdTeamMemberEvent, teamIdTeamMember, teamMemberMaster } =
         appConstants.SQL_TABLE;
 
       try {
@@ -31,23 +31,37 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Event does not exists" });
         }
 
-        const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
-        if (getTeamOfUserRes.isError) {
-          return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
-        }
-        const teamId = getTeamOfUserRes.data;
-
-        const teamRes = await pool.query(
-          `SELECT * FROM ${teamMemberEvent}
-        WHERE
-          team_id = $1 AND
-          event_id = $2`,
-          [teamId, eventId]
+        const getTeamIdTeamMemberRes = await pool.query(
+          `SELECT * FROM ${teamIdTeamMember}
+          WHERE
+          team_id_team_member_id in (
+            SELECT team_id_team_member_id FROM ${teamIdTeamMemberEvent}
+            WHERE
+            event_id = $1
+            )`,
+          [eventId]
         );
-        const data = teamRes.rows.map((row) => {
+
+        const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows;
+
+        let data = [];
+
+        for (const {
+          team_id: teamId,
+          member_id: memberId,
+        } of teamIdTeamMemberData) {
+          const getTeamMemberRes = await pool.query(
+            `SELECT * FROM ${teamMemberMaster}
+            WHERE member_id = $1`,
+            [memberId]
+          );
+          const teamMemberData = { ...getTeamMemberRes.rows[0], teamId };
+          data.push(teamMemberData);
+        }
+
+        data = data.map((row) => {
           return {
-            teamId: row.team_id,
-            eventId: row.event_id,
+            teamId: row.teamId,
             firstName: row.first_name,
             lastName: row.last_name,
             usn: row.usn,
@@ -58,7 +72,7 @@ module.exports = (router) => {
 
         return res.status(200).json(data);
       } catch (error) {
-        console.log("GET Team member by event iderror", error);
+        console.log("GET Team member by event id error", error);
         return res.status(500).json("Server error");
       }
     }
