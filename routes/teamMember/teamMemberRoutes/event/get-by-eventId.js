@@ -1,15 +1,15 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const {
   authorization,
   validateInputs,
-} = require("../../../middleware/exportMiddlewares");
-const appConstants = require("../../../constants/appConstants");
+} = require("../../../../middleware/exportMiddlewares");
+const appConstants = require("../../../../constants/appConstants");
 const {
   getTeamIdOfUser,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+} = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isEventExistsByEventId,
-} = require("../../../dbUtils/event/dbEventUtils");
+} = require("../../../../dbUtils/event/dbEventUtils");
 
 module.exports = (router) => {
   router.post(

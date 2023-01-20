@@ -1,19 +1,19 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const {
   authorization,
   validateInputs,
-} = require("../../../middleware/exportMiddlewares");
-const appConstants = require("../../../constants/appConstants");
+} = require("../../../../middleware/exportMiddlewares");
+const appConstants = require("../../../../constants/appConstants");
 const {
   isEventExistsByEventId,
-} = require("../../../dbUtils/event/dbEventUtils");
+} = require("../../../../dbUtils/event/dbEventUtils");
 
 const {
   getTeamIdOfUser,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+} = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isTeamMemberExistsByMemberId,
-} = require("../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
+} = require("../../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
 module.exports = (router) => {
   router.post(
@@ -91,7 +91,7 @@ module.exports = (router) => {
           data: teamIdTeamMemberData,
         });
       } catch (error) {
-        console.log("ADD Team member error", error);
+        console.log("ADD Team member to event error", error);
         return res.status(500).json("Server error");
       }
     }
