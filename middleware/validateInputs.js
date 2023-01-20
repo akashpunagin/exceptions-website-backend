@@ -179,8 +179,27 @@ function handleTeamMemberError(req) {
     }
   }
 
+  if (req.path === "/update") {
+    if (
+      ![memberId, firstName, lastName, usn, email, contactNumber].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+  }
+
   if (req.path === "/add-team-member-to-event") {
     if (![eventId, memberId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/remove-team-member-from-event") {
+    if (![eventId, memberId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+  if (req.path === "/get-by-eventId") {
+    if (![eventId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
