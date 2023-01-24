@@ -1,11 +1,11 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const bcrypt = require("bcryptjs");
 const {
   accessTokenGenerator,
   refreshTokenGenerator,
-} = require("../../../utilities/jwtGenerator");
-const validateInputs = require("../../../middleware/validateInputs");
-const appConstants = require("../../../constants/appConstants");
+} = require("../../../../utilities/jwtGenerator");
+const validateInputs = require("../../../../middleware/validateInputs");
+const appConstants = require("../../../../constants/appConstants");
 
 module.exports = (router) => {
   router.post("/login", validateInputs, async (req, res) => {

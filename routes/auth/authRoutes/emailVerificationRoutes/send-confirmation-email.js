@@ -1,7 +1,7 @@
-const pool = require("../../../db/pool");
-const validateInputs = require("../../../middleware/validateInputs");
-const sendConfirmationEmail = require("../../../utilities/sendConfirmationEmail");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const validateInputs = require("../../../../middleware/validateInputs");
+const sendConfirmationEmail = require("../../../../utilities/sendConfirmationEmail");
+const appConstants = require("../../../../constants/appConstants");
 
 module.exports = (router) => {
   router.post("/send-confirmation-email", validateInputs, async (req, res) => {

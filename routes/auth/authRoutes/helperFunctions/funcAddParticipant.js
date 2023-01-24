@@ -1,5 +1,5 @@
-const pool = require("../../../db/pool");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const appConstants = require("../../../../constants/appConstants");
 
 async function addPartipant(particpantUserId, participantDetails) {
   const { collegeName, usn, state, city, zip } = participantDetails;

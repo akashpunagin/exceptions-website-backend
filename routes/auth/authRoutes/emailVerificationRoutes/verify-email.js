@@ -1,5 +1,5 @@
-const pool = require("../../../db/pool");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const appConstants = require("../../../../constants/appConstants");
 
 module.exports = (router) => {
   router.get("/verify-email", async (req, res) => {

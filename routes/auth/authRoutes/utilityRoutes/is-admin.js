@@ -1,6 +1,6 @@
-const pool = require("../../../db/pool");
-const authorization = require("../../../middleware/authorization");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const authorization = require("../../../../middleware/authorization");
+const appConstants = require("../../../../constants/appConstants");
 
 module.exports = (router) => {
   router.get("/is-admin", authorization, async (req, res) => {

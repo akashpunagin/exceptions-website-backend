@@ -1,11 +1,11 @@
-const pool = require("../../../db/pool");
-const validateInputs = require("../../../middleware/validateInputs");
-const sendConfirmationEmail = require("../../../utilities/sendConfirmationEmail");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const validateInputs = require("../../../../middleware/validateInputs");
+const sendConfirmationEmail = require("../../../../utilities/sendConfirmationEmail");
+const appConstants = require("../../../../constants/appConstants");
 const {
   resetPasswordTokenGenerator,
-} = require("../../../utilities/jwtGenerator");
-const sendPasswordResetEmail = require("../../../utilities/sendPasswordResetEmail");
+} = require("../../../../utilities/jwtGenerator");
+const sendPasswordResetEmail = require("../../../../utilities/sendPasswordResetEmail");
 
 module.exports = (router) => {
   router.post("/reset-password", validateInputs, async (req, res) => {

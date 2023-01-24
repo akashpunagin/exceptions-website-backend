@@ -1,8 +1,8 @@
-const pool = require("../../../db/pool");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const appConstants = require("../../../../constants/appConstants");
 const {
   isUserExistsByUserEmail,
-} = require("../../../dbUtils/users/dbUsersUtils");
+} = require("../../../../dbUtils/users/dbUsersUtils");
 const bcrypt = require("bcryptjs");
 const { generateBcryptPassword } = require("./funcGenerateBcryptPassword");
 

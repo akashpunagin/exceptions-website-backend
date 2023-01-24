@@ -1,10 +1,10 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const {
   accessTokenGenerator,
   refreshTokenGenerator,
-} = require("../../../utilities/jwtGenerator");
-const authorizeRefreshToken = require("../../../middleware/authorizeRefreshToken");
-const appConstants = require("../../../constants/appConstants");
+} = require("../../../../utilities/jwtGenerator");
+const authorizeRefreshToken = require("../../../../middleware/authorizeRefreshToken");
+const appConstants = require("../../../../constants/appConstants");
 
 module.exports = (router) => {
   router.post("/refresh-token", authorizeRefreshToken, async (req, res) => {

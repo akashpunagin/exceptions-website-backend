@@ -1,11 +1,13 @@
-const pool = require("../../../db/pool");
-const validateInputs = require("../../../middleware/validateInputs");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const validateInputs = require("../../../../middleware/validateInputs");
+const appConstants = require("../../../../constants/appConstants");
 const {
   passwordResetJwtSecretGenerator,
-} = require("../../../utilities/jwtGenerator");
+} = require("../../../../utilities/jwtGenerator");
 const jwt = require("jsonwebtoken");
-const { generateBcryptPassword } = require("./funcGenerateBcryptPassword");
+const {
+  generateBcryptPassword,
+} = require("../helperFunctions/funcGenerateBcryptPassword");
 
 module.exports = (router) => {
   router.post("/update-password", validateInputs, async (req, res) => {

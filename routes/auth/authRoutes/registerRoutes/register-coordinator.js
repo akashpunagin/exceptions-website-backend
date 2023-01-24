@@ -1,14 +1,14 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const {
   accessTokenGenerator,
   refreshTokenGenerator,
-} = require("../../../utilities/jwtGenerator");
-const validateInputs = require("../../../middleware/validateInputs");
-const appConstants = require("../../../constants/appConstants");
-const addUser = require("./funcAddUser");
+} = require("../../../../utilities/jwtGenerator");
+const validateInputs = require("../../../../middleware/validateInputs");
+const appConstants = require("../../../../constants/appConstants");
+const addUser = require("./../helperFunctions/funcAddUser");
 
 module.exports = (router) => {
-  router.post("/register-admin", validateInputs, async (req, res) => {
+  router.post("/register-coordinator", validateInputs, async (req, res) => {
     console.log("Route:", req.path);
 
     const { users, userVerificationTokens, userPermission, userRole } =
@@ -34,7 +34,7 @@ module.exports = (router) => {
 
       // save role of this user
       const userRoleRes = await pool.query(
-        `INSERT INTO ${userRole}(user_id, role_admin)
+        `INSERT INTO ${userRole}(user_id, role_coordinator)
         VALUES ($1, true)
         RETURNING *`,
         [newUser.user_id]
@@ -42,9 +42,9 @@ module.exports = (router) => {
       const newUserRole = userRoleRes.rows[0];
       console.log("USER ROLE: ", newUserRole);
 
-      const perm_add_event = true;
-      const perm_edit_event = true;
-      const perm_delete_event = true;
+      const perm_add_event = false;
+      const perm_edit_event = false;
+      const perm_delete_event = false;
       const perm_view_participant = true;
       const perm_edit_participant = true;
       const perm_access_report = true;
@@ -87,7 +87,7 @@ module.exports = (router) => {
         [refreshToken, newUser.user_id]
       );
 
-      // save the access token in db for email verification
+      // save the token in db
       await pool.query(
         `INSERT INTO ${userVerificationTokens}(user_id, token)
           VALUES($1, $2)`,
@@ -102,7 +102,7 @@ module.exports = (router) => {
         contact_number: newUser.contact_number,
       });
     } catch (error) {
-      console.error("Error while registering admin", error);
+      console.error("Error while registering coordinator", error);
       return res.status(500).send("Server error");
     }
   });

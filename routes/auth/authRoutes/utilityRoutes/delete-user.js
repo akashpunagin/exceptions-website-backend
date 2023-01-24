@@ -1,10 +1,10 @@
-const pool = require("../../../db/pool");
-const validateInputs = require("../../../middleware/validateInputs");
-const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../../db/pool");
+const validateInputs = require("../../../../middleware/validateInputs");
+const appConstants = require("../../../../constants/appConstants");
 const {
   isUserExistsByUserId,
   getUserByUserId,
-} = require("../../../dbUtils/users/dbUsersUtils");
+} = require("../../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.post("/delete-user", validateInputs, async (req, res) => {

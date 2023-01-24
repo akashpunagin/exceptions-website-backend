@@ -1,11 +1,11 @@
-const pool = require("../../../db/pool");
+const pool = require("../../../../db/pool");
 const {
   accessTokenGenerator,
   refreshTokenGenerator,
-} = require("../../../utilities/jwtGenerator");
-const validateInputs = require("../../../middleware/validateInputs");
-const appConstants = require("../../../constants/appConstants");
-const addUser = require("./funcAddUser");
+} = require("../../../../utilities/jwtGenerator");
+const validateInputs = require("../../../../middleware/validateInputs");
+const appConstants = require("../../../../constants/appConstants");
+const addUser = require("../helperFunctions/funcAddUser");
 
 module.exports = (router) => {
   router.post("/register-volunteer", validateInputs, async (req, res) => {

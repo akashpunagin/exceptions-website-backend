@@ -1,4 +1,4 @@
-const authorization = require("../../../middleware/authorization");
+const authorization = require("../../../../middleware/authorization");
 
 module.exports = (router) => {
   router.get("/is-token-valid", authorization, async (req, res) => {
