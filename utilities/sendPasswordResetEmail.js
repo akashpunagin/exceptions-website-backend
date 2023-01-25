@@ -12,7 +12,7 @@ const transport = nodemailer.createTransport({
 });
 
 const sendPasswordResetEmail = async (name, userId, email, jwtToken) => {
-  const link = `${FRONT_END_FORGOT_PASSWORD_URL}?jwtToken=${jwtToken}?userId=${userId}`;
+  const link = `${FRONT_END_FORGOT_PASSWORD_URL}?jwtToken=${jwtToken}&userId=${userId}`;
 
   try {
     const temp = await transport.sendMail({
