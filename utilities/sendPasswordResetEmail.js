@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
 const FRONT_END_FORGOT_PASSWORD_URL = process.env.FRONT_END_FORGOT_PASSWORD_URL;
