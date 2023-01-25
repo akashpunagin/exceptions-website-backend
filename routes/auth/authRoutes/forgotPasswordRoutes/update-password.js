@@ -60,7 +60,7 @@ module.exports = (router) => {
       }
 
       return res.status(200).json({
-        message: "Sent Password reset email successfully",
+        message: "Password updated successfully",
         user: { userId },
       });
     } catch (error) {
