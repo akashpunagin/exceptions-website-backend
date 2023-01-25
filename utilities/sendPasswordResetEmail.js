@@ -2,6 +2,8 @@ const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
+const FORNT_END_EMAIL_CONFIRMATION_URL =
+  process.env.FORNT_END_EMAIL_CONFIRMATION_URL;
 
 const transport = nodemailer.createTransport({
   service: "Gmail",
@@ -12,9 +14,7 @@ const transport = nodemailer.createTransport({
 });
 
 const sendPasswordResetEmail = async (name, userId, email, jwtToken) => {
-  // const link = `${BASE_URL}/auth/update-password?jwtToken=${jwtToken}&userId=${userId}`;
-  const reactAppUrl = "http://192.168.66.68:3000/";
-  const link = `${reactAppUrl}/update-password?jwtToken=${jwtToken}&userId=${userId}`;
+  const link = `${FORNT_END_EMAIL_CONFIRMATION_URL}?jwtToken=${jwtToken}&userId=${userId}`;
 
   try {
     const temp = await transport.sendMail({

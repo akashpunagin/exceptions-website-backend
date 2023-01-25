@@ -2,6 +2,8 @@ const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
+const FORNT_END_EMAIL_CONFIRMATION_URL =
+  process.env.FORNT_END_EMAIL_CONFIRMATION_URL;
 
 const transport = nodemailer.createTransport({
   // if normal password is used
@@ -16,7 +18,7 @@ const transport = nodemailer.createTransport({
 });
 
 const sendConfirmationEmail = async (name, email, jwtToken) => {
-  const link = `${BASE_URL}/auth/verify-email?jwtToken=${jwtToken}`;
+  const link = `${FORNT_END_EMAIL_CONFIRMATION_URL}?jwtToken=${jwtToken}`;
 
   try {
     const temp = await transport.sendMail({
