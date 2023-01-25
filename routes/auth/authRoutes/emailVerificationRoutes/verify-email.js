@@ -40,7 +40,7 @@ module.exports = (router) => {
         [jwtToken]
       );
 
-      return res.status(200).send("Email Verified Successfully");
+      return res.status(200).send({ message: "Email Verified Successfully" });
     } catch (error) {
       console.error("ERROR while verifying email", error);
       return res.status(500).json("Server error");
