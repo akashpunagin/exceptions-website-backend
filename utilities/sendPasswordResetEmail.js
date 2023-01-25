@@ -2,8 +2,7 @@ const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
-const FORNT_END_EMAIL_CONFIRMATION_URL =
-  process.env.FORNT_END_EMAIL_CONFIRMATION_URL;
+const FRONT_END_FORGOT_PASSWORD_URL = process.env.FRONT_END_FORGOT_PASSWORD_URL;
 
 const transport = nodemailer.createTransport({
   service: "Gmail",
@@ -14,7 +13,7 @@ const transport = nodemailer.createTransport({
 });
 
 const sendPasswordResetEmail = async (name, userId, email, jwtToken) => {
-  const link = `${FORNT_END_EMAIL_CONFIRMATION_URL}?jwtToken=${jwtToken}&userId=${userId}`;
+  const link = `${FRONT_END_FORGOT_PASSWORD_URL}?jwtToken=${jwtToken}&userId=${userId}`;
 
   try {
     const temp = await transport.sendMail({
