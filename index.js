@@ -30,7 +30,7 @@ app.use("/teamMember", teamMemberRouter);
 app.use("/testing", testingRouter);
 
 app.get("/", (req, res) => {
-  res.send("API working");
+  res.send("API working on exceptions.rvce.edu.in");
 });
 
 app.listen(PORT, async () => {
