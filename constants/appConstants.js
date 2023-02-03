@@ -30,6 +30,8 @@ const constants = {
     teamMemberMaster: "team_member_master", // used to store details of team members
     teamIdTeamMember: "team_id_team_member", // used to map team (team id) and team member (member id)
     teamIdTeamMemberEvent: "team_id_team_member_event", // used to map team (team id), team member (member id) and event (event id)
+
+    appIntConstants: "app_int_constants",
   },
 };
 

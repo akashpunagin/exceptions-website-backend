@@ -163,7 +163,7 @@ function handleTeamReq(req) {
   }
 }
 
-function handleTeamMemberError(req) {
+function handleTeamMemberReq(req) {
   const { firstName, lastName, usn, email, contactNumber, eventId, memberId } =
     req.body;
 
@@ -205,17 +205,29 @@ function handleTeamMemberError(req) {
   }
 }
 
+function handleAppConstantsReq(req) {
+  const { memberSize } = req.body;
+
+  if (req.path === "/update-max-gc-member-size") {
+    if (![memberSize].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
   const teamError = handleTeamReq(req);
-  const teamMemberError = handleTeamMemberError(req);
+  const teamMemberError = handleTeamMemberReq(req);
+  const appConstantsError = handleAppConstantsReq(req);
 
   console.log({
     authError,
     eventError,
     teamError,
     teamMemberError,
+    appConstantsError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -229,6 +241,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/teamMember/") && teamMemberError) {
     return res.status(401).json({ error: teamMemberError });
+  }
+  if (req.originalUrl.includes("/appConstants/") && appConstantsError) {
+    return res.status(401).json({ error: appConstantsError });
   }
 
   next();
