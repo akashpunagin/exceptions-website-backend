@@ -37,4 +37,23 @@ async function getTeamIdOfUser(userId) {
   return { isError: false, errorMessage: null, data: teamId };
 }
 
-module.exports = { isTeamHeadExists, getTeamIdOfUser };
+async function getTeamByTeamId(teamId) {
+  const { teamMaster } = appConstants.SQL_TABLE;
+
+  const currentTeamRes = await pool.query(
+    `SELECT * FROM ${teamMaster}
+        WHERE team_id = $1`,
+    [teamId]
+  );
+  if (currentTeamRes.rowCount === 0) {
+    return {
+      isError: true,
+      errorMessage: "Team does not exist",
+      data: null,
+    };
+  }
+  const currentTeam = currentTeamRes.rows[0];
+  return { isError: false, errorMessage: null, data: currentTeam };
+}
+
+module.exports = { isTeamHeadExists, getTeamIdOfUser, getTeamByTeamId };

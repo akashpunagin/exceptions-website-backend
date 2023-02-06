@@ -41,7 +41,7 @@ module.exports = (router) => {
       if (teamMemberExistsRes.rowCount > 0) {
         return res
           .status(401)
-          .json({ error: "Team member already exists in this team" });
+          .json({ error: "This Team member credentials already exists" });
       }
 
       const addTeamMemberMasterRes = await pool.query(

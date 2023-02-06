@@ -31,4 +31,44 @@ async function isEventExistsByEventName(eventName) {
   return true;
 }
 
-module.exports = { isEventExistsByEventId, isEventExistsByEventName };
+async function getTeamMembersByEventId(eventId) {
+  const {
+    eventMaster,
+    teamIdTeamMemberEvent,
+    teamIdTeamMember,
+    teamMemberMaster,
+  } = appConstants.SQL_TABLE;
+
+  const eventRes = await pool.query(
+    `SELECT * 
+    FROM ${eventMaster}, ${teamIdTeamMemberEvent}, ${teamIdTeamMember}, ${teamMemberMaster}
+    WHERE
+      ${eventMaster}.event_id = ${teamIdTeamMemberEvent}.event_id AND
+      ${teamIdTeamMemberEvent}.team_id_team_member_id = ${teamIdTeamMember}.team_id_team_member_id AND
+      ${teamIdTeamMember}.member_id = ${teamMemberMaster}.member_id AND
+      ${teamIdTeamMemberEvent}.event_id = $1`,
+    [eventId]
+  );
+  let data = eventRes.rows;
+
+  data = data.map((member) => {
+    return {
+      teamId: member.team_id,
+
+      memberId: member.member_id,
+      firstName: member.first_name,
+      lastName: member.last_name,
+      usn: member.usn,
+      email: member.email,
+      contactNumber: member.contact_number,
+    };
+  });
+
+  return data;
+}
+
+module.exports = {
+  isEventExistsByEventId,
+  isEventExistsByEventName,
+  getTeamMembersByEventId,
+};

@@ -136,6 +136,12 @@ function handelEventReq(req) {
       return invalidCredsMessage;
     }
   }
+
+  if (req.path === "/get-team-members-by-event-id") {
+    if (![eventId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 function handleTeamReq(req) {

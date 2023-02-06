@@ -44,8 +44,12 @@ module.exports = app;
 // TODO
 //  DONE:: get teams: embed user details in place of head user Id
 //  DONE:: get team members of all teams - sort by team id
-//  from event name(or id) get team and team members
-//  from team name(or id) get team members
+
+//  DONE:: from event name(or id) get team and team members
+
+//  from team name(or id) get team members, with team head
+//  team master: is_present: update true or false
+
 //  get coordinators, volunteers, participants - for admin
 //  authorized emails for admin, coordinators, volunteers
 //  team names, dont send team names which are already selected
