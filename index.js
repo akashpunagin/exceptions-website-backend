@@ -47,12 +47,15 @@ module.exports = app;
 
 //  DONE:: from event name(or id) get team and team members
 
+//  team member assign to event: validate if team is maxed out
+
+//  team names, dont send team names which are already selected
+
 //  from team name(or id) get team members, with team head
-//  team master: is_present: update true or false
+//  team member master: is_present: update true or false
 
 //  get coordinators, volunteers, participants - for admin
 //  authorized emails for admin, coordinators, volunteers
-//  team names, dont send team names which are already selected
 
 // [
 //   {

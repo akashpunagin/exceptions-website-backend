@@ -72,7 +72,6 @@ CREATE TABLE team_master(
     team_head_user uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     team_is_gc_considered BOOLEAN NOT NULL,
     team_score INT DEFAULT 0,
-    is_present BOOLEAN DEFAULT FALSE
 );
 
 --team member master--
@@ -83,6 +82,7 @@ CREATE TABLE team_member_master(
     usn VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     contact_number VARCHAR NOT NULL
+    is_present BOOLEAN DEFAULT FALSE
 );
 
 --used to map team and team members--

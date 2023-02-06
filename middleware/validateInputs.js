@@ -204,8 +204,15 @@ function handleTeamMemberReq(req) {
       return missingCredsMessage;
     }
   }
+
   if (req.path === "/get-by-eventId") {
     if (![eventId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/get-event-of-team-member") {
+    if (![memberId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
