@@ -42,6 +42,7 @@ app.listen(PORT, async () => {
 module.exports = app;
 
 // TODO
-// 2. available events - if member is in a event then only return
-// 3. get coordinators, volunteers, participants - for admin
-// 4. authorized emails for admin, coordinators, volunteers
+//  get teams: embed user details in place of head user id: DONE
+//  get team members of all teams - sort by team id
+//  get coordinators, volunteers, participants - for admin
+//  authorized emails for admin, coordinators, volunteers
