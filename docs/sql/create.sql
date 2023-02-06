@@ -101,7 +101,6 @@ CREATE TABLE team_id_team_member_event(
     PRIMARY KEY(team_id_team_member_id, event_id)
 );
 
-
 --used to store application constants--
 CREATE TABLE app_int_constants(
     id SERIAL PRIMARY KEY,

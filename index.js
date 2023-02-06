@@ -42,7 +42,22 @@ app.listen(PORT, async () => {
 module.exports = app;
 
 // TODO
-//  get teams: embed user details in place of head user id: DONE
-//  get team members of all teams - sort by team id
+//  DONE:: get teams: embed user details in place of head user Id
+//  DONE:: get team members of all teams - sort by team id
+//  from event name(or id) get team and team members
+//  from team name(or id) get team members
 //  get coordinators, volunteers, participants - for admin
 //  authorized emails for admin, coordinators, volunteers
+//  team names, dont send team names which are already selected
+
+// [
+//   {
+//     teamId: 1,
+//     name: "hi",
+//     members: [{ team1MemberDetails }, { team1MemberDetails }],
+//   },
+//   {
+//     teamId: 2,
+//     members: [{ team1MemberDetails }, { team1MemberDetails }],
+//   },
+// ];
