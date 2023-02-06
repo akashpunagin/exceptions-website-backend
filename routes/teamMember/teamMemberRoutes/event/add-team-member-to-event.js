@@ -6,6 +6,7 @@ const {
 const appConstants = require("../../../../constants/appConstants");
 const {
   isEventExistsByEventId,
+  getEventByEventId,
 } = require("../../../../dbUtils/event/dbEventUtils");
 
 const {
@@ -45,6 +46,33 @@ module.exports = (router) => {
           return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
         }
         const teamId = getTeamOfUserRes.data;
+
+        const eventRes = await getEventByEventId(eventId);
+        if (eventRes.isError) {
+          return res.status(401).json({ error: eventRes.errorMessage });
+        }
+        const eventData = eventRes.data;
+        console.log("SEE", eventData);
+        const eventMaxTeamSize = eventData.eventMaxTeamSize;
+        console.log("MAX:", eventMaxTeamSize);
+
+        const getEventTeamMembers = await pool.query(
+          `SELECT * 
+          FROM ${teamIdTeamMemberEvent}, ${teamIdTeamMember}
+          WHERE
+            ${teamIdTeamMemberEvent}.team_id_team_member_id = ${teamIdTeamMember}.team_id_team_member_id AND
+            ${teamIdTeamMember}.team_id = $1 AND
+            ${teamIdTeamMemberEvent}.event_id = $2
+            `,
+          [teamId, eventId]
+        );
+        const currentTeamSize = getEventTeamMembers.rowCount;
+        console.log("CURRENT", currentTeamSize);
+        if (currentTeamSize > eventMaxTeamSize) {
+          return res
+            .status(401)
+            .json({ error: "Maximum members are registered for this event" });
+        }
 
         const getTeamIdTeamMemberRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMember}

@@ -31,15 +31,22 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Event does not exists" });
         }
 
+        const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
+        if (getTeamOfUserRes.isError) {
+          return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
+        }
+        const teamId = getTeamOfUserRes.data;
+
         const getTeamIdTeamMemberRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMember}
           WHERE
           team_id_team_member_id in (
             SELECT team_id_team_member_id FROM ${teamIdTeamMemberEvent}
             WHERE
-            event_id = $1
+            event_id = $1 AND
+            team_id = $2
             )`,
-          [eventId]
+          [eventId, teamId]
         );
 
         const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows;
@@ -62,6 +69,7 @@ module.exports = (router) => {
         data = data.map((row) => {
           return {
             teamId: row.teamId,
+            memberId: row.member_id,
             firstName: row.first_name,
             lastName: row.last_name,
             usn: row.usn,

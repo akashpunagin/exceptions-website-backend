@@ -36,9 +36,7 @@ module.exports = (router) => {
         );
 
         if (getTeamRes.rowCount === 0) {
-          return res.status(200).json({
-            message: "This member has not been assigned to any event",
-          });
+          return res.status(200).json({});
         }
 
         const getTeamData = getTeamRes.rows[0];

@@ -47,7 +47,7 @@ module.exports = app;
 
 //  DONE:: from event name(or id) get team and team members
 
-//  team member assign to event: validate if team is maxed out
+//  team member assign to event: validate if event is maxed out
 
 //  team names, dont send team names which are already selected
 

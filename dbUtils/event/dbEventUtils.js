@@ -1,6 +1,44 @@
 const pool = require("./../../db/pool");
 const appConstants = require("./../../constants/appConstants");
 
+async function getEventByEventId(eventId) {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  try {
+    const eventRes = await pool.query(
+      `SELECT * 
+      FROM ${eventMaster}
+      WHERE event_id = $1`,
+      [eventId]
+    );
+    let eventData = eventRes.rows[0];
+    const {
+      event_name: eventName,
+      event_description: eventDescription,
+      event_max_points: eventMaxPoints,
+      event_max_team_size: eventMaxTeamSize,
+      event_is_open_event: eventIsOpenEvent,
+    } = eventData;
+
+    eventData = {
+      eventId,
+      eventName,
+      eventDescription,
+      eventMaxPoints,
+      eventMaxTeamSize,
+      eventIsOpenEvent,
+    };
+
+    return { isError: null, errorMessage: null, data: eventData };
+  } catch (error) {
+    return {
+      isError: true,
+      errorMessage: "Event does not exist",
+      data: null,
+    };
+  }
+}
+
 async function isEventExistsByEventId(eventId) {
   const { eventMaster } = appConstants.SQL_TABLE;
 
@@ -71,4 +109,5 @@ module.exports = {
   isEventExistsByEventId,
   isEventExistsByEventName,
   getTeamMembersByEventId,
+  getEventByEventId,
 };
