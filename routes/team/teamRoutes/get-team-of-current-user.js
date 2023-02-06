@@ -20,6 +20,8 @@ module.exports = (router) => {
         [currentUser.userId]
       );
 
+      console.log("SEE", teamRes.rowCount);
+
       let data = [];
       if (teamRes.rowCount > 0) {
         const team = teamRes.rows[0];
@@ -31,6 +33,8 @@ module.exports = (router) => {
           isGCConsidered: team.team_is_gc_considered,
           score: team.team_score,
         };
+      } else {
+        data = {};
       }
 
       return res.status(200).json(data);

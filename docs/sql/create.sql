@@ -68,7 +68,7 @@ CREATE TABLE event_master(
 --used to store details of team along with team head--
 CREATE TABLE team_master(
     team_id SERIAL PRIMARY KEY,
-    team_name VARCHAR NOT NULL,
+    team_name VARCHAR NOT NULL UNIQUE,
     team_head_user uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     team_is_gc_considered BOOLEAN NOT NULL,
     team_score INT DEFAULT 0
