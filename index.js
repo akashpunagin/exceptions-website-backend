@@ -10,6 +10,7 @@ const eventRouter = require("./routes/event/eventRouter");
 const teamRouter = require("./routes/team/teamRouter");
 const teamMemberRouter = require("./routes/teamMember/teamMemberRouter");
 const appConstantsRouter = require("./routes/app_constants/appConstantsRouter");
+const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -27,6 +28,7 @@ app.use("/event", eventRouter);
 app.use("/team", teamRouter);
 app.use("/teamMember", teamMemberRouter);
 app.use("/appConstants", appConstantsRouter);
+app.use("/teamNames", teamNamesRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
@@ -47,7 +49,7 @@ module.exports = app;
 
 //  DONE:: from event name(or id) get team and team members
 
-//  team member assign to event: validate if event is maxed out
+//  DONE:: team member assign to event: validate if event is maxed out
 
 //  team names, dont send team names which are already selected
 
