@@ -229,10 +229,15 @@ function handleAppConstantsReq(req) {
 }
 
 function handleTeamNamesReq(req) {
-  const { label } = req.body;
+  const { id, label } = req.body;
 
   if (req.path === "/add") {
     if (![label].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+  if (req.path === "/delete") {
+    if (![id].every(Boolean)) {
       return missingCredsMessage;
     }
   }

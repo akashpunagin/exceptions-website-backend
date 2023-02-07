@@ -7,35 +7,30 @@ const {
 const appConstants = require("../../../constants/appConstants");
 const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
-  isTeamNameExistsByLabel,
+  isTeamNameExistsById,
 } = require("../../../dbUtils/team_names/dbTeamNamesUtils");
 
 module.exports = (router) => {
   // TODO add auth admin
-  router.post("/add", [authorization, validateInputs], async (req, res) => {
+  router.post("/delete", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { teamNames } = appConstants.SQL_TABLE;
 
     try {
-      const { label } = req.body;
+      const { id } = req.body;
 
-      const isTeamNameExistsByLabelRes = await isTeamNameExistsByLabel(label);
-      if (isTeamNameExistsByLabelRes.isError) {
-        return res
-          .status(401)
-          .json({ error: isTeamNameExistsByLabelRes.errorMessage });
-      }
+      const isTeamNameExists = await isTeamNameExistsById(id);
 
-      const teamNamesAddRes = await pool.query(
-        `INSERT INTO ${teamNames}(label)
-        VALUES ($1)
+      const teamNamesDeleteRes = await pool.query(
+        `DELETE FROM ${teamNames}
+        WHERE id = $1
         RETURNING *`,
-        [label]
+        [id]
       );
-      const data = teamNamesAddRes.rows;
+      const teamNamesData = teamNamesDeleteRes.rows;
 
-      return res.status(200).json(data);
+      return res.status(200).json(teamNamesData);
     } catch (error) {
       console.log("ADD Team name error", error);
       return res.status(500).json("Server error");
