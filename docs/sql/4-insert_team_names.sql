@@ -91,7 +91,6 @@ VALUES
     ('The Sith Wizards'),
     ('The Starkiller Base'),
     ('The Wookie Warriors'),
-    ('The Wookie Warriors'),
     ('The Yellow Squadron'),
     ('TIE Fighters'),
     ('X-Wing Fighters');

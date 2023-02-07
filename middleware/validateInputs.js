@@ -228,12 +228,23 @@ function handleAppConstantsReq(req) {
   }
 }
 
+function handleTeamNamesReq(req) {
+  const { label } = req.body;
+
+  if (req.path === "/add") {
+    if (![label].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
   const teamError = handleTeamReq(req);
   const teamMemberError = handleTeamMemberReq(req);
   const appConstantsError = handleAppConstantsReq(req);
+  const teamNamesError = handleTeamNamesReq(req);
 
   console.log({
     authError,
@@ -241,6 +252,7 @@ module.exports = (req, res, next) => {
     teamError,
     teamMemberError,
     appConstantsError,
+    teamNamesError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -257,6 +269,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/appConstants/") && appConstantsError) {
     return res.status(401).json({ error: appConstantsError });
+  }
+  if (req.originalUrl.includes("/teamNames/") && teamNamesError) {
+    return res.status(401).json({ error: teamNamesError });
   }
 
   next();

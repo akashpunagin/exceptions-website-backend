@@ -11,11 +11,11 @@ module.exports = (router) => {
 
     try {
       const teamNamesRes = await pool.query(`SELECT * FROM ${teamNames}`);
-      let data = teamNamesRes.rows;
+      const data = teamNamesRes.rows;
 
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET Team error", error);
+      console.log("GET Team name error", error);
       return res.status(500).json("Server error");
     }
   });

@@ -112,5 +112,5 @@ CREATE TABLE app_int_constants(
 --used to store team names--
 CREATE TABLE team_names(
     id SERIAL PRIMARY KEY,
-    label VARCHAR NOT NULL
+    label VARCHAR NOT NULL UNIQUE
 );
