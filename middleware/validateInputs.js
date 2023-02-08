@@ -173,6 +173,12 @@ function handleTeamReq(req) {
       return invalidCredsMessage;
     }
   }
+
+  if (req.path === "/get-specific-team-details") {
+    if (![teamId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 function handleTeamMemberReq(req) {
