@@ -42,6 +42,7 @@ module.exports = (router) => {
           usn: row.usn,
           email: row.email,
           contactNumber: row.contact_number,
+          isPresent: row.is_present,
         };
       });
 

@@ -51,7 +51,7 @@ module.exports = app;
 
 //  DONE:: team member assign to event: validate if event is maxed out
 
-//  team names, dont send team names which are already selected
+//  DONE:: team names, dont send team names which are already selected
 
 //  from team name(or id) get team members, with team head
 //  team member master: is_present: update true or false

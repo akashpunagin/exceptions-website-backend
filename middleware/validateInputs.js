@@ -176,8 +176,16 @@ function handleTeamReq(req) {
 }
 
 function handleTeamMemberReq(req) {
-  const { firstName, lastName, usn, email, contactNumber, eventId, memberId } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    usn,
+    email,
+    contactNumber,
+    eventId,
+    memberId,
+    isPresent,
+  } = req.body;
 
   if (req.path === "/add") {
     if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
@@ -196,6 +204,15 @@ function handleTeamMemberReq(req) {
       ![memberId, firstName, lastName, usn, email, contactNumber].every(Boolean)
     ) {
       return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/update-attendence") {
+    if (![memberId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (typeof isPresent !== "boolean") {
+      return invalidCredsMessage;
     }
   }
 
