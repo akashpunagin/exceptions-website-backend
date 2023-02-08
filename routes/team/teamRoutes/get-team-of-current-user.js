@@ -4,34 +4,46 @@ const {
   authorizeAdmin,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.get("/get-team-of-current-user", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMaster } = appConstants.SQL_TABLE;
+    const { teamMaster, teamNames } = appConstants.SQL_TABLE;
 
     try {
       const currentUser = req.user;
 
       const teamRes = await pool.query(
-        `SELECT * FROM ${teamMaster}
-        WHERE team_head_user = $1`,
+        `SELECT * 
+        FROM ${teamMaster}, ${teamNames}
+        WHERE
+          ${teamMaster}.team_name_id = ${teamNames}.id AND
+          team_head_user = $1`,
         [currentUser.userId]
       );
 
-      console.log("SEE", teamRes.rowCount);
-
       let data = [];
       if (teamRes.rowCount > 0) {
-        const team = teamRes.rows[0];
+        const teamRow = teamRes.rows[0];
+
+        const headUserId = teamRow.team_head_user;
+        const teamNameId = teamRow.id;
+        const teamName = teamRow.label;
+
+        const headUser = await getUserByUserId(headUserId);
 
         data = {
-          teamId: team.team_id,
-          name: team.team_name,
-          headUserId: team.team_head_user,
-          isGCConsidered: team.team_is_gc_considered,
-          score: team.team_score,
+          teamId: teamRow.team_id,
+          teamName,
+          teamName: {
+            label: teamName,
+            id: teamNameId,
+          },
+          headUser,
+          isGCConsidered: teamRow.team_is_gc_considered,
+          score: teamRow.team_score,
         };
       } else {
         data = {};

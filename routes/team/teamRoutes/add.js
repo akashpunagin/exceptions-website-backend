@@ -8,7 +8,11 @@ const appConstants = require("../../../constants/appConstants");
 const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   isTeamHeadExists,
+  isTeamExistsByTeamNameId,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+const {
+  isTeamNameExistsById,
+} = require("../../../dbUtils/team_names/dbTeamNamesUtils");
 
 module.exports = (router) => {
   router.post(
@@ -20,19 +24,29 @@ module.exports = (router) => {
       const { teamMaster } = appConstants.SQL_TABLE;
 
       try {
-        const { name, isGCConsidered } = req.body;
+        const { teamNameId, isGCConsidered } = req.body;
 
         const currentUser = req.user;
         const headUserId = currentUser.userId;
 
-        const teamRes = await pool.query(
-          `SELECT team_id 
-            FROM ${teamMaster}
-            WHERE team_name = $1`,
-          [name]
+        const isTeamNameExists = await isTeamNameExistsById(teamNameId);
+        if (!isTeamNameExists) {
+          return res.status(401).json({ error: "Team name does not exists" });
+        }
+
+        const isTeamExistsByTeamIdRes = await isTeamExistsByTeamNameId(
+          teamNameId
         );
-        if (teamRes.rowCount > 0) {
-          return res.status(401).json({ error: "Team already exists" });
+        if (isTeamExistsByTeamIdRes.isError) {
+          return res
+            .status(401)
+            .json({ error: isTeamExistsByTeamIdRes.errorMessage });
+        }
+        const isTeamExistsByTeamName = isTeamExistsByTeamIdRes.data;
+        if (isTeamExistsByTeamName) {
+          return res
+            .status(401)
+            .json({ error: "Team with name already exists" });
         }
 
         const isUserExists = await isUserExistsByUserId(headUserId);
@@ -48,10 +62,10 @@ module.exports = (router) => {
         }
 
         const addRes = await pool.query(
-          `INSERT INTO ${teamMaster}(team_name, team_head_user, team_is_gc_considered)
+          `INSERT INTO ${teamMaster}(team_name_id, team_head_user, team_is_gc_considered)
             VALUES($1, $2, $3)
             RETURNING *`,
-          [name, headUserId, isGCConsidered]
+          [teamNameId, headUserId, isGCConsidered]
         );
 
         return res.status(200).json({

@@ -21,6 +21,7 @@ module.exports = (router) => {
       const { id } = req.body;
 
       const isTeamNameExists = await isTeamNameExistsById(id);
+      // TODO apply above variable
 
       const teamNamesDeleteRes = await pool.query(
         `DELETE FROM ${teamNames}

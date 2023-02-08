@@ -6,11 +6,16 @@ const {
 const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   isTeamHeadExists,
+  isTeamExistsByTeamId,
+  isTeamExistsByTeamNameId,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+const {
+  isTeamNameExistsById,
+} = require("../../../dbUtils/team_names/dbTeamNamesUtils");
 
 module.exports = (router) => {
   router.post("/update", [authorization, validateInputs], async (req, res) => {
@@ -19,7 +24,7 @@ module.exports = (router) => {
     const { teamMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { name } = req.body;
+      const { teamNameId } = req.body;
 
       const currentUser = req.user;
       const teamIdRes = await getTeamIdOfUser(currentUser.userId);
@@ -28,33 +33,31 @@ module.exports = (router) => {
       }
       const teamId = teamIdRes.data;
 
-      const teamExistsRes = await pool.query(
-        `SELECT team_id 
-          FROM ${teamMaster}
-          WHERE team_id = $1`,
-        [teamId]
-      );
-      if (teamExistsRes.rowCount === 0) {
-        return res.status(401).json({ error: "Team does not exists" });
+      const isTeamNameExists = await isTeamNameExistsById(teamNameId);
+      if (!isTeamNameExists) {
+        return res.status(401).json({ error: "Team name does not exists" });
       }
 
-      const teamNameExistsRes = await pool.query(
-        `SELECT team_id 
-          FROM ${teamMaster}
-          WHERE team_name = $1`,
-        [name]
+      const isTeamExistsByTeamIdRes = await isTeamExistsByTeamNameId(
+        teamNameId
       );
-      if (teamNameExistsRes.rowCount > 0) {
-        return res.status(401).json({ error: "Team name already exists" });
+      if (isTeamExistsByTeamIdRes.isError) {
+        return res
+          .status(401)
+          .json({ error: isTeamExistsByTeamIdRes.errorMessage });
+      }
+      const isTeamExistsByTeamName = isTeamExistsByTeamIdRes.data;
+      if (isTeamExistsByTeamName) {
+        return res.status(401).json({ error: "Team with name already exists" });
       }
 
       const updateRes = await pool.query(
         `UPDATE ${teamMaster}
           SET 
-            team_name = $1
+            team_name_id = $1
           WHERE team_id = $2
           RETURNING *`,
-        [name, teamId]
+        [teamNameId, teamId]
       );
 
       return res.status(200).json({

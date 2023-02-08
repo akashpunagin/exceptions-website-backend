@@ -65,13 +65,19 @@ CREATE TABLE event_master(
     event_is_open_event BOOLEAN NOT NULL --open or group event--
 );
 
+--used to store team names--
+CREATE TABLE team_names(
+    id SERIAL PRIMARY KEY,
+    label VARCHAR NOT NULL UNIQUE
+);
+
 --used to store details of team along with team head--
 CREATE TABLE team_master(
     team_id SERIAL PRIMARY KEY,
-    team_name VARCHAR NOT NULL UNIQUE,
+    team_name_id INTEGER REFERENCES team_names UNIQUE,
     team_head_user uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     team_is_gc_considered BOOLEAN NOT NULL,
-    team_score INT DEFAULT 0,
+    team_score INT DEFAULT 0
 );
 
 --team member master--
@@ -81,7 +87,7 @@ CREATE TABLE team_member_master(
     last_name VARCHAR NOT NULL,
     usn VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    contact_number VARCHAR NOT NULL
+    contact_number VARCHAR NOT NULL,
     is_present BOOLEAN DEFAULT FALSE
 );
 
@@ -107,10 +113,4 @@ CREATE TABLE app_int_constants(
     id SERIAL PRIMARY KEY,
     label VARCHAR NOT NULL,
     value INT NOT NULL
-);
-
---used to store team names--
-CREATE TABLE team_names(
-    id SERIAL PRIMARY KEY,
-    label VARCHAR NOT NULL UNIQUE
 );

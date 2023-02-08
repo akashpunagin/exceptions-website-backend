@@ -7,23 +7,34 @@ module.exports = (router) => {
   router.get("/get", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMaster } = appConstants.SQL_TABLE;
+    const { teamMaster, teamNames } = appConstants.SQL_TABLE;
 
     try {
-      const teamRes = await pool.query(`SELECT * FROM ${teamMaster}`);
+      const teamRes = await pool.query(`
+        SELECT *
+        FROM ${teamMaster}, ${teamNames}
+        WHERE 
+          ${teamMaster}.team_name_id = ${teamNames}.id
+      `);
       let data = teamRes.rows;
 
       const asyncTeamRes = await Promise.all(
-        data.map(async (team) => {
-          const headUserId = team.team_head_user;
+        data.map(async (row) => {
+          const headUserId = row.team_head_user;
+          const teamNameId = row.id;
+          const teamName = row.label;
+
           const headUser = await getUserByUserId(headUserId);
 
           return {
-            teamId: team.team_id,
-            name: team.team_name,
+            teamId: row.team_id,
+            teamName: {
+              label: teamName,
+              id: teamNameId,
+            },
             headUser,
-            isGCConsidered: team.team_is_gc_considered,
-            score: team.team_score,
+            isGCConsidered: row.team_is_gc_considered,
+            score: row.team_score,
           };
         })
       );

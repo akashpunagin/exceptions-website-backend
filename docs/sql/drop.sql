@@ -8,3 +8,5 @@ DROP TABLE user_permission;
 DROP TABLE user_role;
 DROP TABLE user_verification_tokens;
 DROP TABLE users;
+DROP TABLE team_names;
+DROP TABLE app_int_constants;

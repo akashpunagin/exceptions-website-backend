@@ -145,13 +145,16 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { teamId, name, isGCConsidered } = req.body;
+  const { teamId, teamNameId, isGCConsidered } = req.body;
 
   if (req.path === "/add") {
-    if (![name, isGCConsidered].every(Boolean)) {
+    if (![teamNameId, isGCConsidered].every(Boolean)) {
       return missingCredsMessage;
     }
     if (typeof isGCConsidered !== "boolean") {
+      return invalidCredsMessage;
+    }
+    if (typeof teamNameId !== "number") {
       return invalidCredsMessage;
     }
   }
@@ -163,8 +166,11 @@ function handleTeamReq(req) {
   }
 
   if (req.path === "/update") {
-    if (![name].every(Boolean)) {
+    if (![teamNameId].every(Boolean)) {
       return missingCredsMessage;
+    }
+    if (typeof teamNameId !== "number") {
+      return invalidCredsMessage;
     }
   }
 }

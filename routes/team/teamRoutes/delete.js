@@ -17,13 +17,13 @@ module.exports = (router) => {
       try {
         const { teamId } = req.body;
 
-        const eventRes = await pool.query(
+        const teamRes = await pool.query(
           `SELECT team_id 
             FROM ${teamMaster}
             WHERE team_id = $1`,
           [teamId]
         );
-        if (eventRes.rowCount === 0) {
+        if (teamRes.rowCount === 0) {
           return res.status(401).json({ error: "Team does not exists" });
         }
 
