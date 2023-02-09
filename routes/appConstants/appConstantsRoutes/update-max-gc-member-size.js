@@ -31,7 +31,7 @@ module.exports = (router) => {
           .status(200)
           .json({ message: "Max GC Member Size updated successfully" });
       } catch (error) {
-        console.log("GET get-max-gc-member-size error", error);
+        console.log("UPDATE max-gc-member-size error", error);
         return res.status(500).json("Server error");
       }
     }

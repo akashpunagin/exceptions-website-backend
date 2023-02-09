@@ -48,8 +48,6 @@ module.exports = (router) => {
             const res = await getTeamByTeamId(teamId);
             const teamData = res.data;
 
-            console.log("SEE", teamId);
-
             teamData.members = eventTeamMembersGroupByTeamId[teamId];
 
             data.push(teamData);
@@ -58,7 +56,7 @@ module.exports = (router) => {
 
         return res.status(200).json(data);
       } catch (error) {
-        console.log("GET Event error", error);
+        console.log("GET team members by Event id error", error);
         return res.status(500).json("Server error");
       }
     }

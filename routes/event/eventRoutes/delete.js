@@ -5,6 +5,9 @@ const {
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  isEventExistsByEventId,
+} = require("../../../dbUtils/event/dbEventUtils");
 
 module.exports = (router) => {
   router.delete(
@@ -18,13 +21,8 @@ module.exports = (router) => {
       try {
         const { eventId } = req.body;
 
-        const eventRes = await pool.query(
-          `SELECT event_id 
-            FROM ${eventMaster}
-            WHERE event_id = $1`,
-          [eventId]
-        );
-        if (eventRes.rowCount === 0) {
+        const isEventExists = await isEventExistsByEventId(eventId);
+        if (!isEventExists) {
           return res.status(401).json({ error: "Event does not exists" });
         }
 
