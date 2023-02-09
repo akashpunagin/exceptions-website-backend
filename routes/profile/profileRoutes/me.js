@@ -49,7 +49,7 @@ module.exports = (router) => {
 
         return res
           .status(200)
-          .json({ ...currentUser, ...participantDetailsJson });
+          .json({ ...currentUser, participantDetails: participantDetailsJson });
       }
 
       return res.status(200).json(currentUser);
