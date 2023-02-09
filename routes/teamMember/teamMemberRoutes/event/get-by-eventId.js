@@ -45,7 +45,7 @@ module.exports = (router) => {
             WHERE
             event_id = $1 AND
             team_id = $2
-            )`,
+          )`,
           [eventId, teamId]
         );
 

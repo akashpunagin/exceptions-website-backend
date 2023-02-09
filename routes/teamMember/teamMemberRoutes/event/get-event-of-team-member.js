@@ -5,11 +5,8 @@ const {
 } = require("../../../../middleware/exportMiddlewares");
 const appConstants = require("../../../../constants/appConstants");
 const {
-  getTeamIdOfUser,
-} = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
-const {
-  isEventExistsByEventId,
-} = require("../../../../dbUtils/event/dbEventUtils");
+  isTeamMemberExistsByMemberId,
+} = require("../../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
 module.exports = (router) => {
   router.post(
@@ -24,6 +21,11 @@ module.exports = (router) => {
       try {
         const { memberId } = req.body;
 
+        const isTeamMemberExists = await isTeamMemberExistsByMemberId(memberId);
+        if (!isTeamMemberExists) {
+          return res.status(401).json({ error: "No such team member exists" });
+        }
+
         const getTeamRes = await pool.query(
           `SELECT * 
           FROM ${teamIdTeamMember}, ${teamIdTeamMemberEvent}, ${eventMaster}
@@ -36,7 +38,9 @@ module.exports = (router) => {
         );
 
         if (getTeamRes.rowCount === 0) {
-          return res.status(200).json({});
+          return res.status(200).json({
+            message: "This team member has not been assigned to any team",
+          });
         }
 
         const getTeamData = getTeamRes.rows[0];

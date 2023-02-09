@@ -8,7 +8,6 @@ const {
   isEventExistsByEventId,
   getEventByEventId,
 } = require("../../../../dbUtils/event/dbEventUtils");
-
 const {
   getTeamIdOfUser,
 } = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
@@ -23,7 +22,7 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { teamMemberMaster, teamIdTeamMember, teamIdTeamMemberEvent } =
+      const { teamIdTeamMember, teamIdTeamMemberEvent } =
         appConstants.SQL_TABLE;
 
       try {
@@ -52,22 +51,19 @@ module.exports = (router) => {
           return res.status(401).json({ error: eventRes.errorMessage });
         }
         const eventData = eventRes.data;
-        console.log("SEE", eventData);
         const eventMaxTeamSize = eventData.eventMaxTeamSize;
-        console.log("MAX:", eventMaxTeamSize);
 
         const getEventTeamMembers = await pool.query(
           `SELECT * 
-          FROM ${teamIdTeamMemberEvent}, ${teamIdTeamMember}
-          WHERE
-            ${teamIdTeamMemberEvent}.team_id_team_member_id = ${teamIdTeamMember}.team_id_team_member_id AND
-            ${teamIdTeamMember}.team_id = $1 AND
-            ${teamIdTeamMemberEvent}.event_id = $2
-            `,
+            FROM ${teamIdTeamMemberEvent}, ${teamIdTeamMember}
+            WHERE
+              ${teamIdTeamMemberEvent}.team_id_team_member_id = ${teamIdTeamMember}.team_id_team_member_id AND
+              ${teamIdTeamMember}.team_id = $1 AND
+              ${teamIdTeamMemberEvent}.event_id = $2`,
           [teamId, eventId]
         );
         const currentTeamSize = getEventTeamMembers.rowCount;
-        console.log("CURRENT", currentTeamSize);
+
         if (currentTeamSize > eventMaxTeamSize) {
           return res
             .status(401)

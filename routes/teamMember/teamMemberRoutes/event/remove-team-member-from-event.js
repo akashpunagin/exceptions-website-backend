@@ -61,19 +61,6 @@ module.exports = (router) => {
         const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows[0];
         const teamIdTeamMemberId = teamIdTeamMemberData.team_id_team_member_id;
 
-        // const getTeamMemberToEventRes = await pool.query(
-        //   `SELECT * FROM ${teamIdTeamMemberEvent}
-        //   WHERE
-        //     team_id_team_member_id = $1 AND
-        //     event_id = $2`,
-        //   [teamIdTeamMemberId, eventId]
-        // );
-        // if (getTeamMemberToEventRes.rowCount > 0) {
-        //   return res
-        //     .status(401)
-        //     .json({ error: "Member is already registered for this event" });
-        // }
-
         const deleteTeamMemberFromEventRes = await pool.query(
           `DELETE FROM ${teamIdTeamMemberEvent}
             WHERE team_id_team_member_id = $1
