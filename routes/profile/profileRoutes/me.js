@@ -1,5 +1,6 @@
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const pool = require("../../../db/pool");
 
 module.exports = (router) => {
   router.get("/me", [authorization], async (req, res) => {
