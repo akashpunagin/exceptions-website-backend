@@ -3,10 +3,7 @@ const {
   authorization,
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
-const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
-  isTeamHeadExists,
-  isTeamExistsByTeamId,
   isTeamExistsByTeamNameId,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 const appConstants = require("../../../constants/appConstants");
@@ -53,8 +50,7 @@ module.exports = (router) => {
 
       const updateRes = await pool.query(
         `UPDATE ${teamMaster}
-          SET 
-            team_name_id = $1
+          SET team_name_id = $1
           WHERE team_id = $2
           RETURNING *`,
         [teamNameId, teamId]

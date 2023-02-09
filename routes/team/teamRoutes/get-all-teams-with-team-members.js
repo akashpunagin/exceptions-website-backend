@@ -58,7 +58,7 @@ module.exports = (router) => {
 
         return res.status(200).json(asyncTeamRes);
       } catch (error) {
-        console.log("GET Team member by event id error", error);
+        console.log("GET all teams with team members error", error);
         return res.status(500).json("Server error");
       }
     }

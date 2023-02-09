@@ -1,14 +1,18 @@
 const pool = require("../../../db/pool");
 const {
   authorization,
+  authorizeAdmin,
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  isTeamExistsByTeamId,
+} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 
 module.exports = (router) => {
   router.delete(
     "/delete",
-    [authorization, validateInputs],
+    [authorization, authorizeAdmin, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
@@ -17,13 +21,14 @@ module.exports = (router) => {
       try {
         const { teamId } = req.body;
 
-        const teamRes = await pool.query(
-          `SELECT team_id 
-            FROM ${teamMaster}
-            WHERE team_id = $1`,
-          [teamId]
-        );
-        if (teamRes.rowCount === 0) {
+        const isTeamExistsByTeamIdRes = await isTeamExistsByTeamId(teamId);
+        if (isTeamExistsByTeamIdRes.isError) {
+          return res
+            .status(401)
+            .json({ error: isTeamExistsByTeamIdRes.errorMessage });
+        }
+        const isTeamExists = isTeamExistsByTeamIdRes.data;
+        if (!isTeamExists) {
           return res.status(401).json({ error: "Team does not exists" });
         }
 
