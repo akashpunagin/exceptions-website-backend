@@ -53,20 +53,12 @@ module.exports = app;
 
 //  DONE:: team names, dont send team names which are already selected
 
-//  from team name(or id) get team members, with team head
+//  DONE:: from team name(or id) get team members, with team head
 //  DONE:: team member master: is_present: update true or false
 
 //  get coordinators, volunteers, participants - for admin
 //  authorized emails for admin, coordinators, volunteers
 
-// [
-//   {
-//     teamId: 1,
-//     name: "hi",
-//     members: [{ team1MemberDetails }, { team1MemberDetails }],
-//   },
-//   {
-//     teamId: 2,
-//     members: [{ team1MemberDetails }, { team1MemberDetails }],
-//   },
-// ];
+// > Payments
+// record transaction id, store is_verified status in database
+// send Verification Done email to participant after verifying
