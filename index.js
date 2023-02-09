@@ -9,7 +9,7 @@ const profileRouter = require("./routes/profile/profileRouter");
 const eventRouter = require("./routes/event/eventRouter");
 const teamRouter = require("./routes/team/teamRouter");
 const teamMemberRouter = require("./routes/teamMember/teamMemberRouter");
-const appConstantsRouter = require("./routes/app_constants/appConstantsRouter");
+const appConstantsRouter = require("./routes/appConstants/appConstantsRouter");
 const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
 
 // TODO delete
