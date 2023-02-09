@@ -1,6 +1,5 @@
 const pool = require("../../../db/pool");
 const appConstants = require("../../../constants/appConstants");
-const { isUserExistsByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   authorization,
   authorizeAdmin,
@@ -42,7 +41,7 @@ module.exports = (router) => {
 
         return res.status(200).json(data);
       } catch (error) {
-        console.log("GET All users error", error);
+        console.log("GET All participants error", error);
         return res.status(500).json("Server error");
       }
     }
