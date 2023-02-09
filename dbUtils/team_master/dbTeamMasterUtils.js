@@ -89,7 +89,7 @@ async function isTeamExistsByTeamNameId(teamNameId) {
       [teamNameId]
     );
     if (teamRes.rowCount > 0) {
-      return { isError: true, errorMessage: null, data: true };
+      return { isError: false, errorMessage: null, data: true };
     }
     return { isError: false, errorMessage: null, data: false };
   } catch (error) {

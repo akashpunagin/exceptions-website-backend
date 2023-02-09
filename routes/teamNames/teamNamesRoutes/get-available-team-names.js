@@ -1,7 +1,6 @@
 const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
-const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.get("/get-available-team-names", [authorization], async (req, res) => {
@@ -22,7 +21,7 @@ module.exports = (router) => {
 
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET Team name error", error);
+      console.log("GET available Team name error", error);
       return res.status(500).json("Server error");
     }
   });
