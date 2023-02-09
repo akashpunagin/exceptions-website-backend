@@ -5,12 +5,6 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const {
-  isEventExistsByEventId,
-} = require("../../../dbUtils/event/dbEventUtils");
-const {
-  getTeamIdOfUser,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
-const {
   isTeamMemberExistsByMemberId,
 } = require("../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
@@ -18,7 +12,7 @@ module.exports = (router) => {
   router.post("/update", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
+    const { teamMemberMaster } = appConstants.SQL_TABLE;
 
     try {
       const { memberId, firstName, lastName, usn, email, contactNumber } =

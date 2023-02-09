@@ -1,8 +1,5 @@
 const pool = require("../../../db/pool");
-const {
-  authorization,
-  authorizeAdmin,
-} = require("../../../middleware/exportMiddlewares");
+const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
@@ -48,7 +45,7 @@ module.exports = (router) => {
 
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET Team member by event id error", error);
+      console.log("GET Team member error", error);
       return res.status(500).json("Server error");
     }
   });

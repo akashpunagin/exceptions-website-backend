@@ -200,7 +200,7 @@ function handleTeamMemberReq(req) {
   }
 
   if (req.path === "/delete") {
-    if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
+    if (![memberId].every(Boolean)) {
       return missingCredsMessage;
     }
   }

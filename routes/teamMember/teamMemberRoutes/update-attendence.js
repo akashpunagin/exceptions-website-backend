@@ -5,12 +5,6 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const {
-  isEventExistsByEventId,
-} = require("../../../dbUtils/event/dbEventUtils");
-const {
-  getTeamIdOfUser,
-} = require("../../../dbUtils/team_master/dbTeamMasterUtils");
-const {
   isTeamMemberExistsByMemberId,
 } = require("../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
@@ -21,7 +15,7 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
+      const { teamMemberMaster } = appConstants.SQL_TABLE;
 
       try {
         const { memberId, isPresent } = req.body;
@@ -33,9 +27,8 @@ module.exports = (router) => {
 
         const updateAttendenceRes = await pool.query(
           `UPDATE ${teamMemberMaster}
-          SET
-              is_present = $1
-          WHERE member_id = $2
+            SET is_present = $1
+            WHERE member_id = $2
             RETURNING *`,
           [isPresent, memberId]
         );

@@ -44,4 +44,42 @@ async function getTeamMembersByTeamId(teamId) {
   return data;
 }
 
-module.exports = { isTeamMemberExistsByMemberId, getTeamMembersByTeamId };
+async function isTeamMemberExistsByCredentials(
+  firstName,
+  lastName,
+  usn,
+  email,
+  contactNumber
+) {
+  const { teamMemberMaster } = appConstants.SQL_TABLE;
+
+  try {
+    const teamMemberExistsRes = await pool.query(
+      `SELECT * FROM ${teamMemberMaster}
+        WHERE
+          first_name = $1 AND
+          last_name = $2 AND
+          usn = $3 AND
+          email = $4 AND
+          contact_number = $5`,
+      [firstName, lastName, usn, email, contactNumber]
+    );
+    if (teamMemberExistsRes.rowCount > 0) {
+      return { isError: false, errorMessage: null, data: true };
+    }
+    return { isError: false, errorMessage: null, data: false };
+  } catch (error) {
+    return {
+      isError: true,
+      errorMessage:
+        "There was some error while checking team member credentials",
+      data: null,
+    };
+  }
+}
+
+module.exports = {
+  isTeamMemberExistsByMemberId,
+  getTeamMembersByTeamId,
+  isTeamMemberExistsByCredentials,
+};

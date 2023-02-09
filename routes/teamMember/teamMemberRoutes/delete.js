@@ -7,15 +7,18 @@ const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+const {
+  isTeamMemberExistsByMemberId,
+} = require("../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
 module.exports = (router) => {
   router.post("/delete", [authorization, validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
+    const { teamMemberMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { firstName, lastName, usn, email, contactNumber } = req.body;
+      const { memberId } = req.body;
 
       const currentUser = req.user;
 
@@ -25,16 +28,16 @@ module.exports = (router) => {
       }
       const teamId = getTeamOfUserRes.data;
 
+      const isTeamMemberExists = await isTeamMemberExistsByMemberId(memberId);
+      if (!isTeamMemberExists) {
+        return res.status(401).json({ error: "No such team member exists" });
+      }
+
       const teamMemberDeleteRes = await pool.query(
         `DELETE FROM ${teamMemberMaster}
-          WHERE 
-            first_name = $1 AND
-            last_name = $2 AND
-            usn = $3 AND
-            email = $4 AND
-            contact_number = $5
+          WHERE member_id = $1
         RETURNING *`,
-        [firstName, lastName, usn, email, contactNumber]
+        [memberId]
       );
       if (teamMemberDeleteRes.rowCount === 0) {
         return res.status(401).json({ error: "No such team member exists" });
