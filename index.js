@@ -11,6 +11,7 @@ const teamRouter = require("./routes/team/teamRouter");
 const teamMemberRouter = require("./routes/teamMember/teamMemberRouter");
 const appConstantsRouter = require("./routes/appConstants/appConstantsRouter");
 const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
+const adminRouter = require("./routes/admin/adminRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -29,6 +30,7 @@ app.use("/team", teamRouter);
 app.use("/teamMember", teamMemberRouter);
 app.use("/appConstants", appConstantsRouter);
 app.use("/teamNames", teamNamesRouter);
+app.use("/admin", adminRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
@@ -56,7 +58,7 @@ module.exports = app;
 //  DONE:: from team name(or id) get team members, with team head
 //  DONE:: team member master: is_present: update true or false
 
-//  get coordinators, volunteers, participants - for admin
+//  DONE:: get coordinators, volunteers, participants - for admin
 //  authorized emails for admin, coordinators, volunteers
 
 // > Payments

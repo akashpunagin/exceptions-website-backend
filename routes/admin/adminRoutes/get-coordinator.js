@@ -8,7 +8,7 @@ const {
 
 module.exports = (router) => {
   router.get(
-    "/get-participants",
+    "/get-coordinators",
     [authorization, authorizeAdmin],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
@@ -25,7 +25,7 @@ module.exports = (router) => {
             WHERE 
               u.user_id = ur.user_id AND
               ur.user_id = up.user_id AND
-              ur.role_participant = true
+              ur.role_coordinator = true
             `
         );
         let data = getRes.rows;
