@@ -46,7 +46,9 @@ module.exports = (router) => {
           score: teamRow.team_score,
         };
       } else {
-        data = {};
+        data = {
+          message: "This user has not registered any teams",
+        };
       }
 
       return res.status(200).json(data);
