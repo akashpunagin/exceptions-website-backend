@@ -1,4 +1,3 @@
-const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 
 module.exports = (router) => {
