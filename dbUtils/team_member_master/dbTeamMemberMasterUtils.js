@@ -78,8 +78,43 @@ async function isTeamMemberExistsByCredentials(
   }
 }
 
+async function deleteTeamMembersOfTeamId(teamId) {
+  const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
+
+  try {
+    const teamMemberRes = await pool.query(
+      `SELECT member.member_id
+      FROM
+        ${teamMemberMaster} as master,
+        ${teamIdTeamMember} as member
+      WHERE
+        member.member_id = master.member_id AND
+        member.team_id = $1`,
+      [teamId]
+    );
+    let memberIds = teamMemberRes.rows;
+
+    for (const { member_id: memberId } of memberIds) {
+      await pool.query(
+        `DELETE FROM ${teamMemberMaster}
+        WHERE member_id = $1
+        RETURNING *`,
+        [memberId]
+      );
+    }
+    return { isError: false, errorMessage: null, data: null };
+  } catch (error) {
+    return {
+      isError: true,
+      errorMessage: "There was some error while deleting team members of team",
+      data: null,
+    };
+  }
+}
+
 module.exports = {
   isTeamMemberExistsByMemberId,
   getTeamMembersByTeamId,
   isTeamMemberExistsByCredentials,
+  deleteTeamMembersOfTeamId,
 };

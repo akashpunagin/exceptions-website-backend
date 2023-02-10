@@ -8,11 +8,15 @@ const appConstants = require("../../../constants/appConstants");
 const {
   isTeamExistsByTeamId,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+const {
+  deleteTeamMembersOfTeamId,
+} = require("../../../dbUtils/team_member_master/dbTeamMemberMasterUtils");
 
 module.exports = (router) => {
   router.delete(
     "/delete",
-    [authorization, authorizeAdmin, validateInputs],
+    // TODO add admin auth
+    [authorization, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
@@ -30,6 +34,13 @@ module.exports = (router) => {
         const isTeamExists = isTeamExistsByTeamIdRes.data;
         if (!isTeamExists) {
           return res.status(401).json({ error: "Team does not exists" });
+        }
+
+        const deleteTeamMemberRes = await deleteTeamMembersOfTeamId(teamId);
+        if (deleteTeamMemberRes.isError) {
+          return res
+            .status(401)
+            .json({ error: deleteTeamMemberRes.errorMessage });
         }
 
         const delRes = await pool.query(
