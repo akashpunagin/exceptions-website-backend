@@ -15,8 +15,8 @@ const {
 module.exports = (router) => {
   router.delete(
     "/delete",
-
-    [authorization, authorizeAdmin, validateInputs],
+    // TODO add admin auth
+    [authorization, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 

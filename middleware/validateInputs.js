@@ -145,10 +145,10 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { teamId, teamNameId, isGCConsidered } = req.body;
+  const { teamId, teamNameId, isGCConsidered, openEventIds } = req.body;
 
   if (req.path === "/add") {
-    if (![teamNameId, isGCConsidered].every(Boolean)) {
+    if (![teamNameId, openEventIds].every(Boolean)) {
       return missingCredsMessage;
     }
     if (typeof isGCConsidered !== "boolean") {

@@ -80,6 +80,14 @@ CREATE TABLE team_master(
     team_score INT DEFAULT 0
 );
 
+--used to map each team with selected events--
+CREATE TABLE team_events(
+    team_id INT REFERENCES team_master ON DELETE CASCADE ON UPDATE CASCADE,
+    event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE,
+
+    PRIMARY KEY(team_id, event_id)
+);
+
 --team member master--
 CREATE TABLE team_member_master(
     member_id SERIAL PRIMARY KEY,

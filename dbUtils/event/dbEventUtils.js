@@ -54,6 +54,23 @@ async function isEventExistsByEventId(eventId) {
   return true;
 }
 
+async function isOpenEventExistsByEventId(eventId) {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  const eventRes = await pool.query(
+    `SELECT event_id 
+    FROM ${eventMaster}
+    WHERE 
+      event_is_open_event = true AND
+      event_id = $1`,
+    [eventId]
+  );
+  if (eventRes.rowCount === 0) {
+    return false;
+  }
+  return true;
+}
+
 async function isEventExistsByEventName(eventName) {
   const { eventMaster } = appConstants.SQL_TABLE;
 
@@ -105,9 +122,33 @@ async function getTeamMembersByEventId(eventId) {
   return data;
 }
 
+async function getGroupEvents() {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  const eventRes = await pool.query(
+    `SELECT event_id 
+    FROM ${eventMaster}
+    WHERE event_is_open_event = false`
+  );
+  let data = eventRes.rows;
+  data = data.map((event) => {
+    return {
+      eventId: event.event_id,
+      name: event.event_name,
+      description: event.event_description,
+      maxPoints: event.event_max_points,
+      maxTeamSize: event.event_max_team_size,
+      isOpenEvent: event.event_is_open_event,
+    };
+  });
+  return data;
+}
+
 module.exports = {
   isEventExistsByEventId,
+  isOpenEventExistsByEventId,
   isEventExistsByEventName,
   getTeamMembersByEventId,
   getEventByEventId,
+  getGroupEvents,
 };
