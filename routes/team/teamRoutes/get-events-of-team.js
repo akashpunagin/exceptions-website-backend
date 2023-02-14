@@ -32,7 +32,7 @@ module.exports = (router) => {
 
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET Team error", error);
+      console.log("GET events of team error", error);
       return res.status(500).json("Server error");
     }
   });

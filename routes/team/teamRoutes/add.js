@@ -83,7 +83,6 @@ module.exports = (router) => {
         const data = addRes.rows[0];
         const teamId = data.team_id;
 
-        //TODO add all open events ids to table
         for (let i = 0; i < openEventIds.length; i++) {
           const openEventId = openEventIds[i];
           await pool.query(
