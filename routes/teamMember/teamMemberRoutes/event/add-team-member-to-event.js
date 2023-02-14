@@ -64,7 +64,7 @@ module.exports = (router) => {
         );
         const currentTeamSize = getEventTeamMembers.rowCount;
 
-        if (currentTeamSize > eventMaxTeamSize) {
+        if (currentTeamSize >= eventMaxTeamSize) {
           return res
             .status(401)
             .json({ error: "Maximum members are registered for this event" });

@@ -6,6 +6,7 @@ const {
 const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
+  getMaxTeamMembersOfTeamByTeamId,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isTeamMemberExistsByCredentials,
@@ -45,6 +46,23 @@ module.exports = (router) => {
         return res
           .status(401)
           .json({ error: "This Team member credentials already exists" });
+      }
+
+      const getTeamMembersRes = await pool.query(
+        `SELECT *
+        FROM ${teamIdTeamMember}
+        WHERE team_id = $1`,
+        [teamId]
+      );
+      const currentTeamMembersCount = getTeamMembersRes.rowCount;
+
+      const maxTeamMemberCount = await getMaxTeamMembersOfTeamByTeamId(teamId);
+      console.log({ currentTeamMembersCount, maxTeamMemberCount });
+
+      if (currentTeamMembersCount >= maxTeamMemberCount) {
+        return res.status(401).json({
+          error: "This Team has maximum number of team members",
+        });
       }
 
       const addTeamMemberMasterRes = await pool.query(
