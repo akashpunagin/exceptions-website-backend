@@ -1,5 +1,5 @@
 const router = require("express").Router();
 
-require("./paymentsRoutes/add")(router);
+require("./paymentRoutes/add")(router);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
+const morgan = require("morgan");
 
 //Routers
 const authRouter = require("./routes/auth/authRouter");
@@ -12,6 +13,7 @@ const teamMemberRouter = require("./routes/teamMember/teamMemberRouter");
 const appConstantsRouter = require("./routes/appConstants/appConstantsRouter");
 const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
 const adminRouter = require("./routes/admin/adminRouter");
+const paymentRouter = require("./routes/payment/paymentRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -21,6 +23,7 @@ const PORT = process.env.PORT;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(morgan("dev"));
 
 //Routes
 app.use("/auth", authRouter);
@@ -31,6 +34,7 @@ app.use("/teamMember", teamMemberRouter);
 app.use("/appConstants", appConstantsRouter);
 app.use("/teamNames", teamNamesRouter);
 app.use("/admin", adminRouter);
+app.use("/payment", paymentRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
