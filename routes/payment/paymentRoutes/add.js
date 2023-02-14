@@ -44,39 +44,41 @@ const imageUpload = multer({
 module.exports = (router) => {
   router.get(
     "/add",
-    [authorization, validateInputs, imageUpload.single("image")],
+    [authorization, imageUpload.single("screenshot"), validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
       const { eventMaster } = appConstants.SQL_TABLE;
-
-      console.log("SEE :", req.isFileUploadError);
-      if (req.isFileUploadRes.isError) {
-        return res.status(401).json({
-          error: req.isFileUploadRes.errorMessage,
-        });
-      }
-
-      const filePath = req.file.path;
-      const fileMimeType = req.file.mimetype;
-
-      const uploadRes = await uploadFileToDrive(filePath, fileMimeType);
-      // if error while saving file in google drive, then
-      // copy the image in failure path
-      if (uploadRes.isError) {
-        console.error("FILE UPLOAD ERROR:", uploadRes.errorMessage);
-        fs.copyFile(filePath, PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH, (err) => {
-          if (err) {
-            console.error(
-              "Error while copying file from success path to failure path"
-            );
-            return;
-          }
-          console.log("Copied file from success to failure path");
-        });
-      }
-
       try {
+        const { amount, transactionId } = req.body;
+        console.log("BODY:", { amount, transactionId });
+
+        if (req.isFileUploadRes.isError) {
+          return res.status(401).json({
+            error: req.isFileUploadRes.errorMessage,
+          });
+        }
+
+        const filePath = req.file.path;
+        const fileMimeType = req.file.mimetype;
+
+        const uploadRes = await uploadFileToDrive(filePath, fileMimeType);
+        // if error while saving file in google drive, then
+        // copy the image in failure path
+        console.log("IS UPLOAD RES ERROR:", uploadRes.isError);
+        if (uploadRes.isError) {
+          console.error("FILE UPLOAD ERROR:", uploadRes.errorMessage);
+          fs.copyFile(filePath, PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH, (err) => {
+            if (err) {
+              console.error(
+                "Error while copying file from success path to failure path"
+              );
+              return;
+            }
+            console.log("Copied file from success to failure path");
+          });
+        }
+
         return res.status(200).json({
           status: "File upload",
           data: {

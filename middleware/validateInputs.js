@@ -272,6 +272,15 @@ function handleTeamNamesReq(req) {
   }
 }
 
+function handlePaymentReq(req) {
+  const { amount, transactionId } = req.body;
+  if (req.path === "/add") {
+    if (![amount, transactionId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
@@ -279,6 +288,7 @@ module.exports = (req, res, next) => {
   const teamMemberError = handleTeamMemberReq(req);
   const appConstantsError = handleAppConstantsReq(req);
   const teamNamesError = handleTeamNamesReq(req);
+  const paymentError = handlePaymentReq(req);
 
   console.log({
     authError,
@@ -287,6 +297,7 @@ module.exports = (req, res, next) => {
     teamMemberError,
     appConstantsError,
     teamNamesError,
+    paymentError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -306,6 +317,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/teamNames/") && teamNamesError) {
     return res.status(401).json({ error: teamNamesError });
+  }
+  if (req.originalUrl.includes("/payment/") && paymentError) {
+    return res.status(401).json({ error: paymentError });
   }
 
   next();
