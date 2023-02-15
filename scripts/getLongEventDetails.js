@@ -75,7 +75,7 @@ async function getLongEventDetails() {
   const objs = [];
   for (const row of data) {
     const {
-      event_id: id,
+      event_id: eventId,
       event_name: name,
       event_description: description,
       event_img: img,

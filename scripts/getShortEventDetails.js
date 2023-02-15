@@ -15,7 +15,7 @@ async function getShortEventDetails() {
   const objs = [];
   for (const row of data) {
     const {
-      event_id: id,
+      event_id: eventId,
       event_name: name,
       event_to: to,
       event_description: description,
