@@ -4,26 +4,12 @@ const appConstants = require("../../../constants/appConstants");
 const { getLongEventDetails } = require("../../../scripts/getLongEventDetails");
 
 module.exports = (router) => {
-  router.get("/get", [authorization], async (req, res) => {
+  router.get("/get-long", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { eventMaster } = appConstants.SQL_TABLE;
 
     try {
-      // const eventRes = await pool.query(`SELECT * FROM ${eventMaster}`);
-      // let data = eventRes.rows;
-
-      // data = data.map((event) => {
-      //   return {
-      //     eventId: event.event_id,
-      //     name: event.event_name,
-      //     description: event.event_description,
-      //     maxPoints: event.event_max_points,
-      //     maxTeamSize: event.event_max_team_size,
-      //     isOpenEvent: event.event_is_open_event,
-      //   };
-      // });
-
       const data = await getLongEventDetails();
 
       return res.status(200).json(data);
