@@ -60,7 +60,7 @@ async function getRequirementsByEventId(eventId) {
   return requirements;
 }
 
-async function main() {
+async function getLongEventDetails() {
   const getRes = await pool.query(`
   SELECT * 
   FROM
@@ -115,7 +115,7 @@ async function main() {
     objs.push(obj);
   }
 
-  console.log(objs);
+  return objs;
 }
 
-main();
+module.exports = { getLongEventDetails };

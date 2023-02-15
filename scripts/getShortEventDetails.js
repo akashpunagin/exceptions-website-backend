@@ -3,7 +3,7 @@ const appConstants = require("../constants/appConstants");
 
 const { eventMaster, eventMasterDetails } = appConstants.SQL_TABLE;
 
-async function main() {
+async function getShortEventDetails() {
   const getRes = await pool.query(`
         SELECT * 
         FROM ${eventMaster}, ${eventMasterDetails}
@@ -40,7 +40,7 @@ async function main() {
     objs.push(obj);
   }
 
-  console.log(objs);
+  return objs;
 }
 
-main();
+module.exports = { getShortEventDetails };
