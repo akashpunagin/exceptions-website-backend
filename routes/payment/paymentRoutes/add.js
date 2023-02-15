@@ -41,7 +41,7 @@ const imageUpload = multer({
 });
 
 module.exports = (router) => {
-  router.get(
+  router.post(
     "/add",
     [authorization, imageUpload.single("screenshot"), validateInputs],
     async (req, res) => {
