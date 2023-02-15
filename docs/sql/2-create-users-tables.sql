@@ -54,5 +54,3 @@ CREATE TABLE participant_details(
     city VARCHAR NOT NULL,
     zip INT NOT NULL
 );
-
---EXECUTE CREATE EVENTS SQL HERE--
