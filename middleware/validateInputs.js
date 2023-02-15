@@ -107,17 +107,6 @@ function handelEventReq(req) {
   const { eventId, name, description, maxPoints, maxTeamSize, isOpenEvent } =
     req.body;
 
-  if (req.path === "/add") {
-    if (
-      ![name, description, maxPoints, maxTeamSize, isOpenEvent].every(Boolean)
-    ) {
-      return missingCredsMessage;
-    }
-    if (typeof isOpenEvent !== "boolean") {
-      return invalidCredsMessage;
-    }
-  }
-
   if (req.path === "/delete") {
     if (![eventId].every(Boolean)) {
       return missingCredsMessage;

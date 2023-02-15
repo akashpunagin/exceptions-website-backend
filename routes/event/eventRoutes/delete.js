@@ -12,7 +12,7 @@ const {
 module.exports = (router) => {
   router.delete(
     "/delete",
-    [authorization, authorizeAdmin, validateInputs],
+    [authorization, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
