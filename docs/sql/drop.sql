@@ -2,7 +2,14 @@ DROP TABLE team_id_team_member_event;
 DROP TABLE team_id_team_member;
 DROP TABLE team_member_master;
 DROP TABLE team_master;
+
+DROP TABLE event_master_rule;
+DROP TABLE event_master_requirement;
+DROP TABLE event_master_contact;
+DROP TABLE event_master_details;
 DROP TABLE event_master;
+
+
 DROP TABLE participant_details;
 DROP TABLE user_permission;
 DROP TABLE user_role;

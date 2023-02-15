@@ -55,15 +55,7 @@ CREATE TABLE participant_details(
     zip INT NOT NULL
 );
 
---used to store details of events--
-CREATE TABLE event_master(
-    event_id SERIAL PRIMARY KEY,
-    event_name VARCHAR NOT NULL,
-    event_description VARCHAR NOT NULL,
-    event_max_points INT NOT NULL,
-    event_max_team_size INT NOT NULL,
-    event_is_open_event BOOLEAN NOT NULL --open or group event--
-);
+--EXECUTE CREATE EVENTS SQL HERE--
 
 --used to store team names--
 CREATE TABLE team_names(

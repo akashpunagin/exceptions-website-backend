@@ -67,4 +67,6 @@ module.exports = app;
 
 // > Payments
 // record transaction id, store is_verified status in database
+//// check store information in payment table
+//// firstly check if payment is already done, if true then block the rest of API route
 // send Verification Done email to participant after verifying

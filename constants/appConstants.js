@@ -25,6 +25,11 @@ const constants = {
     participantDetails: "participant_details",
 
     eventMaster: "event_master",
+    eventMasterRule: "event_master_rule",
+    eventMasterRequirement: "event_master_requirement",
+    eventMasterContact: "event_master_contact",
+    eventMasterDetails: "event_master_details",
+
     teamMaster: "team_master",
 
     teamEvents: "team_events", // used to map each team with selected events
