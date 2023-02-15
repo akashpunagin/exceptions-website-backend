@@ -9,7 +9,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
 const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
-const GOOGLE_FOLDER_ID = "1xhcyNZ9Q2jQGcR4bNehV9t6u7cXhGRWH";
+const GOOGLE_FOLDER_ID = process.env.GOOGLE_FOLDER_ID;
 
 const oauth2Client = new google.auth.OAuth2(
   GOOGLE_CLIENT_ID,
