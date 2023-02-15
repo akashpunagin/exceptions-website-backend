@@ -91,9 +91,9 @@ async function getLongEventDetails() {
       event_contact_phone: contactPhone,
     } = row;
 
-    const rules = await getRulesByEventId(id);
+    const rules = await getRulesByEventId(eventId);
 
-    const requirements = await getRequirementsByEventId(id);
+    const requirements = await getRequirementsByEventId(eventId);
 
     const obj = {
       eventId,
