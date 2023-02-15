@@ -32,11 +32,11 @@ function refreshToken() {
   });
 }
 
-async function uploadFileToDrive(filePath, fileMimeType) {
+async function uploadFileToDriveAndGetFileId(filePath, fileMimeType) {
   const fileName = path.basename(filePath);
 
   try {
-    await drive.files.create({
+    const uploadRes = await drive.files.create({
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
@@ -47,15 +47,36 @@ async function uploadFileToDrive(filePath, fileMimeType) {
         body: fs.createReadStream(filePath),
       },
     });
-    return { isError: false, errorMessage: null };
+
+    const fileId = uploadRes.data.id;
+
+    return { isError: false, errorMessage: null, data: fileId };
   } catch (error) {
     console.error("Upload file to google error:", error);
     return {
       isError: true,
       errorMessage:
         "There was some error while uploading image to Google Drive",
+      data: null,
     };
   }
 }
 
-module.exports = { uploadFileToDrive };
+async function deleteFileByFileId(fileId) {
+  try {
+    const delRes = await drive.files.update({
+      fileId,
+      resource: { trashed: true },
+    });
+    return { isError: false, errorMessage: null, data: null };
+  } catch (error) {
+    console.log("DELETE FROM GOOGLE DRIVE error", error);
+    return {
+      isError: true,
+      errorMessage: "There was some error while deleting file from google",
+      data: null,
+    };
+  }
+}
+
+module.exports = { uploadFileToDriveAndGetFileId, deleteFileByFileId };

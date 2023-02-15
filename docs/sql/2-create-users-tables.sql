@@ -54,3 +54,12 @@ CREATE TABLE participant_details(
     city VARCHAR NOT NULL,
     zip INT NOT NULL
 );
+
+--used to store payment information--
+CREATE TABLE participant_payment(
+  participant_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+  amount INTEGER NOT NULL,
+  transaction_id VARCHAR NOT NULL,
+  screenshot_g_drive_file_id VARCHAR NOT NULL,
+  is_verified BOOLEAN DEFAULT FALSE
+);

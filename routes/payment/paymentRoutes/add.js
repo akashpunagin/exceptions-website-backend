@@ -6,15 +6,14 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const multer = require("multer");
-const { uploadFileToDrive } = require("../../../utilities/uploadToDrive");
+const {
+  uploadFileToDriveAndGetFileId,
+} = require("../../../utilities/googleDriveUtils");
 const path = require("path");
-const fs = require("fs");
 
 require("dotenv").config();
 
 const PAYMENT_SCREENSHOT_PATH = process.env.PAYMENT_SCREENSHOT_PATH;
-const PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH =
-  process.env.PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH;
 
 const imageUpload = multer({
   fileFilter: function (req, file, callback) {
@@ -48,10 +47,22 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { eventMaster } = appConstants.SQL_TABLE;
+      const { participantPayment } = appConstants.SQL_TABLE;
       try {
         const { amount, transactionId } = req.body;
-        console.log("BODY:", { amount, transactionId });
+        const currentUser = req.user;
+
+        const getRes = await pool.query(
+          `SELECT * FROM ${participantPayment}
+          WHERE participant_id = $1`,
+          [currentUser.userId]
+        );
+        const rowCount = getRes.rowCount;
+        if (rowCount > 0) {
+          return res.status(401).json({
+            error: "Current user has already paid for the events",
+          });
+        }
 
         if (req.isFileUploadRes.isError) {
           return res.status(401).json({
@@ -62,31 +73,51 @@ module.exports = (router) => {
         const filePath = req.file.path;
         const fileMimeType = req.file.mimetype;
 
-        const uploadRes = await uploadFileToDrive(filePath, fileMimeType);
-        // if error while saving file in google drive, then
-        // copy the image in failure path
-        console.log("IS UPLOAD RES ERROR:", uploadRes.isError);
+        const uploadRes = await uploadFileToDriveAndGetFileId(
+          filePath,
+          fileMimeType
+        );
+
         if (uploadRes.isError) {
-          console.error("FILE UPLOAD ERROR:", uploadRes.errorMessage);
-          fs.copyFile(filePath, PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH, (err) => {
-            if (err) {
-              console.error(
-                "Error while copying file from success path to failure path"
-              );
-              return;
-            }
-            console.log("Copied file from success to failure path");
+          return res.status(401).json({
+            error: uploadRes.errorMessage,
           });
+
+          //// if error while saving file in google drive, then
+          //// copy the image in failure path
+          // console.error("FILE UPLOAD ERROR:", uploadRes.errorMessage);
+          // fs.copyFile(filePath, PAYMENT_SCREENSHOT_DRIVE_ERROR_PATH, (err) => {
+          //   if (err) {
+          //     console.error(
+          //       "Error while copying file from success path to failure path"
+          //     );
+          //     return;
+          //   }
+          //   console.log("Copied file from success to failure path");
+          // });
+          ////
         }
 
+        const fileId = uploadRes.data;
+
+        const addRes = await pool.query(
+          `INSERT INTO ${participantPayment}(
+            participant_id ,amount,
+            transaction_id, screenshot_g_drive_file_id
+          )
+          VALUES ($1, $2, $3, $4)
+          RETURNING *`,
+          [currentUser.userId, amount, transactionId, fileId]
+        );
+        const data = addRes.rows[0];
+
         return res.status(200).json({
-          status: "File upload",
-          data: {
-            file: req.file,
-          },
+          status: "Payment recorded successfully",
+          data,
+          gDriveUploadError: uploadRes.isError,
         });
       } catch (error) {
-        console.log("DELETE Event error", error);
+        console.log("ADD payment error", error);
         return res.status(500).json("Server error");
       }
     }

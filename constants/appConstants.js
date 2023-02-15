@@ -23,6 +23,7 @@ const constants = {
     userPermission: "user_permission",
 
     participantDetails: "participant_details",
+    participantPayment: "participant_payment",
 
     eventMaster: "event_master",
     eventMasterRule: "event_master_rule",
