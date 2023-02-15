@@ -27,7 +27,7 @@ async function getShortEventDetails() {
     } = row;
 
     const obj = {
-      id,
+      eventId,
       name,
       to,
       description,

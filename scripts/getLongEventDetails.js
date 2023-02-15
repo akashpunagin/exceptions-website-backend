@@ -96,7 +96,7 @@ async function getLongEventDetails() {
     const requirements = await getRequirementsByEventId(id);
 
     const obj = {
-      id,
+      eventId,
       name,
       description,
       img,
