@@ -103,19 +103,33 @@ async function isTeamExistsByTeamNameId(teamNameId) {
 }
 
 async function getMaxTeamMembersOfTeamByTeamId(teamId) {
-  const { teamMaster, teamEvents, eventMaster } = appConstants.SQL_TABLE;
+  const { teamMaster, teamEvents, eventMaster, appIntConstants } =
+    appConstants.SQL_TABLE;
+
+  const label = "max_gc_member_size";
+  const intConstantsRes = await pool.query(
+    `SELECT * FROM ${appIntConstants}
+    WHERE label = $1`,
+    [label]
+  );
+  const constantsData = intConstantsRes.rows[0];
+  const maxGCMemberSize = Number.parseInt(constantsData.value);
+
   const teamRes = await pool.query(
     `SELECT SUM(${eventMaster}.event_max_team_size)
       FROM ${teamMaster}, ${teamEvents}, ${eventMaster}
       WHERE 
         ${teamEvents}.team_id = $1 AND
         ${teamMaster}.team_id = ${teamEvents}.team_id AND
-        ${teamEvents}.event_id = ${eventMaster}.event_id`,
+        ${teamEvents}.event_id = ${eventMaster}.event_id AND
+        ${eventMaster}.event_is_open_event = true`,
     [teamId]
   );
   const data = teamRes.rows[0];
-  const maxTeamMembers = data.sum;
-  return Number.parseInt(maxTeamMembers);
+  const maxOpenEventTeamMembers = Number.parseInt(data.sum);
+
+  const totalMaxTeamMembers = maxGCMemberSize + maxOpenEventTeamMembers;
+  return Number.parseInt(totalMaxTeamMembers);
 }
 
 module.exports = {

@@ -66,7 +66,7 @@ module.exports = app;
 //  authorized emails for admin, coordinators, volunteers
 
 // > Payments
-// record transaction id, store is_verified status in database
-//// check store information in payment table
-//// firstly check if payment is already done, if true then block the rest of API route
-// send Verification Done email to participant after verifying
+// DONE:: record transaction id, store is_verified status in database
+//// DONE:: check store information in payment table
+//// DONE:: firstly check if payment is already done, if true then block the rest of API route
+// DONE:: send Verification Done email to participant after verifying
