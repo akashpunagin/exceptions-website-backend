@@ -1,6 +1,9 @@
 const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  getSolvathonEventFees,
+} = require("../../../dbUtils/app_int_constants/dbAppIntConstantsUtils");
 
 module.exports = (router) => {
   router.get("/get-event-fees-solvathon", [authorization], async (req, res) => {
@@ -10,13 +13,7 @@ module.exports = (router) => {
     const label = "event_fees_solvathon";
 
     try {
-      const intConstantsRes = await pool.query(
-        `SELECT * FROM ${appIntConstants}
-        WHERE label = $1`,
-        [label]
-      );
-      const data = intConstantsRes.rows[0];
-      const fees = data.value;
+      const fees = await getSolvathonEventFees();
 
       return res.status(200).json(fees);
     } catch (error) {

@@ -1,6 +1,9 @@
 const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  getStrikeForceFees,
+} = require("../../../dbUtils/app_int_constants/dbAppIntConstantsUtils");
 
 module.exports = (router) => {
   router.get(
@@ -13,13 +16,7 @@ module.exports = (router) => {
       const label = "event_fees_strike_force";
 
       try {
-        const intConstantsRes = await pool.query(
-          `SELECT * FROM ${appIntConstants}
-        WHERE label = $1`,
-          [label]
-        );
-        const data = intConstantsRes.rows[0];
-        const fees = data.value;
+        const fees = await getStrikeForceFees();
 
         return res.status(200).json(fees);
       } catch (error) {

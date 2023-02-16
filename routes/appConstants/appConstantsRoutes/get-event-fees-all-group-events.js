@@ -1,6 +1,9 @@
 const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  getAllGroupEventsFees,
+} = require("../../../dbUtils/app_int_constants/dbAppIntConstantsUtils");
 
 module.exports = (router) => {
   router.get(
@@ -9,17 +12,8 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { appIntConstants } = appConstants.SQL_TABLE;
-      const label = "event_fees_all_group_events";
-
       try {
-        const intConstantsRes = await pool.query(
-          `SELECT * FROM ${appIntConstants}
-        WHERE label = $1`,
-          [label]
-        );
-        const data = intConstantsRes.rows[0];
-        const fees = data.value;
+        const fees = await getAllGroupEventsFees();
 
         return res.status(200).json(fees);
       } catch (error) {

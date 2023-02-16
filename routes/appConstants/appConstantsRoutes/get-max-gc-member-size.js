@@ -1,6 +1,9 @@
 const pool = require("../../../db/pool");
 const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  getMaxGCMember,
+} = require("../../../dbUtils/app_int_constants/dbAppIntConstantsUtils");
 
 module.exports = (router) => {
   router.get("/get-max-gc-member-size", [authorization], async (req, res) => {
@@ -10,13 +13,7 @@ module.exports = (router) => {
     const label = "max_gc_member_size";
 
     try {
-      const intConstantsRes = await pool.query(
-        `SELECT * FROM ${appIntConstants}
-        WHERE label = $1`,
-        [label]
-      );
-      const data = intConstantsRes.rows[0];
-      const maxGCMemberSize = data.value;
+      const maxGCMemberSize = await getMaxGCMember();
 
       return res.status(200).json(maxGCMemberSize);
     } catch (error) {

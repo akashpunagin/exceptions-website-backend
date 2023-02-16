@@ -4,10 +4,11 @@ const appConstants = require("../../../constants/appConstants");
 const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   getTeamIdOfUser,
+  getTeamIsGCConsideredOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 
 module.exports = (router) => {
-  router.get("/get-events-of-team", [authorization], async (req, res) => {
+  router.get("/get-event-fees-of-team", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { teamMaster, teamEvents, eventMaster } = appConstants.SQL_TABLE;
@@ -43,7 +44,22 @@ module.exports = (router) => {
         };
       });
 
-      return res.status(200).json(data);
+      //
+      let totalFees = 0;
+      const isTeamGCConsideredRes = await getTeamIsGCConsideredOfUser(
+        currentUser.userId
+      );
+      if (isTeamGCConsideredRes.isError) {
+        return res
+          .status(401)
+          .json({ error: isTeamGCConsideredRes.errorMessage });
+      }
+      const isTeamGCConsidered = isTeamGCConsideredRes.data;
+
+      if (isTeamGCConsidered) {
+      }
+
+      return res.status(200).json(isTeamGCConsidered);
     } catch (error) {
       console.log("GET events of team error", error);
       return res.status(500).json("Server error");
