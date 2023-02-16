@@ -60,14 +60,40 @@ async function getRequirementsByEventId(eventId) {
   return requirements;
 }
 
-async function getLongEventDetails() {
-  const getRes = await pool.query(`
-  SELECT * 
+async function getContactsByEventId(eventId) {
+  const getRes = await pool.query(
+    `
+  SELECT
+    ${eventMasterContact}.*
   FROM
     ${eventMaster},
     ${eventMasterContact}
   WHERE
-    ${eventMaster}.event_id = ${eventMasterContact}.event_id
+    ${eventMaster}.event_id = ${eventMasterContact}.event_id AND
+    ${eventMasterContact}.event_id = $1
+  `,
+    [eventId]
+  );
+
+  const data = getRes.rows;
+
+  const contacts = [];
+  for (const contact of data) {
+    const {
+      event_contact_name: contactName,
+      event_contact_email: contactEmail,
+      event_contact_type: contactType,
+      event_contact_phone: contactPhone,
+    } = contact;
+    contacts.push({ contactName, contactEmail, contactType, contactPhone });
+  }
+  return contacts;
+}
+
+async function getLongEventDetails() {
+  const getRes = await pool.query(`
+    SELECT * 
+    FROM ${eventMaster}
   `);
 
   const data = getRes.rows;
@@ -85,15 +111,11 @@ async function getLongEventDetails() {
       event_is_open_event: isOpenEvent,
     } = row;
 
-    const {
-      event_contact_name: contactName,
-      event_contact_email: contactEmail,
-      event_contact_phone: contactPhone,
-    } = row;
-
     const rules = await getRulesByEventId(eventId);
 
     const requirements = await getRequirementsByEventId(eventId);
+
+    const contacts = await getContactsByEventId(eventId);
 
     const obj = {
       eventId,
@@ -102,14 +124,10 @@ async function getLongEventDetails() {
       img,
       rules,
       requirements,
+      contacts,
       maxPoints,
       maxTeamSize,
       isOpenEvent,
-      contact: {
-        name: contactName,
-        email: contactEmail,
-        phone: contactPhone,
-      },
     };
 
     objs.push(obj);
