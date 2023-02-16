@@ -5,6 +5,7 @@ const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   getTeamIdOfUser,
   getMaxTeamMembersOfTeamByTeamId,
+  getTeamIsGCConsideredOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 
 module.exports = (router) => {
@@ -20,7 +21,21 @@ module.exports = (router) => {
       }
       const teamId = teamIdRes.data;
 
-      const maxTeamMembers = await getMaxTeamMembersOfTeamByTeamId(teamId);
+      const isTeamGCConsideredRes = await getTeamIsGCConsideredOfUser(
+        currentUser.userId
+      );
+
+      if (isTeamGCConsideredRes.isError) {
+        return res
+          .status(401)
+          .json({ error: isTeamGCConsideredRes.errorMessage });
+      }
+      const isTeamGCConsidered = isTeamGCConsideredRes.data;
+
+      const maxTeamMembers = await getMaxTeamMembersOfTeamByTeamId(
+        isTeamGCConsidered,
+        teamId
+      );
 
       return res.status(200).json(maxTeamMembers);
     } catch (error) {
