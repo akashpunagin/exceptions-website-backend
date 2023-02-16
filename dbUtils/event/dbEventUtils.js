@@ -144,6 +144,18 @@ async function getGroupEvents() {
   return data;
 }
 
+function getInfinityAndBeyondEventName() {
+  return "Infinity & Beyond";
+}
+
+function getSolvathonEventName() {
+  return "SOLVEATHON";
+}
+
+function getStrikeForceEventName() {
+  return "Strike Force";
+}
+
 module.exports = {
   isEventExistsByEventId,
   isOpenEventExistsByEventId,
@@ -151,4 +163,8 @@ module.exports = {
   getTeamMembersByEventId,
   getEventByEventId,
   getGroupEvents,
+
+  getInfinityAndBeyondEventName,
+  getSolvathonEventName,
+  getStrikeForceEventName,
 };

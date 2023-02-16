@@ -71,7 +71,6 @@ async function getMaxGCMember() {
 module.exports = {
   getAllGroupEventsFees,
   getInfinityAndBeyondEventFees,
-  getAllGroupEventsFees,
   getSolvathonEventFees,
   getStrikeForceFees,
   getMaxGCMember,
