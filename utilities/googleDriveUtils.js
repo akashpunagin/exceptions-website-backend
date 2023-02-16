@@ -1,4 +1,3 @@
-const multer = require("multer");
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
@@ -10,6 +9,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
 const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 const GOOGLE_FOLDER_ID = process.env.GOOGLE_FOLDER_ID;
+const PAYMENT_SCREENSHOT_PATH = process.env.PAYMENT_SCREENSHOT_PATH;
 
 const oauth2Client = new google.auth.OAuth2(
   GOOGLE_CLIENT_ID,
@@ -62,12 +62,23 @@ async function uploadFileToDriveAndGetFileId(filePath, fileMimeType) {
   }
 }
 
+async function deleteLocalFile(fileName) {
+  const filePath = path.join(PAYMENT_SCREENSHOT_PATH, fileName);
+  const file = fs.createReadStream(filePath);
+  fs.unlink(fileName, function () {
+    fs.unlinkSync(filePath);
+  });
+}
+
 async function deleteFileByFileId(fileId) {
   try {
     const delRes = await drive.files.update({
       fileId,
       resource: { trashed: true },
     });
+    const fileName = delRes.data.name;
+    await deleteLocalFile(fileName);
+
     return { isError: false, errorMessage: null, data: null };
   } catch (error) {
     console.log("DELETE FROM GOOGLE DRIVE error", error);

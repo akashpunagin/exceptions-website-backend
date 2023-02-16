@@ -24,7 +24,6 @@ module.exports = (router) => {
       const data = getRes.rows[0];
 
       const fileId = data.screenshot_g_drive_file_id;
-      console.log("FILE ID:", fileId);
 
       const deleteRes = await deleteFileByFileId(fileId);
       if (deleteRes.isError) {
@@ -33,7 +32,7 @@ module.exports = (router) => {
         });
       }
 
-      const delRes = await pool.query(
+      await pool.query(
         `DELETE FROM ${participantPayment}
           WHERE participant_id = $1
           RETURNING *`,
