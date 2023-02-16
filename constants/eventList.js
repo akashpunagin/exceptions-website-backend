@@ -72,7 +72,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 20,
+    maxPoints: 10,
     maxTeamSize: 1,
     isOpenEvent: false,
   },
@@ -108,7 +108,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 30,
+    maxPoints: 10,
     maxTeamSize: 2,
     isOpenEvent: false,
   },
@@ -144,7 +144,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 15,
+    maxPoints: 10,
     maxTeamSize: 2,
     isOpenEvent: false,
   },
@@ -184,7 +184,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 25,
+    maxPoints: 10,
     maxTeamSize: 2,
     isOpenEvent: false,
   },
@@ -227,7 +227,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 22,
+    maxPoints: 10,
     maxTeamSize: 1,
     isOpenEvent: false,
   },
@@ -266,7 +266,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 30,
+    maxPoints: 10,
     maxTeamSize: 4,
     isOpenEvent: true,
   },
@@ -308,7 +308,7 @@ const eventsList = [
       },
     ],
 
-    maxPoints: 33,
+    maxPoints: 10,
     maxTeamSize: 2,
     isOpenEvent: true,
   },
@@ -356,7 +356,7 @@ const eventsList = [
         phone: "+91 8884601647",
       },
     ],
-    maxPoints: 33,
+    maxPoints: 10,
     maxTeamSize: 2,
     isOpenEvent: true,
   },

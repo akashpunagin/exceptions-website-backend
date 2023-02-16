@@ -8,6 +8,7 @@ const { deleteFileByFileId } = require("../../../utilities/googleDriveUtils");
 const {
   isUserPaid,
 } = require("../../../dbUtils/participant_payment/dbParticipantPaymentUtils");
+const sendPaymentVerificationEmail = require("../../../utilities/sendPaymentVerificationEmail");
 
 module.exports = (router) => {
   router.post(
@@ -45,6 +46,21 @@ module.exports = (router) => {
           [isVerified, currentUser.userId]
         );
         const data = updateRes.rows[0];
+
+        const { firstName, lastName, email } = currentUser;
+        const fullName = `${firstName} ${lastName}`;
+
+        if (isVerified) {
+          const isSuccess = await sendPaymentVerificationEmail(fullName, email);
+
+          if (!isSuccess) {
+            return res
+              .status(401)
+              .json({
+                error: "Error while sending payment verification email",
+              });
+          }
+        }
 
         return res.status(200).json({
           status: "Payment is verified updated successfully",
