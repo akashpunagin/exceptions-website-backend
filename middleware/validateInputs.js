@@ -262,9 +262,15 @@ function handleTeamNamesReq(req) {
 }
 
 function handlePaymentReq(req) {
-  const { amount, transactionId } = req.body;
+  const { amount, transactionId, isVerified } = req.body;
   if (req.path === "/add") {
     if (![amount, transactionId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/update-verification") {
+    if (![isVerified].every(Boolean)) {
       return missingCredsMessage;
     }
   }
