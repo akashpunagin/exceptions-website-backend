@@ -19,9 +19,9 @@ module.exports = (router) => {
           [label]
         );
         const data = intConstantsRes.rows[0];
-        const maxGCMemberSize = data.value;
+        const fees = data.value;
 
-        return res.status(200).json(maxGCMemberSize);
+        return res.status(200).json(fees);
       } catch (error) {
         console.log("GET get-event-fees-strike-force error", error);
         return res.status(500).json("Server error");
