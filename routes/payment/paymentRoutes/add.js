@@ -8,12 +8,12 @@ const appConstants = require("../../../constants/appConstants");
 const multer = require("multer");
 const {
   uploadFileToDriveAndGetFileId,
+  getFileNameFromUserId,
+  getFilePath,
 } = require("../../../utilities/googleDriveUtils");
 const path = require("path");
 
 require("dotenv").config();
-
-const PAYMENT_SCREENSHOT_PATH = process.env.PAYMENT_SCREENSHOT_PATH;
 
 const imageUpload = multer({
   fileFilter: function (req, file, callback) {
@@ -31,10 +31,10 @@ const imageUpload = multer({
   },
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, PAYMENT_SCREENSHOT_PATH);
+      cb(null, getFilePath());
     },
     filename: function (req, file, cb) {
-      const fileName = `${req.user.userId}_payment`;
+      const fileName = getFileNameFromUserId(req.user.userId);
       cb(null, fileName);
     },
   }),
@@ -103,11 +103,13 @@ module.exports = (router) => {
         const addRes = await pool.query(
           `INSERT INTO ${participantPayment}(
             participant_id ,amount,
-            transaction_id, screenshot_g_drive_file_id
+            transaction_id, 
+            screenshot_g_drive_file_id,
+            screenshot_mime_type
           )
-          VALUES ($1, $2, $3, $4)
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING *`,
-          [currentUser.userId, amount, transactionId, fileId]
+          [currentUser.userId, amount, transactionId, fileId, fileMimeType]
         );
         const data = addRes.rows[0];
 

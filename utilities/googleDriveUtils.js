@@ -70,6 +70,14 @@ async function deleteLocalFile(fileName) {
   });
 }
 
+function getFileNameFromUserId(userId) {
+  return `${userId}_payment`;
+}
+
+function getFilePath() {
+  return PAYMENT_SCREENSHOT_PATH;
+}
+
 async function deleteFileByFileId(fileId) {
   try {
     const delRes = await drive.files.update({
@@ -90,4 +98,9 @@ async function deleteFileByFileId(fileId) {
   }
 }
 
-module.exports = { uploadFileToDriveAndGetFileId, deleteFileByFileId };
+module.exports = {
+  uploadFileToDriveAndGetFileId,
+  deleteFileByFileId,
+  getFileNameFromUserId,
+  getFilePath,
+};

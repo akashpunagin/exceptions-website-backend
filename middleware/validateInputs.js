@@ -262,7 +262,7 @@ function handleTeamNamesReq(req) {
 }
 
 function handlePaymentReq(req) {
-  const { amount, transactionId, isVerified } = req.body;
+  const { amount, transactionId, isVerified, participantId } = req.body;
   if (req.path === "/add") {
     if (![amount, transactionId].every(Boolean)) {
       return missingCredsMessage;
@@ -275,6 +275,12 @@ function handlePaymentReq(req) {
   if (req.path === "/update-verification") {
     if (typeof isVerified !== "boolean") {
       return invalidCredsMessage;
+    }
+  }
+
+  if (req.path === "/get-screenshot-by-user-id") {
+    if (![participantId].every(Boolean)) {
+      return missingCredsMessage;
     }
   }
 }

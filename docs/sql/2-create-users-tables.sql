@@ -61,5 +61,6 @@ CREATE TABLE participant_payment(
   amount INTEGER NOT NULL,
   transaction_id VARCHAR NOT NULL,
   screenshot_g_drive_file_id VARCHAR NOT NULL,
+  screenshot_mime_type VARCHAR NOT NULL,
   is_verified BOOLEAN DEFAULT FALSE
 );
