@@ -114,11 +114,7 @@ function handelEventReq(req) {
   }
 
   if (req.path === "/update") {
-    if (
-      ![eventId, name, description, maxPoints, maxTeamSize, isOpenEvent].every(
-        Boolean
-      )
-    ) {
+    if (![eventId, name, description, maxPoints, maxTeamSize].every(Boolean)) {
       return missingCredsMessage;
     }
     if (typeof isOpenEvent !== "boolean") {
@@ -270,8 +266,8 @@ function handlePaymentReq(req) {
   }
 
   if (req.path === "/update-verification") {
-    if (![isVerified].every(Boolean)) {
-      return missingCredsMessage;
+    if (typeof isVerified !== "boolean") {
+      return invalidCredsMessage;
     }
   }
 }

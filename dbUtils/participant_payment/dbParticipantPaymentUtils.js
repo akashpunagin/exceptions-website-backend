@@ -27,8 +27,14 @@ async function isUserPaid(userId) {
       amount,
       transaction_id: transactionId,
       screenshot_g_drive_file_id: googleDriveFileId,
+      is_verified: isVerified,
     } = rowData;
-    const paymentData = { amount, transactionId, googleDriveFileId };
+    const paymentData = {
+      amount,
+      transactionId,
+      googleDriveFileId,
+      isVerified,
+    };
 
     return {
       isError: false,

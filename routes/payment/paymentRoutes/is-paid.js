@@ -11,15 +11,6 @@ module.exports = (router) => {
     try {
       const currentUser = req.user;
 
-      // const getRes = await pool.query(
-      //   `SELECT * FROM ${participantPayment}
-      //     WHERE participant_id = $1`,
-      //   [currentUser.userId]
-      // );
-      // const rowCount = getRes.rowCount;
-
-      // const isPaid = rowCount > 0;
-
       const isPaidRes = await isUserPaid(currentUser.userId);
       if (isPaidRes.isError) {
         return res.status(401).json({

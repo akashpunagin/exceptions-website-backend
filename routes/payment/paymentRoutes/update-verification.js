@@ -5,9 +5,12 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 const { deleteFileByFileId } = require("../../../utilities/googleDriveUtils");
+const {
+  isUserPaid,
+} = require("../../../dbUtils/participant_payment/dbParticipantPaymentUtils");
 
 module.exports = (router) => {
-  router.delete(
+  router.post(
     "/update-verification",
     [authorization, validateInputs],
     async (req, res) => {
@@ -19,39 +22,36 @@ module.exports = (router) => {
 
         const currentUser = req.user;
 
-        const getRes = await pool.query(
-          `SELECT * FROM ${participantPayment}
-        WHERE participant_id = $1`,
-          [currentUser.userId]
-        );
-        if (getRes.rowCount === 0) {
+        const isPaidRes = await isUserPaid(currentUser.userId);
+        if (isPaidRes.isError) {
           return res.status(401).json({
-            error: "No record of payment from current user",
+            error: isPaidRes.errorMessage,
           });
         }
-        const data = getRes.rows[0];
+        const isPaidData = isPaidRes.data;
+        const { isPaid } = isPaidData;
 
-        const fileId = data.screenshot_g_drive_file_id;
-
-        const deleteRes = await deleteFileByFileId(fileId);
-        if (deleteRes.isError) {
+        if (!isPaid) {
           return res.status(401).json({
-            error: deleteRes.errorMessage,
+            error: "User has not yet paid for the event",
           });
         }
 
-        await pool.query(
-          `DELETE FROM ${participantPayment}
-          WHERE participant_id = $1
+        const updateRes = await pool.query(
+          `UPDATE ${participantPayment}
+          SET is_verified = $1
+          WHERE participant_id = $2
           RETURNING *`,
-          [currentUser.userId]
+          [isVerified, currentUser.userId]
         );
+        const data = updateRes.rows[0];
 
         return res.status(200).json({
-          status: "Payment record deleted successfully",
+          status: "Payment is verified updated successfully",
+          data,
         });
       } catch (error) {
-        console.log("DELETE payment error", error);
+        console.log("UPDATE is verified payment error", error);
         return res.status(500).json("Server error");
       }
     }
