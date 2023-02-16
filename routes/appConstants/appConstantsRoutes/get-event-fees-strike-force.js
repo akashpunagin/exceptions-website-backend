@@ -23,7 +23,7 @@ module.exports = (router) => {
 
         return res.status(200).json(maxGCMemberSize);
       } catch (error) {
-        console.log("GET get-max-gc-member-size error", error);
+        console.log("GET get-event-fees-strike-force error", error);
         return res.status(500).json("Server error");
       }
     }

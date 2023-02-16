@@ -3,27 +3,32 @@ const { authorization } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
 
 module.exports = (router) => {
-  router.get(
-    "/get-event-fees-infinity-and-beyond",
+  router.post(
+    "/update-event-fees-all-group-events",
     [authorization],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
       const { appIntConstants } = appConstants.SQL_TABLE;
-      const label = "event_fees_infinity_and_beyond";
+      const label = "event_fees_all_group_events";
 
       try {
+        const { fees } = req.body;
+
         const intConstantsRes = await pool.query(
-          `SELECT * FROM ${appIntConstants}
-        WHERE label = $1`,
-          [label]
+          `UPDATE ${appIntConstants}
+          SET value = $2
+          WHERE label = $1
+          RETURNING *`,
+          [label, fees]
         );
         const data = intConstantsRes.rows[0];
-        const fees = data.value;
 
-        return res.status(200).json(fees);
+        return res.status(200).json({
+          message: "event-fees-all-group-events updated successfully",
+        });
       } catch (error) {
-        console.log("GET get-event-fees-infinity-and-beyond error", error);
+        console.log("UPDATE event-fees-all-group-events error", error);
         return res.status(500).json("Server error");
       }
     }
