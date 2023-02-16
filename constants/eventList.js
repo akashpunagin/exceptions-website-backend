@@ -1,6 +1,6 @@
 const eventsList = [
   {
-    name: "gravity",
+    name: "Gravity",
     route: "gravity",
     details: {
       to: "/details/gravity",
@@ -25,18 +25,21 @@ const eventsList = [
       "Participants should know the basics of OOP's.",
       "Participants should carry a laptop.",
     ],
-    contact: {
-      name: "Shireesha KB",
-      email: "shireeshakb.mca21@rvce.edu.in",
-      phone: "+91 9880063997",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Shireesha KB",
+        email: "shireeshakb.mca21@rvce.edu.in",
+        phone: "+91 9880063997",
+      },
+    ],
 
     maxPoints: 10,
-    maxTeamSize: 3,
+    maxTeamSize: 1,
     isOpenEvent: false,
   },
   {
-    name: "big bang",
+    name: "Big Bang",
     route: "bigbang",
     details: {
       to: "/details/bigbang",
@@ -60,18 +63,21 @@ const eventsList = [
     requirements: [
       "Participants should have knowledge about current technology and current affairs.",
     ],
-    contact: {
-      name: "Krupa Arjunwadkar",
-      email: "krupasa.mca21@rvce.edu.in",
-      phone: "+91 9972308056",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Krupa Arjunwadkar",
+        email: "krupasa.mca21@rvce.edu.in",
+        phone: "+91 9972308056",
+      },
+    ],
 
     maxPoints: 20,
-    maxTeamSize: 4,
+    maxTeamSize: 1,
     isOpenEvent: false,
   },
   {
-    name: "gen - geeks",
+    name: "Gen - Geeks",
     route: "gengeeks",
     details: {
       to: "/details/gengeeks",
@@ -93,18 +99,21 @@ const eventsList = [
       "Participants are required to assemble at the event venue 15 minutes prior to the stated time.",
     ],
     requirements: ["Participants should have fair knowledge in all areas."],
-    contact: {
-      name: "Bhakthi Prabhu",
-      email: "bhaktiprabhu.mca21@rvce.edu.in",
-      phone: "+91 8088308112",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Bhakthi Prabhu",
+        email: "bhaktiprabhu.mca21@rvce.edu.in",
+        phone: "+91 8088308112",
+      },
+    ],
 
     maxPoints: 30,
-    maxTeamSize: 5,
+    maxTeamSize: 2,
     isOpenEvent: false,
   },
   {
-    name: "zest",
+    name: "Zest",
     route: "zest",
     details: {
       to: "/details/zest",
@@ -126,18 +135,21 @@ const eventsList = [
       "Participants to be present 10 minutes prior to the stated schedule.",
     ],
     requirements: ["Participants should have fair knowledge in all areas."],
-    contact: {
-      name: "Sumanth C R",
-      email: "sumanthcr.mca21@rvce.edu.in",
-      phone: "+91 789263225",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Sumanth C R",
+        email: "sumanthcr.mca21@rvce.edu.in",
+        phone: "+91 789263225",
+      },
+    ],
 
     maxPoints: 15,
-    maxTeamSize: 5,
+    maxTeamSize: 2,
     isOpenEvent: false,
   },
   {
-    name: "constellation",
+    name: "Constellation",
     route: "constellation",
     details: {
       to: "/details/constellation",
@@ -163,18 +175,21 @@ const eventsList = [
       "Install required software prior to the event",
     ],
     requirements: [],
-    contact: {
-      name: "Aishwarya Kamble",
-      email: "aishwaryakk.mca21@rvce.edu.in",
-      phone: "+91 7026239982",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Aishwarya Kamble",
+        email: "aishwaryakk.mca21@rvce.edu.in",
+        phone: "+91 7026239982",
+      },
+    ],
 
     maxPoints: 25,
-    maxTeamSize: 1,
+    maxTeamSize: 2,
     isOpenEvent: false,
   },
   {
-    name: "nebula x",
+    name: "Nebula X",
     route: "nebulax",
     details: {
       to: "/details/nebulax",
@@ -203,18 +218,21 @@ const eventsList = [
       "Participants are expected to bring their laptops, and charging cables.",
       "Tools required: Eclipse, VS Code or any Editor/IDE the participant is comfortable with.",
     ],
-    contact: {
-      name: "Dashline Jove D Souza",
-      email: "dashlineds.mca21@rvce.edu.in",
-      phone: "+91 8762127308",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Dashline Jove D Souza",
+        email: "dashlineds.mca21@rvce.edu.in",
+        phone: "+91 8762127308",
+      },
+    ],
 
     maxPoints: 22,
-    maxTeamSize: 4,
+    maxTeamSize: 1,
     isOpenEvent: false,
   },
   {
-    name: "strike force",
+    name: "Strike Force",
     route: "strikeforce",
     details: {
       to: "/details/strikeforce",
@@ -239,18 +257,21 @@ const eventsList = [
       "Participants should have a steam account",
       "Participants should bring their own accessories (Keyboards, Mouse, Earphones)",
     ],
-    contact: {
-      name: "Sohan Gowda C",
-      email: "sohangowdac.mca21@rvce.edu.in",
-      phone: "+91 9380023145",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Sohan Gowda C",
+        email: "sohangowdac.mca21@rvce.edu.in",
+        phone: "+91 9380023145",
+      },
+    ],
 
     maxPoints: 30,
-    maxTeamSize: 3,
+    maxTeamSize: 4,
     isOpenEvent: true,
   },
   {
-    name: "infinity & beyond",
+    name: "Infinity & Beyond",
     route: "infinity&beyond",
     details: {
       to: "/details/infinity&beyond",
@@ -278,34 +299,77 @@ const eventsList = [
       "Team members should inform one of the organizers before leaving the venue, failure to do so will result in disqualification of the entire team.",
     ],
     requirements: [],
-    contact: {
-      name: "Prajwal K",
-      email: "prajwalk.mca21@rvce.edu.in",
-      phone: "+91 8105830328",
-    },
+    contacts: [
+      {
+        type: "Student Coordinator",
+        name: "Prajwal K",
+        email: "prajwalk.mca21@rvce.edu.in",
+        phone: "+91 8105830328",
+      },
+    ],
 
     maxPoints: 33,
-    maxTeamSize: 3,
+    maxTeamSize: 2,
     isOpenEvent: true,
   },
   {
-    name: "event x",
-    route: "eventx",
+    id: 11,
+    name: "SOLVEATHON",
+    route: "solveathon",
     details: {
-      to: "/details/eventx",
-      description: "Why don't you come to the Venue and find out?",
-      img: "/icons/mystery.svg",
+      to: "/details/solveathon",
+      description: `Solve-a-thon is a solution event focused on building an AI/ML and
+              vision based android application, where enrolled teams will get to
+              solve real time problems that could be planet changing tech. It is
+              an opportunity for students to showcase their skills, learn new
+              technologies and potentially develop a project into a product.`,
+      img: "/icons/solveathon.svg",
       direction: "flex-row-reverse",
       color: "btn-primary",
-      text: "text-primary",
-      eventType: "general",
+      text: "text-warning",
+      eventType: "open",
     },
+    description:
+      "Solve-a-thon is a solution event focused on building an AI/ML and vision based android application, where enrolled teams will get to solve real time problems that could be planet changing tech. It is an opportunity for students to showcase their skills, learn new technologies and potentially develop a project into a product",
+    img: "/src/assets/eventdetails/hackathon.jpg",
+    rules: [
+      "Team Size: 2 Members",
+      "Problem statements will be provided in the brochure, Enrolled teams will have till 3rd March 2023 to submit their working model",
+      "The teams must adhere to ethics and responsible AI practices",
+      "Submissions should include a detailed report and demonstration of the working model",
+      "The decision of the judges is final",
+      "The winning team will be awarded based on the criteria specified by the organizers",
+      "The teams must comply with the deadline for submissions",
+    ],
+    requirements: [],
+    contacts: [
+      {
+        type: "Faculty Coordinator",
+        name: "Dr Preethi Patil",
+        email: "preethinpatil@rvce.edu.in",
+        phone: "+91 9900970235",
+      },
+      {
+        type: "Student Coordinator",
+        name: "Ranjith Kumar J",
+        email: "ranjithkj.mca21@rvce.edu.in",
+        phone: "+91 8884601647",
+      },
+    ],
+    maxPoints: 33,
+    maxTeamSize: 2,
+    isOpenEvent: true,
+  },
+  {
+    name: "Mystery Event",
+    route: "eventx",
     img: "/src/assets/eventdetails/mystery.jpg",
     description: "You Never Know What you Might have in the Store?",
     rules: [],
     requirements: [],
+    contacts: [],
     maxPoints: 10,
-    maxTeamSize: 3,
+    maxTeamSize: 7,
     isOpenEvent: false,
   },
 ];

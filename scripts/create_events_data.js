@@ -22,7 +22,7 @@ async function main() {
       isOpenEvent,
     } = event;
 
-    const { details, contact } = event;
+    const { details, contacts } = event;
 
     const { rules, requirements } = event;
 
@@ -36,11 +36,11 @@ async function main() {
       isOpenEvent
     );
 
-    await insertIntoEventDetails(eventId, details);
-
-    if (contact !== undefined) {
-      await insertIntoEventContacts(eventId, contact);
+    if (details !== undefined) {
+      await insertIntoEventDetails(eventId, details);
     }
+
+    await insertIntoEventContacts(eventId, contacts);
 
     await insertIntoEventRules(eventId, rules);
     await insertIntoEventRequirements(eventId, requirements);

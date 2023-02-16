@@ -30,6 +30,7 @@ CREATE TABLE event_master_contact(
     event_id INT REFERENCES event_master ON DELETE CASCADE ON UPDATE CASCADE,
     event_contact_name VARCHAR NOT NULL,
     event_contact_email VARCHAR NOT NULL,
+    event_contact_type VARCHAR NOT NULL,
     event_contact_phone VARCHAR NOT NULL
 );
 

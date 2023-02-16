@@ -67,21 +67,27 @@ async function insertIntoEventDetails(
   console.log(`EVENT: ${eventId} details inserted`);
 }
 
-async function insertIntoEventContacts(eventId, { name, email, phone }) {
-  await pool.query(
-    `INSERT INTO ${eventMasterContact}(
-                  event_id,
-                  event_contact_name,
-                  event_contact_email,
-                  event_contact_phone
-              )
-              VALUES (
-                  $1, $2, $3, $4
-              )
-              RETURNING *`,
-    [eventId, name, email, phone]
-  );
-  console.log(`EVENT: ${eventId} conact inserted`);
+async function insertIntoEventContacts(eventId, contacts) {
+  for (const contact of contacts) {
+    const { name, email, phone, type } = contact;
+
+    await pool.query(
+      `INSERT INTO ${eventMasterContact}(
+                    event_id,
+                    event_contact_name,
+                    event_contact_email,
+                    event_contact_type,
+                    event_contact_phone
+                )
+                VALUES (
+                    $1, $2, $3, $4, $5
+                )
+                RETURNING *`,
+      [eventId, name, email, type, phone]
+    );
+    console.log(`EVENT: ${eventId} conact inserted`);
+  }
+  console.log(`EVENT: ${eventId} ALL CONTACTS inserted`);
 }
 
 async function insertIntoEventRules(eventId, rules) {
