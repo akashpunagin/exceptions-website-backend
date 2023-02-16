@@ -9,6 +9,10 @@ function isValidEmail(userEmail) {
   return isValidEmail;
 }
 
+function isNumeric(value) {
+  return /^-?\d+$/.test(value);
+}
+
 function handleAuthReq(req) {
   const {
     userId,
@@ -262,6 +266,9 @@ function handlePaymentReq(req) {
   if (req.path === "/add") {
     if (![amount, transactionId].every(Boolean)) {
       return missingCredsMessage;
+    }
+    if (!isNumeric(amount)) {
+      return invalidCredsMessage;
     }
   }
 
