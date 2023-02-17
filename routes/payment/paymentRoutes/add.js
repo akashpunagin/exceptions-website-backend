@@ -64,6 +64,18 @@ module.exports = (router) => {
           });
         }
 
+        const getTransactionIdRes = await pool.query(
+          `SELECT * FROM ${participantPayment}
+          WHERE transaction_id = $1`,
+          [transactionId]
+        );
+        const rowCountTransactionId = getTransactionIdRes.rowCount;
+        if (rowCountTransactionId > 0) {
+          return res.status(401).json({
+            error: "Transaction id already exists",
+          });
+        }
+
         if (req.isFileUploadRes.isError) {
           return res.status(401).json({
             error: req.isFileUploadRes.errorMessage,
