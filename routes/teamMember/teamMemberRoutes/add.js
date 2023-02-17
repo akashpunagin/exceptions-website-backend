@@ -7,6 +7,7 @@ const appConstants = require("../../../constants/appConstants");
 const {
   getTeamIdOfUser,
   getMaxTeamMembersOfTeamByTeamId,
+  getTeamIsGCConsideredOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isTeamMemberExistsByCredentials,
@@ -28,6 +29,17 @@ module.exports = (router) => {
         return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
       }
       const teamId = getTeamOfUserRes.data;
+
+      const isTeamGCConsideredRes = await getTeamIsGCConsideredOfUser(
+        currentUser.userId
+      );
+
+      if (isTeamGCConsideredRes.isError) {
+        return res
+          .status(401)
+          .json({ error: isTeamGCConsideredRes.errorMessage });
+      }
+      const isTeamGCConsidered = isTeamGCConsideredRes.data;
 
       const isTeamMemberExistsRes = await isTeamMemberExistsByCredentials(
         firstName,
@@ -56,7 +68,10 @@ module.exports = (router) => {
       );
       const currentTeamMembersCount = getTeamMembersRes.rowCount;
 
-      const maxTeamMemberCount = await getMaxTeamMembersOfTeamByTeamId(teamId);
+      const maxTeamMemberCount = await getMaxTeamMembersOfTeamByTeamId(
+        isTeamGCConsidered,
+        teamId
+      );
       console.log({ currentTeamMembersCount, maxTeamMemberCount });
 
       if (currentTeamMembersCount >= maxTeamMemberCount) {
