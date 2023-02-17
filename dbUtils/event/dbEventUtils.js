@@ -149,7 +149,7 @@ function getInfinityAndBeyondEventName() {
 }
 
 function getSolvathonEventName() {
-  return "SOLVEATHON";
+  return "Solveathon";
 }
 
 function getStrikeForceEventName() {
