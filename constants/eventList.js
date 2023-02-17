@@ -314,7 +314,7 @@ const eventsList = [
   },
   {
     id: 11,
-    name: "SOLVEATHON",
+    name: "Solveathon",
     route: "solveathon",
     details: {
       to: "/details/solveathon",
