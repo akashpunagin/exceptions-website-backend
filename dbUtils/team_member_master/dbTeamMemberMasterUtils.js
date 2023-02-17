@@ -54,19 +54,45 @@ async function isTeamMemberExistsByCredentials(
   const { teamMemberMaster } = appConstants.SQL_TABLE;
 
   try {
-    const teamMemberExistsRes = await pool.query(
+    let teamMemberExistsRes = await pool.query(
       `SELECT * FROM ${teamMemberMaster}
-        WHERE
-          first_name = $1 AND
-          last_name = $2 AND
-          usn = $3 AND
-          email = $4 AND
-          contact_number = $5`,
-      [firstName, lastName, usn, email, contactNumber]
+        WHERE email = $1`,
+      [email]
     );
     if (teamMemberExistsRes.rowCount > 0) {
-      return { isError: false, errorMessage: null, data: true };
+      return {
+        isError: false,
+        errorMessage: "Another team member has this email",
+        data: true,
+      };
     }
+
+    teamMemberExistsRes = await pool.query(
+      `SELECT * FROM ${teamMemberMaster}
+        WHERE usn = $1`,
+      [usn]
+    );
+    if (teamMemberExistsRes.rowCount > 0) {
+      return {
+        isError: false,
+        errorMessage: "Another team member has this usn",
+        data: true,
+      };
+    }
+
+    teamMemberExistsRes = await pool.query(
+      `SELECT * FROM ${teamMemberMaster}
+        WHERE contact_number = $1`,
+      [contactNumber]
+    );
+    if (teamMemberExistsRes.rowCount > 0) {
+      return {
+        isError: false,
+        errorMessage: "Another team member has this contact number",
+        data: true,
+      };
+    }
+
     return { isError: false, errorMessage: null, data: false };
   } catch (error) {
     return {
