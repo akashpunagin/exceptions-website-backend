@@ -252,6 +252,7 @@ const eventsList = [
       "Games will be played with the default settings for competition. If a game is played with non-default settings, the match will be replayed with corrections.",
       "Games will be played on the current competitive map pool. Map pick will be contingent",
       "On who wins a coin flip. CT/T side will also be contingent on a separate coinflip.",
+      "The participants should bring an ethernet adapter if their device doesn't have one",
     ],
     requirements: [
       "Participants should have a steam account",

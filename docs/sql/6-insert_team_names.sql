@@ -38,7 +38,7 @@ VALUES
     ('The Gray Squadron'),
     ('The Green Squadron'),
     ('The Hoth Squad'),
-    ('The Imperial Commandos,'),
+    ('The Imperial Commandos'),
     ('The Imperial Fleets'),
     ('The Imperial Walkers'),
     ('The Imperials'),
