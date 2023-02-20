@@ -144,7 +144,7 @@ async function getMaxTeamMembersOfTeamByTeamId(isTeamGCConsidered, teamId) {
 
   if (isTeamOpenEventExists) {
     const data = teamRes.rows[0];
-    console.log("DATA:", teamRes.rows);
+
     const maxOpenEventTeamMembers = Number.parseInt(data.sum);
     console.log("maxOpenEventTeamMembers:", maxOpenEventTeamMembers);
 

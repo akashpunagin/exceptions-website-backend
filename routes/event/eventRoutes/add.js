@@ -25,8 +25,6 @@ module.exports = (router) => {
     try {
       const { eventData } = req.body;
 
-      console.log("DATA:", eventData);
-
       const {
         name,
         route,
