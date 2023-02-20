@@ -283,6 +283,12 @@ function handlePaymentReq(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/delete-with-user-id") {
+    if (![participantId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {
