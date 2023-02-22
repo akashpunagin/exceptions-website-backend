@@ -54,7 +54,7 @@ CREATE TABLE participant_details(
     city VARCHAR NOT NULL,
     zip INT NOT NULL,
     
-    is_male BOOLEAN NULL,
+    is_male BOOLEAN NOT NULL,
     number_of_accomodations INTEGER DEFAULT 0
 );
 
