@@ -74,7 +74,10 @@ module.exports = app;
 //> after payment send
 // https://docs.google.com/forms/d/e/1FAIpQLScd5vUCTYVm310utaXnrhjzkae58iJ-9QzGXllffT9NO632BA/viewform?usp=sf_link
 // this link if team is registered with Solvathon
-//>
+
+//> add telegram link
+// https://t.me/exceptions_rvce
+// in payment verification
 // Present team members
 // Absent team members
 // CSV file of team members
