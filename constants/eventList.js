@@ -268,7 +268,7 @@ const eventsList = [
     ],
 
     maxPoints: 10,
-    maxTeamSize: 4,
+    maxTeamSize: 5,
     isOpenEvent: true,
   },
   {
@@ -291,7 +291,7 @@ const eventsList = [
       "Team should consist of 2 to maximum 3 participants.",
       "Team must be present 20 minutes prior to the scheduled event time for reporting.",
       "A list of available IOT devices will be provided during registration and students are also allowed to bring their own devices that are not present in the list.",
-      "Mandatory IOT Component disclosure will be provided online which should be accepted and a Refundable amount of Rs. 1000/- is to be paid that will be withheld in case of component damage.",
+      "Mandatory IOT Component disclosure will be provided on the day of event which should be accepted and a Refundable amount of Rs. 1000/- is to be paid that will be withheld in case of component damage.",
       "Raspberry pi’s provided should be returned as it is, and SD card exchanging will result in team disqualification.",
       "Internet services will be provided where contestants are allowed to search and find solutions.",
       "Participants are supposed to bring their own laptops and charging cords.",

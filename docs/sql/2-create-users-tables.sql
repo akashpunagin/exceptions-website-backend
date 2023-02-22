@@ -52,7 +52,10 @@ CREATE TABLE participant_details(
     usn VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
     city VARCHAR NOT NULL,
-    zip INT NOT NULL
+    zip INT NOT NULL,
+    
+    is_male BOOLEAN NULL,
+    number_of_accomodations INTEGER DEFAULT 0
 );
 
 --used to store payment information--

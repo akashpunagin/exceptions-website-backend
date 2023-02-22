@@ -27,6 +27,8 @@ function handleAuthReq(req) {
     city,
     zip,
     newPassword,
+    isMale,
+    numberOfAccomodations,
   } = req.body;
 
   if (req.path === "/register-admin") {
@@ -70,6 +72,8 @@ function handleAuthReq(req) {
         state,
         city,
         zip,
+        isMale,
+        numberOfAccomodations,
       ].every(Boolean)
     ) {
       return missingCredsMessage;
