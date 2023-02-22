@@ -70,3 +70,8 @@ module.exports = app;
 //// DONE:: check store information in payment table
 //// DONE:: firstly check if payment is already done, if true then block the rest of API route
 // DONE:: send Verification Done email to participant after verifying
+
+// Present team members
+// Absent team members
+// CSV file of team members
+//

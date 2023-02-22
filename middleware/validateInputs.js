@@ -27,8 +27,8 @@ function handleAuthReq(req) {
     city,
     zip,
     newPassword,
-    isMale,
-    numberOfAccomodations,
+    numberOfMaleAccomodations,
+    numberOfFemaleAccomodations,
   } = req.body;
 
   if (req.path === "/register-admin") {
@@ -72,14 +72,20 @@ function handleAuthReq(req) {
         state,
         city,
         zip,
-        isMale,
-        numberOfAccomodations,
+        numberOfMaleAccomodations,
+        numberOfFemaleAccomodations,
       ].every(Boolean)
     ) {
       return missingCredsMessage;
     }
     if (!isValidEmail(email)) {
       return invalidEmailMessage;
+    }
+    if (!isNumeric(numberOfMaleAccomodations)) {
+      return invalidCredsMessage;
+    }
+    if (!isNumeric(numberOfFemaleAccomodations)) {
+      return invalidCredsMessage;
     }
   }
 

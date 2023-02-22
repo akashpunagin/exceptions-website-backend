@@ -2,14 +2,24 @@ const pool = require("../../../../db/pool");
 const appConstants = require("../../../../constants/appConstants");
 
 async function addPartipant(particpantUserId, participantDetails) {
-  const { collegeName, usn, state, city, zip, isMale, numberOfAccomodations } =
-    participantDetails;
+  const {
+    collegeName,
+    usn,
+    state,
+    city,
+    zip,
+    numberOfMaleAccomodations,
+    numberOfFemaleAccomodations,
+  } = participantDetails;
 
   const { participantDetails: participantDetailsTable } =
     appConstants.SQL_TABLE;
 
   const newParticipantRes = await pool.query(
-    `INSERT INTO ${participantDetailsTable}(user_id, college_name, usn, state, city, zip, is_male, number_of_accomodations)
+    `INSERT INTO ${participantDetailsTable}(
+      user_id, college_name, usn, state, city, zip,
+      no_of_male_accomodations, no_of_female_accomodations
+    )
         VALUES($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING user_id, college_name, usn, state, city, zip`,
     [
@@ -19,8 +29,8 @@ async function addPartipant(particpantUserId, participantDetails) {
       state,
       city,
       zip,
-      isMale,
-      numberOfAccomodations,
+      numberOfMaleAccomodations,
+      numberOfFemaleAccomodations,
     ]
   );
 

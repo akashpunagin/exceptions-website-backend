@@ -28,8 +28,8 @@ module.exports = (router) => {
         state,
         city,
         zip,
-        isMale,
-        numberOfAccomodations,
+        numberOfMaleAccomodations,
+        numberOfFemaleAccomodations,
       } = req.body;
 
       const userDetails = {
@@ -46,8 +46,8 @@ module.exports = (router) => {
         state,
         city,
         zip,
-        isMale,
-        numberOfAccomodations,
+        numberOfMaleAccomodations,
+        numberOfFemaleAccomodations,
       };
 
       const addUserRes = await addUser(userDetails);

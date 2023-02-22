@@ -54,9 +54,11 @@ CREATE TABLE participant_details(
     city VARCHAR NOT NULL,
     zip INT NOT NULL,
     
-    is_male BOOLEAN NOT NULL,
-    number_of_accomodations INTEGER DEFAULT 0
+    no_of_male_accomodations INTEGER DEFAULT 0,
+    no_of_female_accomodations INTEGER DEFAULT 0
 );
+
+alter table participant_details drop column number_of_accomodations;
 
 --used to store payment information--
 CREATE TABLE participant_payment(

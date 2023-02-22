@@ -6,17 +6,14 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 
 module.exports = (router) => {
-  router.get(
-    "/get-participants",
-    [authorization, authorizeAdmin],
-    async (req, res) => {
-      console.log("Route:", req.originalUrl);
+  router.get("/get-participants", [authorization], async (req, res) => {
+    console.log("Route:", req.originalUrl);
 
-      const { users, userRole, userPermission } = appConstants.SQL_TABLE;
+    const { users, userRole, userPermission } = appConstants.SQL_TABLE;
 
-      try {
-        const getRes = await pool.query(
-          `SELECT u.user_id, u.email, u.contact_number, u.first_name, u.last_name
+    try {
+      const getRes = await pool.query(
+        `SELECT u.user_id, u.email, u.contact_number, u.first_name, u.last_name
             FROM
               ${users} as u,
               ${userRole} as ur,
@@ -26,24 +23,23 @@ module.exports = (router) => {
               ur.user_id = up.user_id AND
               ur.role_participant = true
             `
-        );
-        let data = getRes.rows;
+      );
+      let data = getRes.rows;
 
-        data = data.map((row) => {
-          return {
-            userId: row.user_id,
-            email: row.email,
-            contactNumber: row.contact_number,
-            firstName: row.first_name,
-            lastName: row.last_name,
-          };
-        });
+      data = data.map((row) => {
+        return {
+          userId: row.user_id,
+          email: row.email,
+          contactNumber: row.contact_number,
+          firstName: row.first_name,
+          lastName: row.last_name,
+        };
+      });
 
-        return res.status(200).json(data);
-      } catch (error) {
-        console.log("GET All participants error", error);
-        return res.status(500).json("Server error");
-      }
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log("GET All participants error", error);
+      return res.status(500).json("Server error");
     }
-  );
+  });
 };
