@@ -71,7 +71,10 @@ module.exports = app;
 //// DONE:: firstly check if payment is already done, if true then block the rest of API route
 // DONE:: send Verification Done email to participant after verifying
 
+//> after payment send
+// https://docs.google.com/forms/d/e/1FAIpQLScd5vUCTYVm310utaXnrhjzkae58iJ-9QzGXllffT9NO632BA/viewform?usp=sf_link
+// this link if team is registered with Solvathon
+//>
 // Present team members
 // Absent team members
 // CSV file of team members
-//
