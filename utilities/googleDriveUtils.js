@@ -3,13 +3,20 @@ const fs = require("fs");
 const path = require("path");
 
 const { google } = require("googleapis");
+const {
+  getRefreshToken,
+} = require("../dbUtils/app_varchar_constants/dbAppVarcharConstantsUtils");
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
-const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 const GOOGLE_FOLDER_ID = process.env.GOOGLE_FOLDER_ID;
 const PAYMENT_SCREENSHOT_PATH = process.env.PAYMENT_SCREENSHOT_PATH;
+let GOOGLE_REFRESH_TOKEN = null;
+
+async function init() {
+  const refreshToken = await getRefreshToken();
+}
 
 const oauth2Client = new google.auth.OAuth2(
   GOOGLE_CLIENT_ID,
@@ -17,20 +24,15 @@ const oauth2Client = new google.auth.OAuth2(
   GOOGLE_REDIRECT_URL
 );
 
-oauth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
+getRefreshToken().then((refreshToken) => {
+  GOOGLE_REFRESH_TOKEN = refreshToken;
+  oauth2Client.setCredentials({ refresh_token: refreshToken });
+});
 
 const drive = google.drive({
   version: "v3",
   auth: oauth2Client,
 });
-
-function refreshToken() {
-  oauth2Client.refreshAccessToken(function (err, tokens) {
-    console.log({ tokens, err });
-    const { access_token: accessToken, refresh_token: refreshToken } = tokens;
-    console.log({ accessToken, refreshToken });
-  });
-}
 
 async function uploadFileToDriveAndGetFileId(filePath, fileMimeType) {
   const fileName = path.basename(filePath);
@@ -53,6 +55,7 @@ async function uploadFileToDriveAndGetFileId(filePath, fileMimeType) {
     return { isError: false, errorMessage: null, data: fileId };
   } catch (error) {
     console.error("Upload file to google error:", error);
+
     return {
       isError: true,
       errorMessage:

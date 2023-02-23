@@ -55,3 +55,10 @@ CREATE TABLE app_int_constants(
     label VARCHAR NOT NULL,
     value INT NOT NULL
 );
+
+
+CREATE TABLE app_varchar_constants(
+    id SERIAL PRIMARY KEY,
+    label VARCHAR NOT NULL,
+    value VARCHAR NOT NULL
+);

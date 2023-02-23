@@ -40,6 +40,7 @@ const constants = {
     teamIdTeamMemberEvent: "team_id_team_member_event", // used to map team (team id), team member (member id) and event (event id)
 
     appIntConstants: "app_int_constants",
+    appVarcharConstants: "app_varchar_constants",
 
     teamNames: "team_names",
   },
