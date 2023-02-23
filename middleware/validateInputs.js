@@ -300,6 +300,12 @@ function handlePaymentReq(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/is-user-paid") {
+    if (![participantId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {
