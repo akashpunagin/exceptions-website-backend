@@ -6,6 +6,7 @@ const {
 const appConstants = require("../../../../constants/appConstants");
 const {
   getTeamIdOfUser,
+  isTeamExistsByTeamId,
 } = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isEventExistsByEventId,
