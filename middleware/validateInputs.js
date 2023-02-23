@@ -284,6 +284,9 @@ function handlePaymentReq(req) {
   }
 
   if (req.path === "/update-verification") {
+    if (![participantId].every(Boolean)) {
+      return missingCredsMessage;
+    }
     if (typeof isVerified !== "boolean") {
       return invalidCredsMessage;
     }

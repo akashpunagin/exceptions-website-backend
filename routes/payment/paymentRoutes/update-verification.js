@@ -13,6 +13,10 @@ const {
   isSolvathonEventExistsForUserId,
 } = require("../../../dbUtils/event/dbEventUtils");
 const sendSolvathonGoogleFormEmail = require("../../../utilities/sendSolvathonGoogleFormEmail");
+const {
+  isUserExistsByUserId,
+  getUserByUserId,
+} = require("../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.post(
@@ -23,11 +27,14 @@ module.exports = (router) => {
 
       const { participantPayment } = appConstants.SQL_TABLE;
       try {
-        const { isVerified } = req.body;
+        const { isVerified, participantId } = req.body;
 
-        const currentUser = req.user;
+        const isUserExists = await isUserExistsByUserId(participantId);
+        if (!isUserExists) {
+          return res.status(401).json({ error: "User does not exists" });
+        }
 
-        const isPaidRes = await isUserPaid(currentUser.userId);
+        const isPaidRes = await isUserPaid(participantId);
         if (isPaidRes.isError) {
           return res.status(401).json({
             error: isPaidRes.errorMessage,
@@ -47,11 +54,13 @@ module.exports = (router) => {
           SET is_verified = $1
           WHERE participant_id = $2
           RETURNING *`,
-          [isVerified, currentUser.userId]
+          [isVerified, participantId]
         );
         const data = updateRes.rows[0];
 
-        const { firstName, lastName, email } = currentUser;
+        const participantUser = await getUserByUserId(participantId);
+
+        const { firstName, lastName, email } = participantUser;
         const fullName = `${firstName} ${lastName}`;
 
         if (isVerified) {
@@ -66,7 +75,7 @@ module.exports = (router) => {
 
         if (isVerified) {
           const isSolvathonExistsRes = await isSolvathonEventExistsForUserId(
-            currentUser.userId
+            participantId
           );
 
           if (isSolvathonExistsRes.isError) {

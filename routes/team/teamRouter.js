@@ -5,6 +5,7 @@ require("./teamRoutes/get")(router);
 require("./teamRoutes/get-team-of-current-user")(router);
 require("./teamRoutes/get-events-of-team")(router);
 require("./teamRoutes/get-event-fees-of-team")(router);
+require("./teamRoutes/get-paid-unverified")(router);
 require("./teamRoutes/get-max-team-members")(router);
 require("./teamRoutes/get-all-teams-with-team-members")(router);
 require("./teamRoutes/get-specific-team-details")(router);
