@@ -10,7 +10,7 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendPaymentVerificationEmail = async (name, email) => {
+const sendSolvathonGoogleFormEmail = async (name, email) => {
   const googleFormLink =
     "https://docs.google.com/forms/d/e/1FAIpQLScd5vUCTYVm310utaXnrhjzkae58iJ-9QzGXllffT9NO632BA/viewform?usp=sf_link";
 
@@ -141,4 +141,4 @@ const sendPaymentVerificationEmail = async (name, email) => {
   }
 };
 
-module.exports = sendPaymentVerificationEmail;
+module.exports = sendSolvathonGoogleFormEmail;

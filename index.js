@@ -63,7 +63,6 @@ module.exports = app;
 //  DONE:: team member master: is_present: update true or false
 
 //  DONE:: get coordinators, volunteers, participants - for admin
-//  authorized emails for admin, coordinators, volunteers
 
 // > Payments
 // DONE:: record transaction id, store is_verified status in database
@@ -71,6 +70,7 @@ module.exports = app;
 //// DONE:: firstly check if payment is already done, if true then block the rest of API route
 // DONE:: send Verification Done email to participant after verifying
 
+//  authorized emails for admin, coordinators, volunteers
 //> after payment send
 // https://docs.google.com/forms/d/e/1FAIpQLScd5vUCTYVm310utaXnrhjzkae58iJ-9QzGXllffT9NO632BA/viewform?usp=sf_link
 // this link if team is registered with Solvathon
