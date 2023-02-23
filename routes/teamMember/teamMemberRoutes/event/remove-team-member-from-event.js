@@ -10,6 +10,7 @@ const {
 
 const {
   getTeamIdOfUser,
+  isTeamExistsByTeamId,
 } = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isTeamMemberExistsByMemberId,
@@ -26,25 +27,23 @@ module.exports = (router) => {
         appConstants.SQL_TABLE;
 
       try {
-        const { eventId, memberId } = req.body;
-
-        const currentUser = req.user;
-
-        const isEventExists = await isEventExistsByEventId(eventId);
-        if (!isEventExists) {
-          return res.status(401).json({ error: "Event does not exists" });
-        }
+        const { memberId, teamId } = req.body;
 
         const isTeamMemberExists = await isTeamMemberExistsByMemberId(memberId);
         if (!isTeamMemberExists) {
           return res.status(401).json({ error: "Team member does not exists" });
         }
 
-        const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
-        if (getTeamOfUserRes.isError) {
-          return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
+        const isTeamExistsByTeamIdRes = await isTeamExistsByTeamId(teamId);
+        if (isTeamExistsByTeamIdRes.isError) {
+          return res
+            .status(401)
+            .json({ error: isTeamExistsByTeamIdRes.errorMessage });
         }
-        const teamId = getTeamOfUserRes.data;
+        const isTeamExists = isTeamExistsByTeamIdRes.data;
+        if (!isTeamExists) {
+          return res.status(401).json({ error: "Team does not exists" });
+        }
 
         const getTeamIdTeamMemberRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMember}
@@ -61,6 +60,8 @@ module.exports = (router) => {
         const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows[0];
         const teamIdTeamMemberId = teamIdTeamMemberData.team_id_team_member_id;
 
+        console.log("SEE HERE:", { teamIdTeamMemberId });
+
         const deleteTeamMemberFromEventRes = await pool.query(
           `DELETE FROM ${teamIdTeamMemberEvent}
             WHERE team_id_team_member_id = $1
@@ -70,7 +71,7 @@ module.exports = (router) => {
         if (deleteTeamMemberFromEventRes.rowCount === 0) {
           return res
             .status(401)
-            .json({ error: "Error while deleting team member in team" });
+            .json({ error: "Member was not assigned to any event" });
         }
         const deleteTeamMemberFromEventData =
           deleteTeamMemberFromEventRes.rows[0];

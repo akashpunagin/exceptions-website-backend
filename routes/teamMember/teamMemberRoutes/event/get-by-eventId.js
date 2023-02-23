@@ -22,20 +22,23 @@ module.exports = (router) => {
         appConstants.SQL_TABLE;
 
       try {
-        const { eventId } = req.body;
-
-        const currentUser = req.user;
+        const { eventId, teamId } = req.body;
 
         const isEventExists = await isEventExistsByEventId(eventId);
         if (!isEventExists) {
           return res.status(401).json({ error: "Event does not exists" });
         }
 
-        const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
-        if (getTeamOfUserRes.isError) {
-          return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
+        const isTeamExistsByTeamIdRes = await isTeamExistsByTeamId(teamId);
+        if (isTeamExistsByTeamIdRes.isError) {
+          return res
+            .status(401)
+            .json({ error: isTeamExistsByTeamIdRes.errorMessage });
         }
-        const teamId = getTeamOfUserRes.data;
+        const isTeamExists = isTeamExistsByTeamIdRes.data;
+        if (!isTeamExists) {
+          return res.status(401).json({ error: "Team does not exists" });
+        }
 
         const getTeamIdTeamMemberRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMember}

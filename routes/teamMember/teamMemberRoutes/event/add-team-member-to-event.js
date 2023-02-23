@@ -10,6 +10,7 @@ const {
 } = require("../../../../dbUtils/event/dbEventUtils");
 const {
   getTeamIdOfUser,
+  isTeamExistsByTeamId,
 } = require("../../../../dbUtils/team_master/dbTeamMasterUtils");
 const {
   isTeamMemberExistsByMemberId,
@@ -26,9 +27,7 @@ module.exports = (router) => {
         appConstants.SQL_TABLE;
 
       try {
-        const { eventId, memberId } = req.body;
-
-        const currentUser = req.user;
+        const { eventId, memberId, teamId } = req.body;
 
         const isEventExists = await isEventExistsByEventId(eventId);
         if (!isEventExists) {
@@ -40,11 +39,16 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Team member does not exists" });
         }
 
-        const getTeamOfUserRes = await getTeamIdOfUser(currentUser.userId);
-        if (getTeamOfUserRes.isError) {
-          return res.status(401).json({ error: getTeamOfUserRes.errorMessage });
+        const isTeamExistsByTeamIdRes = await isTeamExistsByTeamId(teamId);
+        if (isTeamExistsByTeamIdRes.isError) {
+          return res
+            .status(401)
+            .json({ error: isTeamExistsByTeamIdRes.errorMessage });
         }
-        const teamId = getTeamOfUserRes.data;
+        const isTeamExists = isTeamExistsByTeamIdRes.data;
+        if (!isTeamExists) {
+          return res.status(401).json({ error: "Team does not exists" });
+        }
 
         const eventRes = await getEventByEventId(eventId);
         if (eventRes.isError) {

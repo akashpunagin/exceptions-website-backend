@@ -71,13 +71,15 @@ module.exports = app;
 // DONE:: send Verification Done email to participant after verifying
 
 //  authorized emails for admin, coordinators, volunteers
+
 //> DONE: after payment send
 // https://docs.google.com/forms/d/e/1FAIpQLScd5vUCTYVm310utaXnrhjzkae58iJ-9QzGXllffT9NO632BA/viewform?usp=sf_link
 // this link if team is registered with Solvathon
 
-//> add telegram link
+//> DONE: add telegram link
 // https://t.me/exceptions_rvce
 // in payment verification
+
 // Present team members
 // Absent team members
 // CSV file of team members

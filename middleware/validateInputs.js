@@ -190,6 +190,7 @@ function handleTeamMemberReq(req) {
     eventId,
     memberId,
     isPresent,
+    teamId,
   } = req.body;
 
   if (req.path === "/add") {
@@ -222,19 +223,19 @@ function handleTeamMemberReq(req) {
   }
 
   if (req.path === "/add-team-member-to-event") {
-    if (![eventId, memberId].every(Boolean)) {
+    if (![eventId, memberId, teamId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
 
   if (req.path === "/remove-team-member-from-event") {
-    if (![eventId, memberId].every(Boolean)) {
+    if (![memberId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
 
   if (req.path === "/get-by-eventId") {
-    if (![eventId].every(Boolean)) {
+    if (![eventId, teamId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
