@@ -5,12 +5,11 @@ const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 const {
   getTeamIdOfUser,
 } = require("../../../dbUtils/team_master/dbTeamMasterUtils");
+const { getEventsOfTeam } = require("../../../dbUtils/event/dbEventUtils");
 
 module.exports = (router) => {
   router.get("/get-events-of-team", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
-
-    const { teamMaster, teamEvents, eventMaster } = appConstants.SQL_TABLE;
 
     try {
       const currentUser = req.user;
@@ -21,27 +20,7 @@ module.exports = (router) => {
       }
       const teamId = teamIdRes.data;
 
-      const teamRes = await pool.query(
-        `SELECT ${eventMaster}.*
-        FROM ${teamMaster}, ${teamEvents}, ${eventMaster}
-        WHERE 
-          ${teamMaster}.team_id = ${teamEvents}.team_id AND
-          ${teamEvents}.event_id = ${eventMaster}.event_id AND
-          ${teamEvents}.team_id = $1`,
-        [teamId]
-      );
-      let data = teamRes.rows;
-
-      data = data.map((row) => {
-        return {
-          eventId: row.event_id,
-          eventName: row.event_name,
-          eventDescription: row.event_description,
-          eventMaxPoints: row.event_max_points,
-          eventMaxTeamSize: row.event_max_team_size,
-          eventIsOpenEvent: row.event_is_open_event,
-        };
-      });
+      const data = await getEventsOfTeam(teamId);
 
       return res.status(200).json(data);
     } catch (error) {

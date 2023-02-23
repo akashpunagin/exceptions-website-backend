@@ -9,6 +9,10 @@ const {
   isUserPaid,
 } = require("../../../dbUtils/participant_payment/dbParticipantPaymentUtils");
 const sendPaymentVerificationEmail = require("../../../utilities/sendPaymentVerificationEmail");
+const {
+  isSolvathonEventExistsForUserId,
+} = require("../../../dbUtils/event/dbEventUtils");
+const sendSolvathonGoogleFormEmail = require("../../../utilities/sendSolvathonGoogleFormEmail");
 
 module.exports = (router) => {
   router.post(
@@ -54,11 +58,36 @@ module.exports = (router) => {
           const isSuccess = await sendPaymentVerificationEmail(fullName, email);
 
           if (!isSuccess) {
-            return res
-              .status(401)
-              .json({
+            return res.status(401).json({
+              error: "Error while sending payment verification email",
+            });
+          }
+        }
+
+        if (isVerified) {
+          const isSolvathonExistsRes = await isSolvathonEventExistsForUserId(
+            currentUser.userId
+          );
+
+          if (isSolvathonExistsRes.isError) {
+            return res.status(401).json({
+              error: isSolvathonExistsRes.errorMessage,
+            });
+          }
+
+          const isSolvathonExists = isSolvathonExistsRes.data;
+
+          if (isSolvathonExists) {
+            const isSuccess = await sendSolvathonGoogleFormEmail(
+              fullName,
+              email
+            );
+
+            if (!isSuccess) {
+              return res.status(401).json({
                 error: "Error while sending payment verification email",
               });
+            }
           }
         }
 

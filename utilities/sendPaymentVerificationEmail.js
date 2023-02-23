@@ -11,6 +11,7 @@ const transport = nodemailer.createTransport({
 });
 
 const sendPaymentVerificationEmail = async (name, email) => {
+  const telegramLink = "http://telegram.openinapp.co/Chanel";
   try {
     const temp = await transport.sendMail({
       from: process.env.NODEMAILDER_EMAIL,
@@ -108,6 +109,25 @@ const sendPaymentVerificationEmail = async (name, email) => {
           >
             Hey, ${name}. Your payment has been verified by the Exceptions 2023 coordinators!
           </h3>
+          <h3
+            style="margin-top: 20px; box-sizing: border-box"
+          >
+            Join our Telegram channel to get on time event updates
+          </h3>
+          <a
+            href=${telegramLink}
+            style="
+              border: 2px solid #dca54c;
+              padding: 8px 12px;
+              outline: none;
+              text-decoration: none;
+              color: #dca54c;
+              font-weight: bold;
+              margin: 0;
+              box-sizing: border-box;
+            "
+            >Telegram Channel
+          </a>
         </div>
       </body>
     </html>

@@ -1,5 +1,6 @@
 const pool = require("./../../db/pool");
 const appConstants = require("./../../constants/appConstants");
+const { getTeamIdOfUser } = require("../team_master/dbTeamMasterUtils");
 
 async function getEventByEventId(eventId) {
   const { eventMaster } = appConstants.SQL_TABLE;
@@ -144,6 +145,49 @@ async function getGroupEvents() {
   return data;
 }
 
+async function getEventsOfTeam(teamId) {
+  const { teamMaster, teamEvents, eventMaster } = appConstants.SQL_TABLE;
+
+  const teamRes = await pool.query(
+    `SELECT ${eventMaster}.*
+    FROM ${teamMaster}, ${teamEvents}, ${eventMaster}
+    WHERE 
+      ${teamMaster}.team_id = ${teamEvents}.team_id AND
+      ${teamEvents}.event_id = ${eventMaster}.event_id AND
+      ${teamEvents}.team_id = $1`,
+    [teamId]
+  );
+  let data = teamRes.rows;
+
+  data = data.map((row) => {
+    return {
+      eventId: row.event_id,
+      eventName: row.event_name,
+      eventDescription: row.event_description,
+      eventMaxPoints: row.event_max_points,
+      eventMaxTeamSize: row.event_max_team_size,
+      eventIsOpenEvent: row.event_is_open_event,
+    };
+  });
+  return data;
+}
+
+async function isSolvathonEventExistsForUserId(userId) {
+  const teamIdRes = await getTeamIdOfUser(userId);
+
+  if (teamIdRes.isError) {
+    return { isError: true, errorMessage: teamIdRes.errorMessage, data: null };
+  }
+  const teamId = teamIdRes.data;
+
+  const eventData = await getEventsOfTeam(teamId);
+
+  const isSolvathonExists = eventData.some((event) => {
+    return event.eventName === getSolvathonEventName();
+  });
+  return { isError: false, errorMessage: null, data: isSolvathonExists };
+}
+
 function getInfinityAndBeyondEventName() {
   return "Infinity & Beyond";
 }
@@ -163,6 +207,8 @@ module.exports = {
   getTeamMembersByEventId,
   getEventByEventId,
   getGroupEvents,
+  getEventsOfTeam,
+  isSolvathonEventExistsForUserId,
 
   getInfinityAndBeyondEventName,
   getSolvathonEventName,
