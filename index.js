@@ -77,9 +77,9 @@ module.exports = app;
 //> DONE: add telegram link
 // https://t.me/exceptions_rvce
 // in payment verification
-
+// DONE: is paid true, is verified false ->team ids
+// get team id by member id
 // authorized emails for admin, coordinators, volunteers
-// is paid true, is verified false ->team ids
 // Present team members
 // Absent team members
 // CSV file of team members

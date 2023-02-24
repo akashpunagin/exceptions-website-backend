@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 require("./teamMemberRoutes/add")(router);
 require("./teamMemberRoutes/get")(router);
+require("./teamMemberRoutes/get-team-of-team-member")(router);
 require("./teamMemberRoutes/update")(router);
 require("./teamMemberRoutes/update-attendence")(router);
 require("./teamMemberRoutes/delete")(router);

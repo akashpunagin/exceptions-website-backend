@@ -245,6 +245,12 @@ function handleTeamMemberReq(req) {
       return missingCredsMessage;
     }
   }
+
+  if (req.path === "/get-team-of-team-member") {
+    if (![memberId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 function handleAppConstantsReq(req) {
