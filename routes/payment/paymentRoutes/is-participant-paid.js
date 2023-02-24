@@ -9,7 +9,7 @@ const {
 } = require("../../../middleware/exportMiddlewares");
 
 module.exports = (router) => {
-  router.get(
+  router.post(
     "/is-participant-paid",
     [authorization, validateInputs],
     async (req, res) => {
