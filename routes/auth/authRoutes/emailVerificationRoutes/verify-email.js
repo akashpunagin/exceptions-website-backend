@@ -1,5 +1,7 @@
 const pool = require("../../../../db/pool");
 const appConstants = require("../../../../constants/appConstants");
+const sendThankYouForRegisteringEmail = require("../../../../utilities/sendThankYouForRegisteringEmail");
+const { getUserByUserId } = require("../../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.get("/verify-email", async (req, res) => {
@@ -39,6 +41,19 @@ module.exports = (router) => {
             WHERE token = $1`,
         [jwtToken]
       );
+
+      const userData = await getUserByUserId(userId);
+
+      const { firstName, lastName, email } = userData;
+      const fullName = `${firstName} ${lastName}`;
+      const isSuccess = await sendThankYouForRegisteringEmail(fullName, email);
+
+      if (!isSuccess) {
+        return res.status(200).send({
+          message: "Email Verified Successfully",
+          emailMessage: "Error while sending registration email",
+        });
+      }
 
       return res.status(200).send({ message: "Email Verified Successfully" });
     } catch (error) {
