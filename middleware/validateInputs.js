@@ -70,8 +70,6 @@ function handleAuthReq(req) {
         state,
         city,
         zip,
-        numberOfMaleAccomodations,
-        numberOfFemaleAccomodations,
       ].every(Boolean)
     ) {
       return missingCredsMessage;
