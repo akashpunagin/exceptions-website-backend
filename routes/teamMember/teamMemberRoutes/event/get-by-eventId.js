@@ -76,7 +76,6 @@ module.exports = (router) => {
             memberId: row.member_id,
             firstName: row.first_name,
             lastName: row.last_name,
-            usn: row.usn,
             email: row.email,
             contactNumber: row.contact_number,
           };

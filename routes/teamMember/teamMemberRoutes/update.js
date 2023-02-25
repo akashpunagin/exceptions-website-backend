@@ -15,8 +15,7 @@ module.exports = (router) => {
     const { teamMemberMaster } = appConstants.SQL_TABLE;
 
     try {
-      const { memberId, firstName, lastName, usn, email, contactNumber } =
-        req.body;
+      const { memberId, firstName, lastName, email, contactNumber } = req.body;
 
       const isTeamMemberExists = await isTeamMemberExistsByMemberId(memberId);
       if (!isTeamMemberExists) {
@@ -28,12 +27,11 @@ module.exports = (router) => {
         SET
             first_name = $1,
             last_name = $2,
-            usn = $3,
-            email = $4,
-            contact_number = $5
-        WHERE member_id = $6
+            email = $3,
+            contact_number = $4
+        WHERE member_id = $5
           RETURNING *`,
-        [firstName, lastName, usn, email, contactNumber, memberId]
+        [firstName, lastName, email, contactNumber, memberId]
       );
       if (updateTeamMemberMasterRes.rowCount === 0) {
         return res

@@ -22,7 +22,6 @@ function handleAuthReq(req) {
     lastName,
     password,
     collegeName,
-    usn,
     state,
     city,
     zip,
@@ -68,7 +67,6 @@ function handleAuthReq(req) {
         lastName,
         password,
         collegeName,
-        usn,
         state,
         city,
         zip,
@@ -184,7 +182,6 @@ function handleTeamMemberReq(req) {
   const {
     firstName,
     lastName,
-    usn,
     email,
     contactNumber,
     eventId,
@@ -194,7 +191,7 @@ function handleTeamMemberReq(req) {
   } = req.body;
 
   if (req.path === "/add") {
-    if (![firstName, lastName, usn, email, contactNumber].every(Boolean)) {
+    if (![firstName, lastName, email, contactNumber].every(Boolean)) {
       return missingCredsMessage;
     }
   }
@@ -206,9 +203,7 @@ function handleTeamMemberReq(req) {
   }
 
   if (req.path === "/update") {
-    if (
-      ![memberId, firstName, lastName, usn, email, contactNumber].every(Boolean)
-    ) {
+    if (![memberId, firstName, lastName, email, contactNumber].every(Boolean)) {
       return missingCredsMessage;
     }
   }

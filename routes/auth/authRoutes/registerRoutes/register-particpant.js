@@ -24,7 +24,6 @@ module.exports = (router) => {
         lastName,
         password,
         collegeName,
-        usn,
         state,
         city,
         zip,
@@ -42,7 +41,6 @@ module.exports = (router) => {
 
       const participantDetails = {
         collegeName,
-        usn,
         state,
         city,
         zip,

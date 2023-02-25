@@ -26,11 +26,11 @@ CREATE TABLE team_member_master(
     member_id SERIAL PRIMARY KEY,
     first_name VARCHAR NOT NULL,
     last_name VARCHAR NOT NULL,
-    usn VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     contact_number VARCHAR NOT NULL,
     is_present BOOLEAN DEFAULT FALSE
 );
+alter table team_member_master drop COLUMN usn;
 
 --used to map team and team members--
 CREATE TABLE team_id_team_member(

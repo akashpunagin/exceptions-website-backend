@@ -20,7 +20,7 @@ module.exports = (router) => {
     const { teamMemberMaster, teamIdTeamMember } = appConstants.SQL_TABLE;
 
     try {
-      const { firstName, lastName, usn, email, contactNumber } = req.body;
+      const { firstName, lastName, email, contactNumber } = req.body;
 
       const currentUser = req.user;
 
@@ -31,9 +31,6 @@ module.exports = (router) => {
       const teamId = getTeamOfUserRes.data;
 
       const isTeamMemberExistsRes = await isTeamMemberExistsByCredentials(
-        firstName,
-        lastName,
-        usn,
         email,
         contactNumber
       );
@@ -80,10 +77,10 @@ module.exports = (router) => {
       }
 
       const addTeamMemberMasterRes = await pool.query(
-        `INSERT INTO ${teamMemberMaster}(first_name, last_name, usn, email, contact_number)
-          VALUES($1, $2, $3, $4, $5)
+        `INSERT INTO ${teamMemberMaster}(first_name, last_name, email, contact_number)
+          VALUES($1, $2, $3, $4)
           RETURNING *`,
-        [firstName, lastName, usn, email, contactNumber]
+        [firstName, lastName, email, contactNumber]
       );
       if (addTeamMemberMasterRes.rowCount === 0) {
         return res

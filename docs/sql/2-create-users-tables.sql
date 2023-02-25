@@ -49,7 +49,6 @@ CREATE TABLE user_permission(
 CREATE TABLE participant_details(
     user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     college_name VARCHAR NOT NULL,
-    usn VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
     city VARCHAR NOT NULL,
     zip INT NOT NULL,
@@ -58,7 +57,8 @@ CREATE TABLE participant_details(
     no_of_female_accomodations INTEGER DEFAULT 0
 );
 
-alter table participant_details drop column number_of_accomodations;
+
+alter table participant_details drop COLUMN usn;
 
 --used to store payment information--
 CREATE TABLE participant_payment(
@@ -69,3 +69,4 @@ CREATE TABLE participant_payment(
   screenshot_mime_type VARCHAR NOT NULL,
   is_verified BOOLEAN DEFAULT FALSE
 );
+

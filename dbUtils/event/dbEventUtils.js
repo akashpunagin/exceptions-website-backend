@@ -114,7 +114,6 @@ async function getTeamMembersByEventId(eventId) {
       memberId: member.member_id,
       firstName: member.first_name,
       lastName: member.last_name,
-      usn: member.usn,
       email: member.email,
       contactNumber: member.contact_number,
     };

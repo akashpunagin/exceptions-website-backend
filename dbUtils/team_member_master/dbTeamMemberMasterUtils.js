@@ -35,7 +35,6 @@ async function getTeamMembersByTeamId(teamId) {
       memberId: member.member_id,
       firstName: member.first_name,
       lastName: member.last_name,
-      usn: member.usn,
       email: member.email,
       contactNumber: member.contact_number,
     };
@@ -44,13 +43,7 @@ async function getTeamMembersByTeamId(teamId) {
   return data;
 }
 
-async function isTeamMemberExistsByCredentials(
-  firstName,
-  lastName,
-  usn,
-  email,
-  contactNumber
-) {
+async function isTeamMemberExistsByCredentials(email, contactNumber) {
   const { teamMemberMaster } = appConstants.SQL_TABLE;
 
   try {
@@ -63,19 +56,6 @@ async function isTeamMemberExistsByCredentials(
       return {
         isError: false,
         errorMessage: "Another team member has this email",
-        data: true,
-      };
-    }
-
-    teamMemberExistsRes = await pool.query(
-      `SELECT * FROM ${teamMemberMaster}
-        WHERE usn = $1`,
-      [usn]
-    );
-    if (teamMemberExistsRes.rowCount > 0) {
-      return {
-        isError: false,
-        errorMessage: "Another team member has this usn",
         data: true,
       };
     }

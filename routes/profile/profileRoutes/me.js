@@ -40,12 +40,11 @@ module.exports = (router) => {
         const getParticipantData = getParticipantRes.rows[0];
         const {
           college_name: collegeName,
-          usn,
           state,
           city,
           zip,
         } = getParticipantData;
-        const participantDetailsJson = { usn, state, city, zip, collegeName };
+        const participantDetailsJson = { state, city, zip, collegeName };
 
         return res
           .status(200)
