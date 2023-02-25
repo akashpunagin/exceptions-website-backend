@@ -30,7 +30,6 @@ CREATE TABLE team_member_master(
     contact_number VARCHAR NOT NULL,
     is_present BOOLEAN DEFAULT FALSE
 );
-alter table team_member_master drop COLUMN usn;
 
 --used to map team and team members--
 CREATE TABLE team_id_team_member(

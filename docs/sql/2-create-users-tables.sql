@@ -52,13 +52,9 @@ CREATE TABLE participant_details(
     state VARCHAR NOT NULL,
     city VARCHAR NOT NULL,
     zip INT NOT NULL,
-    
     no_of_male_accomodations INTEGER DEFAULT 0,
     no_of_female_accomodations INTEGER DEFAULT 0
 );
-
-
-alter table participant_details drop COLUMN usn;
 
 --used to store payment information--
 CREATE TABLE participant_payment(
