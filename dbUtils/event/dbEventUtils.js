@@ -199,6 +199,10 @@ function getStrikeForceEventName() {
   return "Strike Force";
 }
 
+function getMysteryEventName() {
+  return "Mystery Event";
+}
+
 async function getInfinityAndBeyondEventId() {
   const { eventMaster } = appConstants.SQL_TABLE;
 
@@ -248,6 +252,7 @@ module.exports = {
   getInfinityAndBeyondEventName,
   getSolvathonEventName,
   getStrikeForceEventName,
+  getMysteryEventName,
 
   getInfinityAndBeyondEventId,
   getSolvathonEventId,
