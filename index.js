@@ -14,6 +14,7 @@ const appConstantsRouter = require("./routes/appConstants/appConstantsRouter");
 const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
 const adminRouter = require("./routes/admin/adminRouter");
 const paymentRouter = require("./routes/payment/paymentRouter");
+const userRouter = require("./routes/user/userRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -35,6 +36,7 @@ app.use("/appConstants", appConstantsRouter);
 app.use("/teamNames", teamNamesRouter);
 app.use("/admin", adminRouter);
 app.use("/payment", paymentRouter);
+app.use("/user", userRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
@@ -78,7 +80,12 @@ module.exports = app;
 // https://t.me/exceptions_rvce
 // in payment verification
 // DONE: is paid true, is verified false ->team ids
-// get team id by member id
+// DONE:: get team id by member id
+
+// 1) that returns college named based on participant id
+// 2) events of specific team (already exists but mappped to access token )
+// 3) teams of specific event
+
 // authorized emails for admin, coordinators, volunteers
 // Present team members
 // Absent team members

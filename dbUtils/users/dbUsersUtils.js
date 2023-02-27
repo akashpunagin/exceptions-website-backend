@@ -1,7 +1,7 @@
 const pool = require("../../db/pool");
 const appConstants = require("../../constants/appConstants");
 
-const { users, userRole, userPermission } = appConstants.SQL_TABLE;
+const { users, userRole } = appConstants.SQL_TABLE;
 
 async function isUserExistsByUserId(userId) {
   const addUsersRes = await pool.query(`SELECT user_id FROM ${users}`);
@@ -62,19 +62,6 @@ async function getUserRoleByUserId(userId) {
   return role;
 }
 
-async function getUserPermissionByUserId(userId) {
-  const userPermissionRes = await pool.query(
-    `SELECT up.perm_view_tweet, up.perm_send_tweet
-    FROM ${users} as u, 
-        ${userPermission} as up
-    WHERE u.user_id = up.user_id
-        AND u.user_id = $1`,
-    [userId]
-  );
-  const userPermission = userPermissionRes.rows[0];
-  return userPermission;
-}
-
 module.exports = {
   isUserExistsByUserId,
   isUserExistsByUserEmail,
@@ -82,5 +69,4 @@ module.exports = {
   getUserByUserId,
 
   getUserRoleByUserId,
-  getUserPermissionByUserId,
 };
