@@ -84,7 +84,10 @@ module.exports = app;
 
 // DONE:: 1) that returns college named based on participant id
 // DONE:: 2) events of specific team (already exists but mappped to access token )
-// 3) teams of specific event
+// DONE:: 3) teams of specific event
+
+// total amount
+// total teams in solvathon, strike force, infinity and beyond
 
 // authorized emails for admin, coordinators, volunteers
 // Present team members
