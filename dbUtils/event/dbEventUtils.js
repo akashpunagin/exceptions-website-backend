@@ -199,6 +199,42 @@ function getStrikeForceEventName() {
   return "Strike Force";
 }
 
+async function getInfinityAndBeyondEventId() {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  const getRes = await pool.query(
+    `SELECT * FROM ${eventMaster}
+    WHERE event_name = $1`,
+    [getInfinityAndBeyondEventName()]
+  );
+  const eventId = getRes.rows[0].event_id;
+  return eventId;
+}
+
+async function getSolvathonEventId() {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  const getRes = await pool.query(
+    `SELECT * FROM ${eventMaster}
+    WHERE event_name = $1`,
+    [getSolvathonEventName()]
+  );
+  const eventId = getRes.rows[0].event_id;
+  return eventId;
+}
+
+async function getStrikeForceEventId() {
+  const { eventMaster } = appConstants.SQL_TABLE;
+
+  const getRes = await pool.query(
+    `SELECT * FROM ${eventMaster}
+    WHERE event_name = $1`,
+    [getStrikeForceEventName()]
+  );
+  const eventId = getRes.rows[0].event_id;
+  return eventId;
+}
+
 module.exports = {
   isEventExistsByEventId,
   isOpenEventExistsByEventId,
@@ -212,4 +248,8 @@ module.exports = {
   getInfinityAndBeyondEventName,
   getSolvathonEventName,
   getStrikeForceEventName,
+
+  getInfinityAndBeyondEventId,
+  getSolvathonEventId,
+  getStrikeForceEventId,
 };

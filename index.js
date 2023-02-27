@@ -86,7 +86,7 @@ module.exports = app;
 // DONE:: 2) events of specific team (already exists but mappped to access token )
 // DONE:: 3) teams of specific event
 
-// total amount
+// DONE:: total amount
 // total teams in solvathon, strike force, infinity and beyond
 
 // authorized emails for admin, coordinators, volunteers
