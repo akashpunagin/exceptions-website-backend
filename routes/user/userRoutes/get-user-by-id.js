@@ -16,9 +16,9 @@ module.exports = (router) => {
       const { users, userRole, participantDetails } = appConstants.SQL_TABLE;
 
       try {
-        const { participantId } = req.body;
+        const { userId } = req.body;
 
-        const isUserExists = await isUserExistsByUserId(participantId);
+        const isUserExists = await isUserExistsByUserId(userId);
 
         if (!isUserExists) {
           return res.status(401).json({ error: "User does not exists" });
@@ -33,7 +33,7 @@ module.exports = (router) => {
               u.user_id = ur.user_id AND
               u.user_id = $1
             `,
-          [participantId]
+          [userId]
         );
         const data = getRes.rows[0];
         const isRoleParticipant = data.role_participant;
@@ -56,7 +56,7 @@ module.exports = (router) => {
                 u.user_id = pd.user_id AND
                 u.user_id = $1
               `,
-            [participantId]
+            [userId]
           );
           const getParticipantData = getParticipantRes.rows[0];
           const {

@@ -317,9 +317,9 @@ function handlePaymentReq(req) {
 }
 
 function handleUserReq(req) {
-  const { participantId } = req.body;
-  if (req.path === "/get-participant-by-id") {
-    if (![participantId].every(Boolean)) {
+  const { userId } = req.body;
+  if (req.path === "/get-user-by-id") {
+    if (![userId].every(Boolean)) {
       return missingCredsMessage;
     }
   }

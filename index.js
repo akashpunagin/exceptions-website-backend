@@ -83,7 +83,7 @@ module.exports = app;
 // DONE:: get team id by member id
 
 // DONE:: 1) that returns college named based on participant id
-// 2) events of specific team (already exists but mappped to access token )
+// DONE:: 2) events of specific team (already exists but mappped to access token )
 // 3) teams of specific event
 
 // authorized emails for admin, coordinators, volunteers
