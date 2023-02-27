@@ -82,7 +82,7 @@ module.exports = app;
 // DONE: is paid true, is verified false ->team ids
 // DONE:: get team id by member id
 
-// 1) that returns college named based on participant id
+// DONE:: 1) that returns college named based on participant id
 // 2) events of specific team (already exists but mappped to access token )
 // 3) teams of specific event
 
