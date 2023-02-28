@@ -9,7 +9,7 @@ const {
 } = require("../../../dbUtils/event/dbEventUtils");
 
 module.exports = (router) => {
-  router.get(
+  router.post(
     "/get-teams-of-event",
     [authorization, validateInputs],
     async (req, res) => {
