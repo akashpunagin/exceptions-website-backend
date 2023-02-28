@@ -43,6 +43,10 @@ const constants = {
     appVarcharConstants: "app_varchar_constants",
 
     teamNames: "team_names",
+
+    allowedEmailsAdmin: "allowed_emails_admin",
+    allowedEmailsCoordinators: "allowed_emails_coordinators",
+    allowedEmailsVolunteers: "allowed_emails_volunteers",
   },
 };
 

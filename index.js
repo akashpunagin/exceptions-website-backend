@@ -15,6 +15,7 @@ const teamNamesRouter = require("./routes/teamNames/teamNamesRouter");
 const adminRouter = require("./routes/admin/adminRouter");
 const paymentRouter = require("./routes/payment/paymentRouter");
 const userRouter = require("./routes/user/userRouter");
+const allowedEmailsRouter = require("./routes/allowedEmails/allowedEmailsRouter");
 
 // TODO delete
 const testingRouter = require("./routes/testing/testingRouter");
@@ -37,6 +38,7 @@ app.use("/teamNames", teamNamesRouter);
 app.use("/admin", adminRouter);
 app.use("/payment", paymentRouter);
 app.use("/user", userRouter);
+app.use("/allowedEmails", allowedEmailsRouter);
 
 // TODO delete
 app.use("/testing", testingRouter);
