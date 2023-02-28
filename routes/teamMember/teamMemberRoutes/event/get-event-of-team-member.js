@@ -43,29 +43,32 @@ module.exports = (router) => {
           });
         }
 
-        const getTeamData = getTeamRes.rows[0];
+        const events = [];
 
-        const {
-          team_id,
-          event_id,
-          event_name,
-          event_description,
-          event_max_points,
-          event_max_team_size,
-          event_is_open_event,
-        } = getTeamData;
+        for (const getTeamData of getTeamRes.rows) {
+          const {
+            team_id,
+            event_id,
+            event_name,
+            event_description,
+            event_max_points,
+            event_max_team_size,
+            event_is_open_event,
+          } = getTeamData;
 
-        const data = {
-          teamId: team_id,
-          eventId: event_id,
-          eventName: event_name,
-          eventDescription: event_description,
-          eventMaxPoints: event_max_points,
-          eventMaxTeamSize: event_max_team_size,
-          eventIsOpenEvent: event_is_open_event,
-        };
+          const data = {
+            teamId: team_id,
+            eventId: event_id,
+            eventName: event_name,
+            eventDescription: event_description,
+            eventMaxPoints: event_max_points,
+            eventMaxTeamSize: event_max_team_size,
+            eventIsOpenEvent: event_is_open_event,
+          };
+          events.push(data);
+        }
 
-        return res.status(200).json(data);
+        return res.status(200).json(events);
       } catch (error) {
         console.log("GET event of Team member error", error);
         return res.status(500).json("Server error");

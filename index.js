@@ -91,7 +91,7 @@ module.exports = app;
 
 // DONE:: update attendence - if already true, return "member is already present"
 
-//> To add in thank you for registering mail
+//> DONE:: To add in thank you for registering mail
 // further steps:
 /*
   Step 1: Login to your account, and select team name and event type (Group events/Open events/Both)
