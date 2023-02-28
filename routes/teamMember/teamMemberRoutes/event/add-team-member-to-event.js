@@ -50,27 +50,6 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Team does not exists" });
         }
 
-        //TODO
-        const getRes = await pool.query(
-          `
-        SELECT * 
-        FROM ${teamIdTeamMember}, ${teamIdTeamMemberEvent}
-        WHERE
-          ${teamIdTeamMember}.team_id_team_member_id = ${teamIdTeamMemberEvent}.team_id_team_member_id AND
-          ${teamIdTeamMemberEvent}.event_id = $1 AND
-          ${teamIdTeamMember}.team_id = $2 AND
-          ${teamIdTeamMember}.member_id = $3
-        `,
-          [eventId, teamId, memberId]
-        );
-        const getTeamMemberOfEventCount = getRes.rowCount;
-        const isTeamMemberAlreadyRegistered = getTeamMemberOfEventCount > 0;
-        if (isTeamMemberAlreadyRegistered) {
-          return res
-            .status(401)
-            .json({ error: "This team member is already attending an event" });
-        }
-
         const eventRes = await getEventByEventId(eventId);
         if (eventRes.isError) {
           return res.status(401).json({ error: eventRes.errorMessage });
