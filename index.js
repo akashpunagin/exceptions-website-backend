@@ -89,7 +89,7 @@ module.exports = app;
 // DONE:: total amount
 // DONE:: total teams in solvathon, strike force, infinity and beyond
 
-// update attendence - if already true, return "member is already present"
+// DONE:: update attendence - if already true, return "member is already present"
 
 //> To add in thank you for registering mail
 // further steps:

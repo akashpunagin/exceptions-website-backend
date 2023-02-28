@@ -37,6 +37,7 @@ async function getTeamMembersByTeamId(teamId) {
       lastName: member.last_name,
       email: member.email,
       contactNumber: member.contact_number,
+      isPresent: member.is_present,
     };
   });
 
