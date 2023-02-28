@@ -1,5 +1,6 @@
 const pool = require("./../../db/pool");
 const appConstants = require("./../../constants/appConstants");
+const { getUserByUserId } = require("../users/dbUsersUtils");
 
 async function isTeamMemberExistsByMemberId(memberId) {
   const { teamMemberMaster } = appConstants.SQL_TABLE;
@@ -119,9 +120,45 @@ async function deleteTeamMembersOfTeamId(teamId) {
   }
 }
 
+async function getAllTeams() {
+  const { teamMaster, teamNames } = appConstants.SQL_TABLE;
+
+  const teamRes = await pool.query(`
+        SELECT *
+        FROM ${teamMaster}, ${teamNames}
+        WHERE 
+          ${teamMaster}.team_name_id = ${teamNames}.id
+      `);
+  let data = teamRes.rows;
+
+  const asyncTeamRes = await Promise.all(
+    data.map(async (row) => {
+      const headUserId = row.team_head_user;
+      const teamNameId = row.id;
+      const teamName = row.label;
+
+      const headUser = await getUserByUserId(headUserId);
+
+      return {
+        teamId: row.team_id,
+        teamName: {
+          label: teamName,
+          id: teamNameId,
+        },
+        headUser,
+        isGCConsidered: row.team_is_gc_considered,
+        score: row.team_score,
+      };
+    })
+  );
+
+  return asyncTeamRes;
+}
+
 module.exports = {
   isTeamMemberExistsByMemberId,
   getTeamMembersByTeamId,
   isTeamMemberExistsByCredentials,
   deleteTeamMembersOfTeamId,
+  getAllTeams,
 };

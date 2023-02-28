@@ -106,6 +106,8 @@ module.exports = app;
 
 */
 
+// get count of all team members
+
 // authorized emails for admin, coordinators, volunteers
 // Present team members
 // Absent team members
