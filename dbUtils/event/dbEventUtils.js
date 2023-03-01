@@ -1,6 +1,7 @@
 const pool = require("./../../db/pool");
 const appConstants = require("./../../constants/appConstants");
 const { getTeamIdOfUser } = require("../team_master/dbTeamMasterUtils");
+const { groupBy } = require("../../utilities/groupBy");
 
 async function getEventByEventId(eventId) {
   const { eventMaster } = appConstants.SQL_TABLE;
@@ -239,6 +240,42 @@ async function getStrikeForceEventId() {
   return eventId;
 }
 
+async function getTeamsOfOnlyGroupEvents() {
+  const { teamEvents } = appConstants.SQL_TABLE;
+
+  const getRes = await pool.query(` SELECT * FROM ${teamEvents}`);
+
+  let eventsData = getRes.rows;
+
+  eventsData = groupBy(eventsData, "team_id");
+
+  const infinityAndBeyondEventId = await getInfinityAndBeyondEventId();
+  const solvathonEventId = await getSolvathonEventId();
+  const strikeForceEventId = await getStrikeForceEventId();
+  const onlyOpenEventIds = [
+    infinityAndBeyondEventId,
+    solvathonEventId,
+    strikeForceEventId,
+  ];
+
+  const teamIdsOfOnlyGroupEvents = [];
+
+  for (const teamId in eventsData) {
+    const uniqueEventIds = [
+      ...new Set(eventsData[teamId].map((event) => event.event_id)),
+    ];
+
+    const isTeamOnlyGroupEvents = uniqueEventIds.every(
+      (id) => !onlyOpenEventIds.includes(id)
+    );
+    if (isTeamOnlyGroupEvents) {
+      teamIdsOfOnlyGroupEvents.push(parseInt(teamId));
+    }
+  }
+
+  return teamIdsOfOnlyGroupEvents;
+}
+
 module.exports = {
   isEventExistsByEventId,
   isOpenEventExistsByEventId,
@@ -257,4 +294,6 @@ module.exports = {
   getInfinityAndBeyondEventId,
   getSolvathonEventId,
   getStrikeForceEventId,
+
+  getOnlyGroupEventsTeams: getTeamsOfOnlyGroupEvents,
 };
