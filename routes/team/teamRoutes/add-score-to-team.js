@@ -63,7 +63,7 @@ module.exports = (router) => {
           data,
         });
       } catch (error) {
-        console.log("Update Team error", error);
+        console.log("Add score to team error", error);
         return res.status(500).json("Server error");
       }
     }
