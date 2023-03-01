@@ -140,7 +140,7 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { teamId, teamNameId, isGCConsidered, openEventIds } = req.body;
+  const { teamId, teamNameId, isGCConsidered, openEventIds, score } = req.body;
 
   if (req.path === "/add") {
     if (![teamNameId, openEventIds].every(Boolean)) {
@@ -165,6 +165,15 @@ function handleTeamReq(req) {
       return missingCredsMessage;
     }
     if (typeof teamNameId !== "number") {
+      return invalidCredsMessage;
+    }
+  }
+
+  if (req.path === "/add-score-to-team") {
+    if (![score, teamId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (typeof score !== "number") {
       return invalidCredsMessage;
     }
   }

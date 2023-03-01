@@ -25,16 +25,6 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Team member does not exists" });
         }
 
-        const getRes = await pool.query(
-          `SELECT * FROM ${teamMemberMaster}
-          WHERE member_id = $1`,
-          [memberId]
-        );
-        const isMemberPresent = getRes.rows[0].is_present;
-        if (isMemberPresent) {
-          return res.status(401).json({ error: "Member is already present" });
-        }
-
         const updateAttendenceRes = await pool.query(
           `UPDATE ${teamMemberMaster}
             SET is_present = $1
