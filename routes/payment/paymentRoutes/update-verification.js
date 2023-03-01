@@ -17,6 +17,9 @@ const {
   isUserExistsByUserId,
   getUserByUserId,
 } = require("../../../dbUtils/users/dbUsersUtils");
+const {
+  logPaymentUpdateVerification,
+} = require("../../../logs/functions/functions");
 
 module.exports = (router) => {
   router.post(
@@ -99,6 +102,13 @@ module.exports = (router) => {
             }
           }
         }
+
+        // TODO log
+        await logPaymentUpdateVerification(
+          req.user.userId,
+          participantId,
+          isVerified
+        );
 
         return res.status(200).json({
           status: "Payment is verified updated successfully",
