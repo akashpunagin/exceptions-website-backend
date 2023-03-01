@@ -1,6 +1,6 @@
 CREATE TABLE allowed_emails_coordinators(
     id SERIAL PRIMARY KEY,
-    email VARCHAR NOT NULL
+    email VARCHAR NOT NULL UNIQUE
 );
 
 
@@ -31,7 +31,7 @@ VALUES ('winiljr.mca21@rvce.edu.in');
 
 CREATE TABLE allowed_emails_volunteers(
     id SERIAL PRIMARY KEY,
-    email VARCHAR NOT NULL
+    email VARCHAR NOT NULL UNIQUE
 );
 
 INSERT INTO allowed_emails_volunteers(email)
@@ -42,7 +42,7 @@ VALUES ('shimpyk.mca21@rvce.edu.in');
 
 CREATE TABLE allowed_emails_admin(
     id SERIAL PRIMARY KEY,
-    email VARCHAR NOT NULL
+    email VARCHAR NOT NULL UNIQUE
 );
 
 INSERT INTO allowed_emails_admin(email)

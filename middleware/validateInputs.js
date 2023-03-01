@@ -325,6 +325,54 @@ function handleUserReq(req) {
   }
 }
 
+function handleAllowedEmailReq(req) {
+  const { email } = req.body;
+  if (req.path === "/admins/add") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidEmail(email)) {
+      return invalidCredsMessage;
+    }
+  }
+
+  if (req.path === "/coordinators/add") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidEmail(email)) {
+      return invalidCredsMessage;
+    }
+  }
+
+  if (req.path === "/volunteers/add") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidEmail(email)) {
+      return invalidCredsMessage;
+    }
+  }
+
+  if (req.path === "/admins/delete") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/coordinators/delete") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/volunteers/delete") {
+    if (![email].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const eventError = handelEventReq(req);
@@ -334,6 +382,7 @@ module.exports = (req, res, next) => {
   const teamNamesError = handleTeamNamesReq(req);
   const paymentError = handlePaymentReq(req);
   const userError = handleUserReq(req);
+  const allowedEmailError = handleAllowedEmailReq(req);
 
   console.log({
     authError,
@@ -344,6 +393,7 @@ module.exports = (req, res, next) => {
     teamNamesError,
     paymentError,
     userError,
+    allowedEmailError,
   });
 
   if (req.originalUrl.includes("/auth/") && authError) {
@@ -369,6 +419,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/user/") && userError) {
     return res.status(401).json({ error: userError });
+  }
+  if (req.originalUrl.includes("/allowedEmails/") && allowedEmailError) {
+    return res.status(401).json({ error: allowedEmailError });
   }
 
   next();
