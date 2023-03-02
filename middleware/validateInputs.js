@@ -199,6 +199,12 @@ function handleTeamReq(req) {
       return invalidCredsMessage;
     }
   }
+
+  if (req.path === "/get-event-fees-of-specific-team") {
+    if (![teamId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 function handleTeamMemberReq(req) {
