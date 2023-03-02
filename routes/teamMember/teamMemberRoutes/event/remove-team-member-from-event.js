@@ -27,7 +27,7 @@ module.exports = (router) => {
         appConstants.SQL_TABLE;
 
       try {
-        const { memberId, teamId } = req.body;
+        const { memberId, teamId, eventId } = req.body;
 
         const isTeamMemberExists = await isTeamMemberExistsByMemberId(memberId);
         if (!isTeamMemberExists) {
@@ -45,6 +45,11 @@ module.exports = (router) => {
           return res.status(401).json({ error: "Team does not exists" });
         }
 
+        const isEventExists = await isEventExistsByEventId(eventId);
+        if (!isEventExists) {
+          return res.status(401).json({ error: "Event does not exists" });
+        }
+
         const getTeamIdTeamMemberRes = await pool.query(
           `SELECT * FROM ${teamIdTeamMember}
           WHERE
@@ -60,13 +65,13 @@ module.exports = (router) => {
         const teamIdTeamMemberData = getTeamIdTeamMemberRes.rows[0];
         const teamIdTeamMemberId = teamIdTeamMemberData.team_id_team_member_id;
 
-        console.log("SEE HERE:", { teamIdTeamMemberId });
-
         const deleteTeamMemberFromEventRes = await pool.query(
           `DELETE FROM ${teamIdTeamMemberEvent}
-            WHERE team_id_team_member_id = $1
+            WHERE
+              team_id_team_member_id = $1 AND
+              event_id = $2
             RETURNING *`,
-          [teamIdTeamMemberId]
+          [teamIdTeamMemberId, eventId]
         );
         if (deleteTeamMemberFromEventRes.rowCount === 0) {
           return res

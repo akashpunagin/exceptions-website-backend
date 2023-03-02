@@ -247,7 +247,7 @@ function handleTeamMemberReq(req) {
   }
 
   if (req.path === "/remove-team-member-from-event") {
-    if (![memberId].every(Boolean)) {
+    if (![memberId, teamId, eventId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
