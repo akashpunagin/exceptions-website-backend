@@ -121,13 +121,14 @@ async function deleteTeamMembersOfTeamId(teamId) {
 }
 
 async function getAllTeams() {
-  const { teamMaster, teamNames } = appConstants.SQL_TABLE;
+  const { teamMaster, teamNames, participantDetails } = appConstants.SQL_TABLE;
 
   const teamRes = await pool.query(`
         SELECT *
-        FROM ${teamMaster}, ${teamNames}
+        FROM ${teamMaster}, ${teamNames}, ${participantDetails}
         WHERE 
-          ${teamMaster}.team_name_id = ${teamNames}.id
+          ${teamMaster}.team_name_id = ${teamNames}.id AND
+          ${teamMaster}.team_head_user = ${participantDetails}.user_id
       `);
   let data = teamRes.rows;
 
@@ -139,6 +140,15 @@ async function getAllTeams() {
 
       const headUser = await getUserByUserId(headUserId);
 
+      const participantDetails = {
+        collegeName: row.college_name,
+        state: row.state,
+        city: row.state,
+        zip: row.zip,
+        noOfMaleAccomodations: row.no_of_male_accomodations,
+        noOfFemaleAccomodations: row.no_of_female_accomodations,
+      };
+
       return {
         teamId: row.team_id,
         teamName: {
@@ -148,6 +158,7 @@ async function getAllTeams() {
         headUser,
         isGCConsidered: row.team_is_gc_considered,
         score: row.team_score,
+        teamHeadDetails: participantDetails,
       };
     })
   );
