@@ -6,6 +6,9 @@ const {
 const validateInputs = require("../../../../middleware/validateInputs");
 const appConstants = require("../../../../constants/appConstants");
 const addUser = require("../helperFunctions/funcAddUser");
+const {
+  isAllowedVolunteerEmailExists,
+} = require("../../../../dbUtils/allowedEmails/dbAllowedEmailsUtils");
 
 module.exports = (router) => {
   router.post("/register-volunteer", validateInputs, async (req, res) => {
@@ -25,6 +28,13 @@ module.exports = (router) => {
         lastName,
         password,
       };
+
+      const isAllowed = await isAllowedVolunteerEmailExists(email);
+      if (!isAllowed) {
+        return res.status(401).json({
+          error: "This email is not allowed to be logged in as Volunteers",
+        });
+      }
 
       const addUserRes = await addUser(userDetails);
       if (addUserRes.error) {

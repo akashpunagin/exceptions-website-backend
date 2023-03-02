@@ -6,6 +6,9 @@ const {
 const validateInputs = require("../../../../middleware/validateInputs");
 const appConstants = require("../../../../constants/appConstants");
 const addUser = require("../helperFunctions/funcAddUser");
+const {
+  isAllowedAdminEmailExists,
+} = require("../../../../dbUtils/allowedEmails/dbAllowedEmailsUtils");
 
 module.exports = (router) => {
   router.post("/register-admin", validateInputs, async (req, res) => {
@@ -25,6 +28,13 @@ module.exports = (router) => {
         lastName,
         password,
       };
+
+      const isAllowed = await isAllowedAdminEmailExists(email);
+      if (!isAllowed) {
+        return res.status(401).json({
+          error: "This email is not allowed to be logged in as Admin",
+        });
+      }
 
       const addUserRes = await addUser(userDetails);
       if (addUserRes.error) {
