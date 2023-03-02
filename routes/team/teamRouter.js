@@ -10,6 +10,7 @@ require("./teamRoutes/get-events-of-specific-team")(router);
 require("./teamRoutes/get-max-team-members")(router);
 require("./teamRoutes/get-all-teams-with-team-members")(router);
 require("./teamRoutes/get-specific-team-details")(router);
+require("./teamRoutes/get-all-team-details")(router);
 require("./teamRoutes/delete")(router);
 require("./teamRoutes/update")(router);
 require("./teamRoutes/add-score-to-team")(router);
