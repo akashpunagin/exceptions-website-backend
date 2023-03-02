@@ -61,3 +61,12 @@ CREATE TABLE app_varchar_constants(
     label VARCHAR NOT NULL,
     value VARCHAR NOT NULL
 );
+
+SELECT *
+FROM team_master
+WHERE team_name_id = (
+    SELECT id
+    FROM team_names
+    WHERE label = 'The Clone Troopers'
+)
+

@@ -60,11 +60,14 @@ async function getTeamIsGCConsideredOfUser(userId) {
 }
 
 async function getTeamByTeamId(teamId) {
-  const { teamMaster } = appConstants.SQL_TABLE;
+  const { teamMaster, teamNames } = appConstants.SQL_TABLE;
 
   const currentTeamRes = await pool.query(
-    `SELECT * FROM ${teamMaster}
-        WHERE team_id = $1`,
+    `SELECT * 
+    FROM ${teamMaster}, ${teamNames}
+    WHERE 
+      ${teamMaster}.team_name_id = ${teamNames}.id AND
+      team_id = $1`,
     [teamId]
   );
   if (currentTeamRes.rowCount === 0) {
