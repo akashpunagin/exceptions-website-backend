@@ -112,6 +112,11 @@ const sendPaymentVerificationEmail = async (name, email) => {
           <h3
             style="margin-top: 20px; box-sizing: border-box"
           >
+            Remainder: All Participants must carry their ID cards to the venue
+          </h3>
+          <h3
+            style="margin-top: 20px; box-sizing: border-box"
+          >
             Join our Telegram channel to get on time event updates
           </h3>
           <a
