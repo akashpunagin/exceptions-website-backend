@@ -13,5 +13,6 @@ require("./teamRoutes/get-specific-team-details")(router);
 require("./teamRoutes/delete")(router);
 require("./teamRoutes/update")(router);
 require("./teamRoutes/add-score-to-team")(router);
+require("./teamRoutes/mark-team-attendance")(router);
 
 module.exports = router;

@@ -140,7 +140,8 @@ function handelEventReq(req) {
 }
 
 function handleTeamReq(req) {
-  const { teamId, teamNameId, isGCConsidered, openEventIds, score } = req.body;
+  const { teamId, teamNameId, isGCConsidered, openEventIds, score, isPresent } =
+    req.body;
 
   if (req.path === "/add") {
     if (![teamNameId, openEventIds].every(Boolean)) {
@@ -187,6 +188,15 @@ function handleTeamReq(req) {
   if (req.path === "/get-events-of-specific-team") {
     if (![teamId].every(Boolean)) {
       return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/mark-team-attendance") {
+    if (![teamId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (typeof isPresent !== "boolean") {
+      return invalidCredsMessage;
     }
   }
 }
