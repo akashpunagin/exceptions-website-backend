@@ -110,8 +110,6 @@ module.exports = app;
 
 // DONE:: get count of all team members
 
-// mark-team-attendence: req: teamId, isPresent, mark all team members attendence
+// DONE::mark-team-attendence: req: teamId, isPresent, mark all team members attendence
 
-// authorized emails for admin, coordinators, volunteers
-// Present team members
-// Absent team members
+// DONE:: authorized emails for admin, coordinators, volunteers
