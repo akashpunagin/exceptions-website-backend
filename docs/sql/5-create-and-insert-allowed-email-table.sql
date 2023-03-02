@@ -36,7 +36,31 @@ VALUES ('kajalpandey.mca22@rvce.edu.in');
 INSERT INTO allowed_emails_coordinators(email)
 VALUES ('pk.puni872@gmail.com');
 
-
+--EVENT HEADS--
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('prajwalk.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('rakshithr.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('indrabusanam.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('aishwaryakk.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('Sumanthcr.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('Krupasa.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('shireeshakb.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('thejasp.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('bhaktiprabhu.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('sohangowdac.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('ranjithkj.mca21@rvce.edu.in');
+INSERT INTO allowed_emails_coordinators(email)
+VALUES ('winiljr.mca21@rvce.edu.in');
 
 CREATE TABLE allowed_emails_volunteers(
     id SERIAL PRIMARY KEY,
