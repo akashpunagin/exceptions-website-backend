@@ -145,8 +145,6 @@ async function getAllTeams() {
         state: row.state,
         city: row.state,
         zip: row.zip,
-        noOfMaleAccomodations: row.no_of_male_accomodations,
-        noOfFemaleAccomodations: row.no_of_female_accomodations,
       };
 
       return {
@@ -159,6 +157,8 @@ async function getAllTeams() {
         isGCConsidered: row.team_is_gc_considered,
         score: row.team_score,
         teamHeadDetails: participantDetails,
+        noOfMaleAccomodations: row.no_of_male_accomodations,
+        noOfFemaleAccomodations: row.no_of_female_accomodations,
       };
     })
   );

@@ -1,5 +1,6 @@
 const appConstants = require("../../constants/appConstants");
 const pool = require("../../db/pool");
+const { getUserByUserId } = require("../users/dbUsersUtils");
 
 async function isTeamHeadExists(teamHeadId) {
   const { teamMaster } = appConstants.SQL_TABLE;
@@ -168,6 +169,55 @@ async function getMaxTeamMembersOfTeamByTeamId(isTeamGCConsidered, teamId) {
   return Number.parseInt(totalMaxTeamMemberCount);
 }
 
+async function getTeamsInEvent(eventId) {
+  const { teamEvents, teamMaster, participantDetails, teamNames } =
+    appConstants.SQL_TABLE;
+
+  const getTeamRes = await pool.query(
+    `
+  SELECT * 
+  FROM ${teamEvents}, ${teamMaster}, ${participantDetails}, ${teamNames}
+  WHERE 
+    ${teamEvents}.team_id = ${teamMaster}.team_id AND
+    ${teamMaster}.team_head_user = ${participantDetails}.user_id AND
+    ${teamMaster}.team_name_id = ${teamNames}.id AND
+    ${teamEvents}.event_id = $1`,
+    [eventId]
+  );
+  let data = getTeamRes.rows;
+
+  data = await Promise.all(
+    data.map(async (row) => {
+      const teamName = {
+        id: row.id,
+        label: row.label,
+      };
+
+      const participantDetails = {
+        collegeName: row.college_name,
+        state: row.state,
+        city: row.state,
+        zip: row.zip,
+      };
+
+      const headUserId = row.team_head_user;
+      const headUser = await getUserByUserId(headUserId);
+
+      return {
+        teamId: row.team_id,
+        teamName,
+        headUser,
+        isGCConsidered: row.team_is_gc_considered,
+        score: row.team_score,
+        teamHeadDetails: participantDetails,
+        noOfMaleAccomodations: row.no_of_male_accomodations,
+        noOfFemaleAccomodations: row.no_of_female_accomodations,
+      };
+    })
+  );
+  return data;
+}
+
 module.exports = {
   isTeamHeadExists,
   getTeamIdOfUser,
@@ -176,4 +226,5 @@ module.exports = {
   isTeamExistsByTeamNameId,
   getMaxTeamMembersOfTeamByTeamId,
   getTeamIsGCConsideredOfUser,
+  getTeamsInEvent,
 };
