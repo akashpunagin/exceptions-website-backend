@@ -1,7 +1,7 @@
 const pool = require("../../db/pool");
 const appConstants = require("../../constants/appConstants");
 
-const { users, userRole } = appConstants.SQL_TABLE;
+const { users, userRole, participantPayment } = appConstants.SQL_TABLE;
 
 async function isUserExistsByUserId(userId) {
   const addUsersRes = await pool.query(`SELECT user_id FROM ${users}`);
@@ -62,6 +62,20 @@ async function getUserRoleByUserId(userId) {
   return role;
 }
 
+async function isParticipantPaid(participantid) {
+  const getRes = await pool.query(
+    `
+  SELECT * FROM ${participantPayment}
+  WHERE participant_id = $1`,
+    [participantid]
+  );
+  if (getRes.rowCount === 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 module.exports = {
   isUserExistsByUserId,
   isUserExistsByUserEmail,
@@ -69,4 +83,5 @@ module.exports = {
   getUserByUserId,
 
   getUserRoleByUserId,
+  isParticipantPaid,
 };
